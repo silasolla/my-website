@@ -97,7 +97,7 @@ export const aboutDataJa: AboutData = {
   publications: [
     {
       title: '修士論文：置換に関する不動点制約を用いた名目書き換え',
-      url: 'https://silasol.la/notes/thesis/mthesis.pdf',
+      url: 'https://doc.silasol.la/thesis/mthesis.pdf',
       description:
         '名目書き換えシステム (Nominal Rewriting System) という計算モデルの性質について．\nPPL 2022 (第24回プログラミングおよびプログラミング言語ワークショップ) でも発表しました．',
       date: '2022年3月',
@@ -199,13 +199,13 @@ export const aboutDataJa: AboutData = {
       items: [
         {
           name: '構成的に証明できないトートロジー',
-          url: 'https://silasol.la/notes/logic/daily-shinjiro.pdf',
+          url: 'https://doc.silasol.la/logic/daily-shinjiro.pdf',
           description:
             'トートロジーの自然演繹体系での証明木集です．\n背理法や二重否定の除去などを使わないと証明できない (証明は省略) ものを扱っています．',
         },
         {
           name: '様相論理の体系と Lindenbaum の補題',
-          url: 'https://silasol.la/notes/logic/sys-modal.pdf',
+          url: 'https://doc.silasol.la/logic/sys-modal.pdf',
           description:
             '様相論理の体系の定義から始まって Lindenbaum の補題を導きます．\n様相論理と言いつつ極大理論を作る話がメインです．',
         },
@@ -245,7 +245,7 @@ export const aboutDataJa: AboutData = {
         },
         {
           name: '担々麺屋',
-          url: 'https://silasol.la/extra/tangtang.html',
+          url: 'https://assets.silasol.la/extra/tangtang.html',
           description:
             '担々麺屋に行きたくなるページです．\nMatrix Canvas Code (https://gigazine.net/news/20130321-matrix-javascript/) を真似しました．',
         },
@@ -385,7 +385,7 @@ export const aboutDataEn: AboutData = {
   publications: [
     {
       title: "Master's Thesis: Nominal Rewriting with Permutation Fixed Point Constraints",
-      url: 'https://silasol.la/notes/thesis/mthesis.pdf',
+      url: 'https://doc.silasol.la/thesis/mthesis.pdf',
       description:
         'A study on the properties of a computational model known as the Nominal Rewriting System. Also presented at PPL 2022 (Programming and Programming Languages Workshop).',
       date: 'March 2022',
