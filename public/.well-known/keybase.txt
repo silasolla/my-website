@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/silasolla
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://silasol.la
+  * I am silasolla (https://keybase.io/silasolla) on keybase.
+  * I have a public key ASD8d4KvLI_SbErB0kd0Yfcbez1fFRVvHa43bu-l4WiEgQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120e1bf83ffe827afd77b24a4c1f50eb1d0d0ec80fe3f9babdc7ae2e8da37e275fd0a",
+      "host": "keybase.io",
+      "kid": "0120fc7782af2c8fd26c4ac1d2477461f71b7b3d5f15156f1dae376eefa5e16884810a",
+      "uid": "29295182de2af2d505b1673e6fa52519",
+      "username": "silasolla"
+    },
+    "merkle_root": {
+      "ctime": 1671402627,
+      "hash": "716ce0609a344001445cb80da54e3193848730ed1f1ddb5598a726bcca6767a18950f104d60e157e243947100ffbe03d3b21b47129ffab3f19d52e49fb354960",
+      "hash_meta": "f05f1e03c1f0ef9a6303a8850f64703cc1961666ae6c46aa177d2d4e30e23a30",
+      "seqno": 23735061
+    },
+    "service": {
+      "entropy": "vHm4YVFGlpptMn4qhYZ7KNWW",
+      "hostname": "silasol.la",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.0.3"
+  },
+  "ctime": 1671402699,
+  "expire_in": 504576000,
+  "prev": "668898b1c845781b0bd2f396191331812bb774f10fdd01aa84fe40ff185ac8ba",
+  "seqno": 75,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg/HeCryyP0mxKwdJHdGH3G3s9XxUVbx2uN27vpeFohIEKp3BheWxvYWTESpcCS8QgZoiYschFeBsL0vOWGRMxgSu3dPEP3QGqhP5A/xhayLrEIOt5CVRhHcS4ry7NmWMJFt9ZlA8jIkq4abSywhi4i/KLAgHCo3NpZ8RA5V/DvdFlQIBSTbwU09A/SrF4BbRtLd9kN3UnrYoXdfEPjKHnUhCIarrMb+S7YB3/skBHXlkkJikpb8+PmP6fBqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIAHiN9S8z7c4rDMfTK5TtvJgLZQWZnvl9zE1Ef5R4lTIo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/silasolla
+
+==================================================================
