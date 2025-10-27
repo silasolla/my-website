@@ -1,22 +1,21 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,30 +40,13 @@ jobs:
 
       - name: Build
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://example.com' }}
+          SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
           IMAGE_BASE_URL: ${{ vars.IMAGE_BASE_URL || '' }}
         run: npm run build
 
-      - name: Generate CNAME
-        run: |
-          SITE_URL="${{ vars.SITE_URL || 'https://example.com' }}"
-          DOMAIN=$(echo "$SITE_URL" | sed 's|https\?://||' | sed 's|/.*||')
-          echo "$DOMAIN" > ./dist/CNAME
-          echo "✓ Generated CNAME with domain: $DOMAIN"
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME || 'silasolla' }}
