@@ -1,0 +1,94 @@
+---
+export interface Props {
+  id: string;
+  user?: string;
+}
+
+const { id, user } = Astro.props;
+---
+
+<div class="tweet-container">
+  <blockquote class="twitter-tweet" data-dnt="true" data-theme="light">
+    <a href={`https://twitter.com/${user || 'x'}/status/${id}`}></a>
+  </blockquote>
+</div>
+
+<script>
+  // Twitter ウィジェットの型定義
+  interface TwitterWidgets {
+    load: () => void;
+  }
+
+  interface TwitterWindow extends Window {
+    twttr?: {
+      widgets: TwitterWidgets;
+    };
+  }
+
+  declare const window: TwitterWindow;
+
+  // Twitter ウィジェットを読み込み，ダークモード対応
+  function loadTwitterWidget() {
+    if (!window.twttr) {
+      const script = document.createElement('script');
+      script.src = 'https://platform.twitter.com/widgets.js';
+      script.async = true;
+      document.body.appendChild(script);
+
+      script.onload = () => {
+        applyThemeToTweets();
+      };
+    } else if (window.twttr?.widgets) {
+      applyThemeToTweets();
+    }
+  }
+
+  function applyThemeToTweets() {
+    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+    const tweets = document.querySelectorAll('.twitter-tweet');
+
+    tweets.forEach((tweet) => {
+      tweet.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    });
+
+    if (window.twttr?.widgets) {
+      window.twttr.widgets.load();
+    }
+  }
+
+  // 初回読み込み
+  loadTwitterWidget();
+
+  // テーマ変更を監視
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'data-theme') {
+        applyThemeToTweets();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+</script>
+
+<style>
+  .tweet-container {
+    margin: 1.5rem auto;
+    max-width: 550px;
+    background: var(--color-bg);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .tweet-container :global(.twitter-tweet) {
+    margin: 0;
+  }
+
+  /* ダークモード */
+  :global([data-theme='dark']) .tweet-container {
+    background: var(--color-bg);
+  }
+</style>

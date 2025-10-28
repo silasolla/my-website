@@ -80,15 +80,43 @@ fun factorial 0 = 1
 
 <!-- PC版で画像サイズを調整したい場合はファイルを mdx にして Astro コンポーネントをインポートして使用 -->
 <Img src="@@/2025-10-26-01_standard-ml-intro/diagram.png" alt="図解" width="400" caption="図解" />
+```
 
-````
+### 2.3 引用の使用
 
-### 2.2 画像を配置
+マークダウンの引用記法 (`>`) を使えます：
+
+```markdown
+> これは引用です．
+> 複数行にわたって書くこともできます．
+```
+
+### 2.4 Twitter (X) の埋め込み
+
+MDX ファイル (`.mdx`) で Twitter の投稿を埋め込めます：
+
+```mdx
+---
+title: 記事タイトル
+date: 2025-10-26
+tags: ['news']
+---
+
+import Tweet from '@/components/Tweet.astro';
+
+# 記事タイトル
+
+<Tweet id="1234567890123456789" user="username" />
+```
+
+**注意：** Tweet ID は投稿URLの数字部分です (e.g. `https://twitter.com/user/status/1234567890123456789`)
+
+### 2.5 画像を配置
 
 ```bash
 # 画像ディレクトリに画像をコピー
 cp ~/Downloads/result.png public/posts/images/2025-10-26-01_my-article-title/
-````
+```
 
 ディレクトリ構造：
 
