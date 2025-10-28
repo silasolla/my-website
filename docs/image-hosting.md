@@ -62,7 +62,7 @@ remarkプラグインが自動的に適切なURLに変換します：
 R2_BUCKET_NAME=your-bucket-name
 ```
 
-認証は`wrangler login`でブラウザ経由で行います (APIトークン不要)．
+認証は `npx wrangler login` でブラウザ経由で行います (APIトークン不要)．
 
 **アップロード実行**：
 

@@ -22,7 +22,7 @@ new:
 wrangler-auth:
 	@echo "🔐 認証を開始します..."
 	@echo "   ブラウザが開くので Cloudflare アカウントで認証してください"
-	wrangler login
+	npx wrangler login
 
 upload-images:
 	@if [ -z "$(R2_BUCKET_NAME)" ]; then \

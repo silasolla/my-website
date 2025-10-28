@@ -27,13 +27,6 @@ if [ -z "$BUCKET_NAME" ]; then
   exit 1
 fi
 
-# Wrangler がインストールされているか確認
-if ! command -v wrangler &> /dev/null; then
-  echo "❌ wrangler が見つかりません"
-  echo "   npm install -g wrangler でインストールしてください"
-  exit 1
-fi
-
 # 画像ディレクトリの存在確認
 if [ ! -d "$IMAGES_DIR" ]; then
   echo "❌ 画像ディレクトリが見つかりません: $IMAGES_DIR"
@@ -78,9 +71,9 @@ while IFS= read -r file; do
     echo "📤 アップロード対象: $key"
     uploaded=$((uploaded + 1))
   else
-    # wrangler で R2 にアップロード
+    # npx wrangler で R2 にアップロード
     # --cache-control で1年間キャッシュ
-    if wrangler r2 object put "$BUCKET_NAME/$key" \
+    if npx wrangler r2 object put "$BUCKET_NAME/$key" \
        --remote \
        --file="$file" \
        --content-type="$(file -b --mime-type "$file")" \

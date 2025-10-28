@@ -237,7 +237,7 @@ make upload-images SLUG=2025-10-26-01_my-article-title
 rm public/posts/images/2025-10-26-01_my-article-title/old-image.png
 
 # R2からも削除 (手動)
-wrangler r2 object delete your-bucket-name/posts/2025-10-26-01_my-article-title/old-image.png
+npx wrangler r2 object delete your-bucket-name/posts/2025-10-26-01_my-article-title/old-image.png
 ```
 
 ### Q3: 記事を削除したい
@@ -252,7 +252,7 @@ git push
 rm -rf public/posts/images/2025-10-26-01_my-article-title
 
 # 3. R2から画像を削除 (手動，オプション)
-wrangler r2 object delete your-bucket-name/posts/2025-10-26-01_my-article-title/ --recursive
+npx wrangler r2 object delete your-bucket-name/posts/2025-10-26-01_my-article-title/ --recursive
 ```
 
 ### Q4: 同じ日に複数記事を書きたい
