@@ -8,13 +8,14 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  noIndex?: boolean;
 }
 
 const locale = getCurrentLocale(Astro.currentLocale);
 const defaultDescription = getTranslation(Astro.currentLocale, 'site.description');
 const siteTitle = getTranslation(Astro.currentLocale, 'site.title');
 
-const { title, description = defaultDescription, image } = Astro.props;
+const { title, description = defaultDescription, image, noIndex = false } = Astro.props;
 
 // 開発環境でのフォールバック用
 const isDev = import.meta.env.DEV;
@@ -33,6 +34,16 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Masaki Haga (silasolla)" />
+
+    <!-- Robots meta tag (特別記事用) -->
+    {
+      noIndex && (
+        <>
+          <meta name="robots" content="noindex, nofollow, noarchive" />
+          <meta name="googlebot" content="noindex, nofollow" />
+        </>
+      )
+    }
 
     <!-- Favicons -->
     <!-- Apple Touch Icons (iOS Safari) -->

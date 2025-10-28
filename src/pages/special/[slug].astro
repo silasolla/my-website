@@ -1,0 +1,636 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// 特別記事の一覧を取得してパスを生成
+export async function getStaticPaths() {
+  const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
+
+  if (!dataBaseUrl) {
+    console.warn('[Special Articles] PUBLIC_DATA_BASE_URL is not set, generating placeholder only');
+    return [{ params: { slug: '_placeholder' } }];
+  }
+
+  try {
+    // 記事一覧を取得
+    const response = await fetch(`${dataBaseUrl}/articles/index.json`);
+
+    if (!response.ok) {
+      console.warn(`[Special Articles] Failed to fetch index.json: ${response.status}`);
+      return [{ params: { slug: '_placeholder' } }];
+    }
+
+    const data = await response.json();
+
+    // 各記事のパスを生成
+    const paths = data.articles.map((article: { slug: string }) => ({
+      params: { slug: article.slug },
+    }));
+
+    console.log(`[Special Articles] Generated ${paths.length} paths`);
+    return paths;
+  } catch (error) {
+    console.error('[Special Articles] Error fetching articles:', error);
+    return [{ params: { slug: '_placeholder' } }];
+  }
+}
+
+const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
+---
+
+<Layout
+  title="特別記事"
+  description="この記事は検索エンジンにインデックスされません"
+  noIndex={true}
+>
+  <div id="special-article-root" class="loading" data-api-base={dataBaseUrl}>
+    <div class="loader">
+      <div class="spinner"></div>
+      <p>読み込み中...</p>
+    </div>
+  </div>
+
+  <script>
+    // データ配信サイトのURL（data属性から取得）
+    const DATA_BASE_URL =
+      document.getElementById('special-article-root')?.getAttribute('data-api-base') || '';
+
+    interface ArticleData {
+      slug: string;
+      title: string;
+      content: string;
+      category: string;
+      categoryColor: string;
+      date: string;
+      tags?: string[];
+      meta?: {
+        publishedAt: string;
+        updatedAt: string;
+      };
+    }
+
+    interface TwitterWidgets {
+      load: () => void;
+    }
+
+    interface TwitterWindow extends Window {
+      twttr?: {
+        widgets: TwitterWidgets;
+      };
+    }
+
+    declare const window: TwitterWindow;
+
+    // URLからスラッグを取得
+    function getSlugFromUrl(): string {
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      return pathParts[pathParts.length - 1] || '';
+    }
+
+    // 記事をフェッチ
+    async function loadSpecialArticle() {
+      const slug = getSlugFromUrl();
+
+      // プレースホルダーページの場合
+      if (slug === '_placeholder' || !slug) {
+        showError('記事が見つかりません', '記事のURLを確認してください。');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // キャッシュ制御（必要に応じて調整）
+          cache: 'default',
+        });
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('記事が見つかりませんでした');
+          } else if (response.status === 403 || response.status === 401) {
+            throw new Error('この記事にアクセスする権限がありません');
+          } else {
+            throw new Error(`エラーが発生しました (${response.status})`);
+          }
+        }
+
+        const data: ArticleData = await response.json();
+        renderArticle(data);
+      } catch (error) {
+        console.error('Error loading article:', error);
+        const message = error instanceof Error ? error.message : '記事の読み込みに失敗しました';
+        showError(message, 'ネットワーク接続を確認してください。');
+      }
+    }
+
+    // 記事をレンダリング
+    function renderArticle(data: ArticleData) {
+      const root = document.getElementById('special-article-root');
+      if (!root) return;
+
+      root.className = 'special-article';
+
+      // タグのHTML生成
+      const tagsHtml =
+        data.tags && data.tags.length > 0
+          ? `<div class="article-tags">
+            ${data.tags.map((tag) => `<span class="tag tag-${tag}">${escapeHtml(tag)}</span>`).join('')}
+           </div>`
+          : '';
+
+      root.innerHTML = `
+        <article class="article-container">
+          <header class="article-header">
+            <div class="article-category" style="background-color: ${escapeHtml(data.categoryColor)}">
+              ${escapeHtml(data.category)}
+            </div>
+            <h1 class="article-title">${escapeHtml(data.title)}</h1>
+            <time class="article-date" datetime="${data.date}">
+              ${formatDate(data.date)}
+            </time>
+            ${tagsHtml}
+          </header>
+
+          <div class="article-content">
+            ${data.content}
+          </div>
+
+          <nav class="article-nav">
+            <a href="/" class="back-link">← トップに戻る</a>
+          </nav>
+        </article>
+      `;
+
+      // 画像の遅延読み込み設定
+      setupLazyImages();
+
+      // 外部リンクの処理
+      setupExternalLinks();
+
+      // Twitter埋め込みの処理
+      loadTwitterEmbeds();
+    }
+
+    // エラー表示
+    function showError(message: string, detail?: string) {
+      const root = document.getElementById('special-article-root');
+      if (!root) return;
+
+      root.className = 'error-state';
+      root.innerHTML = `
+        <div class="error-container">
+          <div class="error-icon">⚠️</div>
+          <h2 class="error-title">${escapeHtml(message)}</h2>
+          ${detail ? `<p class="error-detail">${escapeHtml(detail)}</p>` : ''}
+          <nav class="error-nav">
+            <a href="/" class="back-link">トップに戻る</a>
+            <button onclick="location.reload()" class="retry-button">再読み込み</button>
+          </nav>
+        </div>
+      `;
+    }
+
+    // HTMLエスケープ
+    function escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 日付フォーマット
+    function formatDate(dateString: string): string {
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ja-JP', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+        });
+      } catch (e) {
+        return dateString;
+      }
+    }
+
+    // 画像の遅延読み込み設定
+    function setupLazyImages() {
+      const images = document.querySelectorAll('.article-content img');
+
+      if ('loading' in HTMLImageElement.prototype) {
+        // ネイティブ lazy loading
+        images.forEach((img) => {
+          (img as HTMLImageElement).loading = 'lazy';
+        });
+      }
+    }
+
+    // 外部リンクの処理
+    function setupExternalLinks() {
+      const links = document.querySelectorAll('.article-content a[href^="http"]');
+
+      links.forEach((link) => {
+        const anchor = link as HTMLAnchorElement;
+        const url = new URL(anchor.href);
+
+        // 同一ドメインでない場合
+        if (url.hostname !== window.location.hostname) {
+          anchor.target = '_blank';
+          anchor.rel = 'noopener noreferrer';
+        }
+      });
+    }
+
+    // Twitter埋め込みの自動読み込み
+    function loadTwitterEmbeds() {
+      const tweets = document.querySelectorAll('.twitter-tweet');
+
+      // ツイートがない場合は何もしない
+      if (tweets.length === 0) return;
+
+      // 既にスクリプトが読み込まれている場合
+      if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load();
+        return;
+      }
+
+      // Twitterウィジェットスクリプトを読み込む
+      const script = document.createElement('script');
+      script.src = 'https://platform.twitter.com/widgets.js';
+      script.async = true;
+      script.setAttribute('charset', 'utf-8');
+      document.body.appendChild(script);
+    }
+
+    // ページ読み込み時に実行
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadSpecialArticle);
+    } else {
+      loadSpecialArticle();
+    }
+  </script>
+</Layout>
+
+<style>
+  /* ローディング状態 */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 4rem 2rem;
+  }
+
+  .loader {
+    text-align: center;
+  }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loader p {
+    color: var(--color-text-light);
+    font-size: 1rem;
+  }
+
+  /* 記事表示 */
+  .special-article {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .article-container {
+    background: var(--color-bg);
+  }
+
+  .article-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .article-category {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    border-radius: 16px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .article-title {
+    font-size: 2.5rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .article-date {
+    display: block;
+    color: var(--color-text-light);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .article-content {
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: 4rem;
+    font-size: 1.05rem;
+  }
+
+  .article-nav {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--color-primary);
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .back-link:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    text-decoration: none;
+    transform: translateX(-4px);
+  }
+
+  /* エラー状態 */
+  .error-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 4rem 2rem;
+  }
+
+  .error-container {
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .error-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .error-title {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .error-detail {
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .error-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .retry-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .retry-button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+  }
+
+  /* レスポンシブ */
+  @media (max-width: 768px) {
+    .article-title {
+      font-size: 1.8rem;
+    }
+
+    .article-content {
+      font-size: 1rem;
+    }
+
+    .special-article {
+      padding: 1rem 0;
+    }
+
+    .article-nav {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<style is:global>
+  /* 記事コンテンツ内のスタイル */
+  .article-content h2 {
+    font-size: 1.8rem;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .article-content h3 {
+    font-size: 1.4rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary-dark);
+    font-weight: 600;
+  }
+
+  .article-content h4 {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    color: var(--color-primary-dark);
+  }
+
+  .article-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-content ul,
+  .article-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+
+  .article-content li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+  }
+
+  .article-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .article-content a:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .article-content blockquote {
+    border-left: 4px solid var(--color-primary);
+    background: var(--color-bg-alt);
+    padding: 1.25rem 1.75rem;
+    margin: 2rem 0;
+    border-radius: 4px;
+    color: var(--color-text-light);
+  }
+
+  .article-content blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .article-content code {
+    background: var(--color-bg-alt);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .article-content pre {
+    background: var(--color-bg-alt);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .article-content hr {
+    border: none;
+    border-top: 2px solid var(--color-border);
+    margin: 3rem 0;
+  }
+
+  /* Twitter埋め込み */
+  .article-content .tweet-container {
+    margin: 1.5rem auto;
+    max-width: 550px;
+  }
+
+  .article-content .twitter-tweet {
+    margin: 1.5rem auto !important;
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+  }
+
+  .article-content th,
+  .article-content td {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .article-content th {
+    background: var(--color-bg-alt);
+    font-weight: 600;
+    color: var(--color-primary-dark);
+  }
+
+  /* スマホ対応 */
+  @media (max-width: 768px) {
+    .article-content h2 {
+      font-size: 1.5rem;
+    }
+
+    .article-content h3 {
+      font-size: 1.25rem;
+    }
+
+    .article-content pre {
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .article-content img {
+      margin: 1.5rem auto;
+    }
+  }
+</style>

@@ -18,6 +18,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# ビルド時に生成される静的ファイル
+public/_headers
+public/robots.txt
+
 # macOS-specific files
 .DS_Store
 

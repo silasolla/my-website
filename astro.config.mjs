@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -25,7 +26,21 @@ const NGROK_HOST = process.env.NGROK_HOST;
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
-  integrations: [mdx()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // 特別記事（/special/*）をサイトマップから除外
+      filter: (page) => !page.includes('/special/'),
+      // i18n対応
+      i18n: {
+        defaultLocale: 'ja',
+        locales: {
+          ja: 'ja-JP',
+          en: 'en-US',
+        },
+      },
+    }),
+  ],
   i18n: {
     defaultLocale: 'ja',
     locales: ['ja', 'en'],

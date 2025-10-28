@@ -42,6 +42,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
           IMAGE_BASE_URL: ${{ vars.IMAGE_BASE_URL || '' }}
+          PUBLIC_DATA_BASE_URL: ${{ vars.PUBLIC_DATA_BASE_URL || 'https://data.example.com' }}
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
