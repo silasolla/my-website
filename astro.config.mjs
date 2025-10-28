@@ -26,6 +26,7 @@ const NGROK_HOST = process.env.NGROK_HOST;
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
+  trailingSlash: 'always',
   integrations: [
     mdx(),
     sitemap({

@@ -97,14 +97,7 @@ const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
       }
 
       try {
-        const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          // キャッシュ制御（必要に応じて調整）
-          cache: 'default',
-        });
+        const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`);
 
         if (!response.ok) {
           if (response.status === 404) {
