@@ -26,7 +26,7 @@ const rightSideCount = getRightSideCount(images.length);
 const leftSideCount = getLeftSideCount(images.length);
 ---
 
-<div class="image-gallery">
+<div class="image-gallery" data-images={JSON.stringify(images)}>
   <div class="gallery-container">
     {
       leftSideCount > 0 && (
@@ -81,14 +81,19 @@ const leftSideCount = getLeftSideCount(images.length);
   }
 </div>
 
-<script is:inline define:vars={{ images }}>
+<script>
+  // data属性から画像配列を取得
+  const galleryElement = document.querySelector('.image-gallery');
+  const imagesData = galleryElement?.getAttribute('data-images');
+  const images: string[] = imagesData ? JSON.parse(imagesData) : [];
+
   let currentIndex = 0;
-  const mainImage = document.getElementById('main-image');
+  const mainImage = document.getElementById('main-image') as HTMLImageElement | null;
   const leftSideImages = document.querySelectorAll('.left-side .side-img');
   const rightSideImages = document.querySelectorAll('.right-side .side-img');
   const dots = document.querySelectorAll('.dot');
 
-  function updateImage(index) {
+  function updateImage(index: number): void {
     currentIndex = index;
     if (mainImage) {
       mainImage.src = images[index];
@@ -96,14 +101,16 @@ const leftSideCount = getLeftSideCount(images.length);
 
     // 右サイド画像の更新 (現在のインデックスから見て次の画像)
     rightSideImages.forEach((img, i) => {
+      const imageElement = img as HTMLImageElement;
       const targetIndex = (index + 1 + i) % images.length;
-      img.src = images[targetIndex];
+      imageElement.src = images[targetIndex];
     });
 
     // 左サイド画像の更新 (右サイドの後の画像)
     leftSideImages.forEach((img, i) => {
+      const imageElement = img as HTMLImageElement;
       const targetIndex = (index + 1 + rightSideImages.length + i) % images.length;
-      img.src = images[targetIndex];
+      imageElement.src = images[targetIndex];
     });
 
     // ドットの更新
@@ -112,7 +119,7 @@ const leftSideCount = getLeftSideCount(images.length);
     });
 
     // アクティブなドットをスクロール表示
-    const activeDot = dots[index];
+    const activeDot = dots[index] as HTMLElement | undefined;
     if (activeDot) {
       // scrollIntoView を使って確実に表示
       requestAnimationFrame(() => {
@@ -127,8 +134,8 @@ const leftSideCount = getLeftSideCount(images.length);
 
   // ドットクリック
   dots.forEach((dot) => {
-    dot.addEventListener('click', (e) => {
-      const index = parseInt(e.currentTarget.dataset.index);
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.getAttribute('data-index') || '0', 10);
       updateImage(index);
     });
   });
@@ -245,7 +252,7 @@ const leftSideCount = getLeftSideCount(images.length);
     mainImage.style.cursor = 'grab';
   }
 
-  function handleSwipeEnd(diff) {
+  function handleSwipeEnd(diff: number): void {
     if (!mainImage) return;
 
     // 透明度を元に戻すアニメーション

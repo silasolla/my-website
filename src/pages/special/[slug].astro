@@ -137,7 +137,7 @@ const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
         data.tags && data.tags.length > 0
           ? `<div class="article-tags">
             ${data.tags.map((tag) => `<span class="tag tag-${tag}">${escapeHtml(tag)}</span>`).join('')}
-           </div>`
+            </div>`
           : '';
 
       root.innerHTML = `

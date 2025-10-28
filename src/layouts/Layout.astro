@@ -135,36 +135,41 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
     </script>
 
     <!-- 開発環境での画像フォールバック -->
-    <script is:inline define:vars={{ isDev, imageBaseUrl }}>
+    <script>
+      // 開発環境での画像フォールバック（data属性から取得）
+      const isDev = document.body.getAttribute('data-dev') === 'true';
+      const imageBaseUrl = document.body.getAttribute('data-image-base') || '';
+
       if (isDev && imageBaseUrl) {
         function setupImageFallback() {
-          var images = document.querySelectorAll('.article-content img');
+          const images = document.querySelectorAll('.article-content img');
 
-          images.forEach(function (img) {
-            if (!img.src.startsWith(imageBaseUrl)) {
+          images.forEach((img) => {
+            const imageElement = img as HTMLImageElement;
+            if (!imageElement.src.startsWith(imageBaseUrl)) {
               return;
             }
 
             function attemptFallback() {
-              if (img.dataset.fallbackAttempted) {
+              if (imageElement.dataset.fallbackAttempted) {
                 return;
               }
 
-              img.dataset.fallbackAttempted = 'true';
+              imageElement.dataset.fallbackAttempted = 'true';
 
               // R2 の URL からローカルパスに変換
-              var path = img.src.replace(imageBaseUrl + '/posts/', '');
-              var localSrc = '/posts/images/' + path;
+              const path = imageElement.src.replace(imageBaseUrl + '/posts/', '');
+              const localSrc = '/posts/images/' + path;
 
-              img.src = localSrc;
+              imageElement.src = localSrc;
             }
 
             // 既にロード失敗している場合 (complete だが naturalWidth が 0)
-            if (img.complete && img.naturalWidth === 0) {
+            if (imageElement.complete && imageElement.naturalWidth === 0) {
               attemptFallback();
             } else {
               // エラーイベントを監視
-              img.addEventListener('error', attemptFallback, { once: true });
+              imageElement.addEventListener('error', attemptFallback, { once: true });
             }
           });
         }
@@ -178,7 +183,7 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
       }
     </script>
   </head>
-  <body>
+  <body data-dev={isDev} data-image-base={imageBaseUrl}>
     <Header />
     <main class="main-content">
       <div class="container">
