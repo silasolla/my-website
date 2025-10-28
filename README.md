@@ -115,9 +115,21 @@ cp .env.example .env
 - `R2_BUCKET_NAME`: R2 のバケット名 (画像アップロード用)
 - `NGROK_HOST`: 開発時の ngrok ホスト (オプショナル)
 
+### ドキュメント
+
+運用に関するドキュメントは `docs/` ディレクトリにまとめられています．
+
+- **[記事作成ワークフロー](./docs/workflow.md)**: 新しい記事の作成から公開までの手順を説明します
+- **[環境変数ガイド](./docs/environment-variables.md)**: プロジェクトで使用する環境変数について説明します
+- **[サイトマップガイド](./docs/sitemap-guide.md)**: サイトマップの自動生成と設定について説明します
+- **[特別記事機能ガイド](./docs/special-articles.md)**: 検索エンジンから除外される特別な記事を配信する機能について説明します
+- **[Aboutページデータ管理](./docs/about-data.md)**: 「私について」ページのコンテンツ (経歴や資格など) の編集方法を説明します
+- **[画像ホスティング](./docs/image-hosting.md)**: 画像のアップロードと配信の仕組みについて説明します
+- **[ヘッダー背景画像](./docs/header-backgrounds.md)**: ヘッダー背景画像の管理方法について説明します
+
 ### 記事の作成と公開
 
-詳細なワークフローは [`docs/workflow.md`](./docs/workflow.md) を参照してください．
+記事の作成と公開に関する詳細な手順は **[記事作成ワークフロー](./docs/workflow.md)** を参照してください．
 
 簡単な流れ：
 
@@ -125,15 +137,15 @@ cp .env.example .env
 # 1. 記事を作成
 make new SLUG=my-post-title
 
-# 2. 記事を書く + 画像を配置
+# 2. 記事を書き，画像を配置
 
 # 3. ローカルで確認
 npm run dev
 
-# 4. 画像をR2にアップロード (SLUG必須)
+# 4. 画像を R2 にアップロード
 make upload-images SLUG=YYYY-MM-DD-NN_my-post-title
 
-# 5. 記事をコミット (画像は含めない)
+# 5. 記事をコミットしてプッシュ
 git add src/content/posts/YYYY-MM-DD-NN_my-post-title.md
 git commit -m "Add: 新しい記事"
 git push
@@ -226,37 +238,7 @@ PR を作成すると，自動的に Preview 環境が作成されます：
 
 ## 記事の追加と管理
 
-記事の作成から公開までの詳細は [`docs/workflow.md`](./docs/workflow.md) を参照してください．
-
-画像ホスティングの設定については [`docs/image-hosting.md`](./docs/image-hosting.md) を参照してください．
-
-### 多言語対応
-
-記事の `lang` フィールドで表示言語を制御します：
-
-- **未定義** (デフォルト)：日本語版/英語版の両方に表示
-- **`lang: 'ja'`**: 日本語版のみに表示
-- **`lang: 'en'`**: 英語版のみに表示
-
-**推奨運用：**
-
-1. 新規記事は `lang` 未指定 (両言語版に表示)
-2. 英語版を追加する際に，日本語版に `lang: 'ja'` を追加し，英語版に `lang: 'en'` を設定
-
-詳細は [`docs/workflow.md`](./docs/workflow.md) の「多言語対応」セクションを参照してください．
-
-### プロフィール情報の更新
-
-**「私について」ページ**のコンテンツは `src/data/about.ts` で一元管理されています：
-
-- 経歴，学歴，出版物，資格などのデータを編集
-- 日本語版 (`aboutDataJa`) と英語版 (`aboutDataEn`) の両方を更新
-- 詳細は [`docs/about-data.md`](./docs/about-data.md) を参照
-
-**リンク集**の更新：
-
-- `src/pages/links.astro` (日本語版)
-- `src/pages/en/links.astro` (英語版) を編集
+記事の作成，多言語対応，プロフィール情報の更新など，コンテンツ管理に関する詳細は `## 開発` セクション内の **[ドキュメント](#ドキュメント)** を参照してください．
 
 ## 注意事項
 
