@@ -37,7 +37,7 @@ const headersContent = `# Cloudflare Pages用のセキュリティヘッダー�
   Referrer-Policy: no-referrer
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; connect-src 'self' ${dataOrigin}
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; connect-src 'self' ${dataOrigin} https://static.cloudflareinsights.com; frame-src https://platform.twitter.com https://syndication.twitter.com
 
 # 通常ページのセキュリティヘッダー
 /*
