@@ -197,9 +197,12 @@ git push
 
 プッシュすると自動的に：
 
-1. ビルド実行 (`IMAGE_BASE_URL=https://image.example.com`)
-2. `@@/`記法が`https://image.example.com/posts/...`に変換される
-3. GitHub Pagesにデプロイ
+1. CI 実行 (フォーマットチェック，型チェックなど)
+2. ビルド実行 (`IMAGE_BASE_URL=https://image.example.com`)
+3. `@@/`記法が`https://image.example.com/posts/...`に変換される
+4. Cloudflare Pagesにデプロイ
+
+**CI が失敗した場合，デプロイは実行されません．**
 
 ## 5. 本番環境で確認
 
@@ -208,7 +211,7 @@ https://example.com で公開された記事を確認します．
 画像はR2から配信されます：
 
 ```
-記事HTML: GitHub Pages
+記事HTML: Cloudflare Pages
 画像: Cloudflare R2 (CDN)
 ```
 
@@ -375,7 +378,7 @@ import Img from '@/components/Img.astro';
 **ポイント：**
 
 - 画像はローカル → R2へ直接アップロード (**スラッグ指定必須**)
-- 記事ファイルはGit → GitHub Pagesへ
+- 記事ファイルはGit → Cloudflare Pagesへ
 - **画像はGitに含めない** (リポジトリサイズを抑える)
 - 画像なしの記事は手順4をスキップ
 

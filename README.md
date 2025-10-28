@@ -12,7 +12,7 @@ Markdown によって記事を管理します．
 - **Astro**: 静的サイトジェネレータ (極力 JS を減らす)
 - **TypeScript**: 型安全な開発
 - **GitHub Actions**: CI/CD
-- **GitHub Pages**: サイトのホスティング
+- **Cloudflare Pages**: サイトのホスティング
 - **Cloudflare R2**: 画像のホスティング
 
 ## プロジェクト構成
@@ -175,26 +175,54 @@ npm run preview
 
 ## デプロイ
 
-このサイトは GitHub Actions を使用して GitHub Pages に自動デプロイされます．
+このサイトは GitHub Actions を使用して Cloudflare Pages に自動デプロイされます．
 
-`main` ブランチにプッシュすると，自動的に以下が実行されます：
+`main` ブランチにプッシュまたは PR を作成すると，自動的に以下が実行されます：
 
-1. 型チェック (`npm run typecheck`)
-2. ビルド (`npm run build`)
-3. **CNAME ファイルの生成** (`SITE_URL` からドメイン名を抽出して `dist/CNAME` に配置)
-4. GitHub Pages へのデプロイ
+1. フォーマットチェック (`npm run format:check`)
+2. EditorConfig チェック (`npm run editorconfig:check`)
+3. 型チェック (`npm run typecheck`)
+4. ビルド (`npm run build`)
+5. Cloudflare Pages へのデプロイ (Wrangler)
 
-### GitHub Actions の環境変数設定
+**CI が失敗した場合，デプロイは実行されません．**
 
-本番環境用の環境変数は，GitHub リポジトリの設定で管理します：
+### GitHub Actions の設定
 
-1. リポジトリの **Settings** → **Secrets and variables** → **Actions**
-2. **Variables** タブで以下を設定：
-   - `SITE_URL`: サイトのURL (例: `https://example.com`)
-     - Astro の `site` 設定に使用
-     - デプロイ時に CNAME ファイル生成に使用
+本番環境用の設定は，GitHub リポジトリで管理します：
 
-**注意**: 開発環境では `.env` ファイル，本番環境では GitHub Actions の Variables を を使用します．
+#### Secrets
+
+リポジトリの **Settings** → **Secrets and variables** → **Actions** → **Secrets** タブ：
+
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API トークン (Cloudflare Pages Edit 権限)
+- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare アカウント ID
+
+#### Variables
+
+リポジトリの **Settings** → **Secrets and variables** → **Actions** → **Variables** タブ：
+
+- `SITE_URL`: サイトのURL (例: `https://example.com`)
+- `IMAGE_BASE_URL`: 画像ホスティングURL (例: `https://image.example.com`)
+- `CLOUDFLARE_PROJECT_NAME`: Cloudflare Pages プロジェクト名 (例: `my-site`)
+
+### カスタムドメインの設定
+
+初回デプロイ後，Cloudflare ダッシュボードで設定：
+
+1. https://dash.cloudflare.com/ → **Workers & Pages** → プロジェクト
+2. **Custom domains** → **Set up a custom domain**
+3. ドメイン名を入力してDNS設定
+
+### Preview 環境
+
+PR を作成すると，自動的に Preview 環境が作成されます：
+
+- URL: `https://<branch-name>.<project-name>.pages.dev`
+- GitHub の PR ページにリンクが表示されます
+- マージ前に確認可能
+
+**注意**: 開発環境では `.env` ファイル，本番環境では GitHub Actions の Secrets/Variables を使用します．
 
 ## 記事の追加と管理
 
@@ -232,9 +260,9 @@ npm run preview
 
 ## 注意事項
 
-### リポジトリサイズとGitHub Pages
+### リポジトリサイズとCloudflare Pages
 
-GitHub Pages は **リポジトリサイズ 1 GB 以下** にしなければなりません
+Cloudflare Pages 自体にはリポジトリサイズの制約はありませんが，Git リポジトリは軽量に保つことを推奨します．
 
 **現在の設計：**
 
