@@ -12,7 +12,9 @@ export async function getStaticPaths() {
 
   try {
     // 記事一覧を取得
-    const response = await fetch(`${dataBaseUrl}/articles/index.json`);
+    const response = await fetch(`${dataBaseUrl}/articles/index.json`, {
+      cache: 'no-store' // ビルド時に常に最新を取得
+    });
 
     if (!response.ok) {
       console.warn(`[Special Articles] Failed to fetch index.json: ${response.status}`);
@@ -103,7 +105,9 @@ const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
       }
 
       try {
-        const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`);
+        const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`, {
+          cache: 'no-store' // ブラウザキャッシュを無効化
+        });
 
         if (!response.ok) {
           if (response.status === 404) {
