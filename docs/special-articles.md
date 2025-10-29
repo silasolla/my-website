@@ -73,23 +73,18 @@
 
     **`articles/index.json` ファイル**
 
-    記事一覧のメタデータを管理します．
+    記事のスラッグ（UUID）の一覧を管理します．
 
     ```json
     {
-      "articles": [
-        {
-          "slug": "f7a3b2c9-4d5e-6f8a-9b0c-1d2e3f4a5b6c",
-          "title": "特別記事のタイトル",
-          "category": "特別",
-          "categoryColor": "#ff6b6b",
-          "date": "2025-10-28T00:00:00Z",
-          "description": "記事の簡単な説明",
-          "tags": ["special"]
-        }
-      ]
+      "slugs": ["f7a3b2c9-4d5e-6f8a-9b0c-1d2e3f4a5b6c", "6913e848-cca3-4ae7-85e4-fbd6bad8cf28"]
     }
     ```
+
+    **重要**:
+    - ビルド時に `getStaticPaths()` でこのファイルをフェッチし，各記事への静的パスを生成します．
+    - タイトルや本文などの詳細情報は含めず，スラッグのみを格納します．
+    - **フォーマット**: `slugs` 配列は必須です．配列が存在しない場合，ビルドはプレースホルダーのみを生成します．
 
     **`articles/[uuid].json` ファイル**
 

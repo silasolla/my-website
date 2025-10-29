@@ -7,8 +7,8 @@
 ### 1. **アーキテクチャ**
 
 - ✅ SSG (通常記事) とCSR (特別記事) のハイブリッド構成を採用．
-- ✅ データ配信サイト (Cloudflare Pages) からJSON形式で記事データを取得．
-- ✅ ビルド時に `index.json` を取得し，記事のパスに対応する静的HTMLを生成．
+- ✅ データ配信サイト (Cloudflare Pages) から JSON 形式で記事データを取得．
+- ✅ ビルド時に `index.json` を取得し，記事のパスに対応する静的 HTML を生成．
 
 ### 2. **検索エンジン対策**
 
@@ -69,8 +69,8 @@ public/                           # Cloudflare Pages のデプロイ対象
 ├── _headers                      # CORS, セキュリティヘッダーを設定
 ├── robots.txt                    # 検索エンジンをブロック
 └── articles/
-    ├── index.json                # 記事一覧のメタデータ
-    └── [uuid].json               # 個別の記事データ
+    ├── index.json                # 記事のスラッグ一覧のみ ({"slugs": [...]}})
+    └── [uuid].json               # 個別の記事データ (タイトル / 本文 / カテゴリ等)
 
 scripts/                          # 記事作成用スクリプト
 ├── new-article.sh

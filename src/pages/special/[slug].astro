@@ -22,10 +22,12 @@ export async function getStaticPaths() {
     const data = await response.json();
 
     // 各記事のパスを生成
-    // slugs 配列（軽量版）または articles 配列（後方互換）に対応
-    const slugs = data.slugs || data.articles?.map((a: { slug: string }) => a.slug) || [];
+    if (!data.slugs || !Array.isArray(data.slugs)) {
+      console.error('[Special Articles] Invalid index.json format: "slugs" array not found');
+      return [{ params: { slug: '_placeholder' } }];
+    }
 
-    const paths = slugs.map((slug: string) => ({
+    const paths = data.slugs.map((slug: string) => ({
       params: { slug },
     }));
 
