@@ -1,8 +1,10 @@
 ---
 import LanguageSwitch from './LanguageSwitch.astro';
 import { getTranslation } from '../i18n/translations';
+import { getSiteTitle } from '../i18n/utils';
+import { profileData } from '../data/profile';
 
-const siteTitle = getTranslation(Astro.currentLocale, 'site.title');
+const siteTitle = getSiteTitle(Astro.currentLocale);
 const tagline = getTranslation(Astro.currentLocale, 'site.tagline');
 const themeToggleLabel = getTranslation(Astro.currentLocale, 'theme.toggle');
 const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light');
@@ -12,7 +14,7 @@ const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light')
   <div class="header-bg-overlay"></div>
   <div class="header-content">
     <a href="/" class="site-title">
-      <img src="/avatar.png" alt="Masaki Haga" class="avatar" />
+      <img src={profileData.avatar} alt={profileData.nameEn} class="avatar" />
       <div class="title-text">
         <h1>{siteTitle}</h1>
         <p class="tagline">{tagline}</p>

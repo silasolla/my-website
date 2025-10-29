@@ -3,6 +3,8 @@ import Header from '../components/Header.astro';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import { getCurrentLocale, getTranslation } from '../i18n/translations';
+import { getSiteTitle, getSiteDescription } from '../i18n/utils';
+import { profileData, seoKeywords } from '../data/profile';
 
 interface Props {
   title: string;
@@ -12,8 +14,8 @@ interface Props {
 }
 
 const locale = getCurrentLocale(Astro.currentLocale);
-const defaultDescription = getTranslation(Astro.currentLocale, 'site.description');
-const siteTitle = getTranslation(Astro.currentLocale, 'site.title');
+const siteTitle = getSiteTitle(Astro.currentLocale);
+const defaultDescription = getSiteDescription(Astro.currentLocale);
 
 const { title, description = defaultDescription, image, noIndex = false } = Astro.props;
 
@@ -25,6 +27,19 @@ const imageBaseUrl = import.meta.env.IMAGE_BASE_URL || '';
 const siteUrl = import.meta.env.SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
 const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
+
+// 構造化データ（JSON-LD）
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profileData.name,
+  alternateName: profileData.alternateNames,
+  url: siteUrl,
+  image: `${siteUrl}${profileData.avatar}`,
+  jobTitle: profileData.jobTitle,
+  description: profileData.description,
+  sameAs: Object.values(profileData.social).filter(Boolean),
+};
 ---
 
 <!doctype html>
@@ -33,7 +48,7 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="Masaki Haga (silasolla)" />
+    <meta name="author" content={`${profileData.nameEn} (${profileData.username})`} />
 
     <!-- Robots meta tag (特別記事用) -->
     {
@@ -73,25 +88,25 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={getTranslation(Astro.currentLocale, 'rss.feed-title')}
+      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-suffix')}
       href="/rss.xml"
     />
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={getTranslation(Astro.currentLocale, 'rss.feed-title-news')}
+      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-news-suffix')}
       href="/rss/news.xml"
     />
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={getTranslation(Astro.currentLocale, 'rss.feed-title-tech')}
+      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-tech-suffix')}
       href="/rss/tech.xml"
     />
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={getTranslation(Astro.currentLocale, 'rss.feed-title-diary')}
+      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-diary-suffix')}
       href="/rss/diary.xml"
     />
 
@@ -107,11 +122,17 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@silasolla" />
-    <meta name="twitter:creator" content="@silasolla" />
+    <meta name="twitter:site" content={`@${profileData.username}`} />
+    <meta name="twitter:creator" content={`@${profileData.username}`} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <!-- Keywords for search -->
+    <meta name="keywords" content={seoKeywords.join(',')} />
+
+    <!-- Structured Data (JSON-LD) for Person -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
     <!-- Theme initialization script (runs before page renders to prevent flash) -->
     <script is:inline>

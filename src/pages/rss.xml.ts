@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
-import { getTranslation } from '../i18n/translations';
+import { getRssFeedTitle, getSiteDescription } from '../i18n/utils';
 
 export async function GET(context: APIContext) {
   const posts = await getCollection('posts', (post) => {
@@ -11,8 +11,8 @@ export async function GET(context: APIContext) {
   const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return rss({
-    title: getTranslation('ja', 'site.title'),
-    description: getTranslation('ja', 'site.description'),
+    title: getRssFeedTitle('ja'),
+    description: getSiteDescription('ja'),
     site: context.site?.toString() || import.meta.env.SITE_URL || 'http://localhost:4321',
     items: sortedPosts.map((post) => ({
       title: post.data.title,

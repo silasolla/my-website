@@ -9,6 +9,8 @@ import MiscSection from '../components/MiscSection.astro';
 import HobbySection from '../components/HobbySection.astro';
 import { aboutDataJa } from '../data/about';
 import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { profileData } from '../data/profile';
 
 // プロフィール画像
 const profileImages = [
@@ -28,20 +30,20 @@ const profileImages = [
 ];
 
 const pageTitle = getTranslation(Astro.currentLocale, 'page.about');
-const siteName = getTranslation(Astro.currentLocale, 'site.name');
-const name = getTranslation(Astro.currentLocale, 'about.name');
-const username = getTranslation(Astro.currentLocale, 'about.username');
+const siteName = getSiteName(Astro.currentLocale);
+const name = `${profileData.name} / ${profileData.nameEn}`;
+const username = `@${profileData.username} / ${profileData.usernameJa}`;
 ---
 
 <Layout
   title={`${pageTitle} - ${siteName}`}
-  description="芳賀 雅樹 (Masaki Haga / @silasolla) の経歴や資格について"
+  description={`${profileData.name} (${profileData.nameEn} / @${profileData.username}) の経歴や資格について`}
 >
   <article class="about-page">
     <section class="about-section intro-section">
       <div class="profile-header">
         <div class="profile-image-container">
-          <ImageGallery images={profileImages} alt="Masaki Haga" />
+          <ImageGallery images={profileImages} alt={profileData.nameEn} />
         </div>
         <div class="profile-info">
           <h2>{name}</h2>

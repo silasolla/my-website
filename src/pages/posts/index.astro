@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { getTranslation } from '../../i18n/translations';
+import { getSiteName } from '../../i18n/utils';
 
 const allPosts = await getCollection('posts', (post) => {
   // 日本語版：lang が 'ja' または未定義の記事のみ
@@ -31,10 +32,13 @@ const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
 const filterToggleOpen = getTranslation(Astro.currentLocale, 'filter.toggle.open');
 const filterToggleClose = getTranslation(Astro.currentLocale, 'filter.toggle.close');
 
-const siteName = getTranslation(Astro.currentLocale, 'site.name');
+const siteName = getSiteName(Astro.currentLocale);
 ---
 
-<Layout title={`${postsTitle} - ${siteName}`} description="記事一覧">
+<Layout
+  title={`${postsTitle} - ${siteName}`}
+  description={getTranslation(Astro.currentLocale, 'posts.description')}
+>
   <article class="posts-page">
     <div class="page-header">
       <h2 class="page-title">{allPostsText}</h2>
@@ -101,7 +105,7 @@ const siteName = getTranslation(Astro.currentLocale, 'site.name');
         <div class="posts-list">
           {sortedPosts.map((post) => (
             <article class="post-item" data-tags={post.data.tags.join(',')}>
-              <a href={`/posts/${post.slug}`} class="post-link">
+              <a href={`/posts/${post.slug}/`} class="post-link">
                 <div class="post-meta">
                   <time datetime={post.data.date.toISOString()} class="post-date">
                     {post.data.date.toLocaleDateString('ja-JP', {

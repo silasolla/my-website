@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getTranslation } from '../../i18n/translations';
+import { getSiteName } from '../../i18n/utils';
+import { profileData } from '../../data/profile';
 
 interface LinkItem {
   name: string;
@@ -101,12 +103,12 @@ const socialMediaLinks: LinkItem[] = [
 ];
 
 const pageTitle = getTranslation(Astro.currentLocale, 'page.links');
-const siteName = getTranslation(Astro.currentLocale, 'site.name');
+const siteName = getSiteName(Astro.currentLocale);
 ---
 
 <Layout
   title={`${pageTitle} - ${siteName}`}
-  description="Links to various accounts of Masaki Haga (@silasolla)"
+  description={`Links to various accounts of ${profileData.nameEn} (@${profileData.username})`}
 >
   <article class="links-page">
     <section class="links-section">

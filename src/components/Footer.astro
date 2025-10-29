@@ -1,9 +1,11 @@
 ---
+import { profileData } from '../data/profile';
 
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <p class="copyright">&copy; 2025, Masaki Haga (silasolla)</p>
+  <p class="copyright">&copy; {currentYear}, {profileData.nameEn} ({profileData.username})</p>
 </footer>
 
 <style>

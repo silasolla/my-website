@@ -1,9 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getTranslation } from '../../i18n/translations';
+import { getSiteName } from '../../i18n/utils';
 
 const pageTitle = getTranslation(Astro.currentLocale, 'notfound.title');
-const siteName = getTranslation(Astro.currentLocale, 'site.name');
+const siteName = getSiteName(Astro.currentLocale);
 const heading = getTranslation(Astro.currentLocale, 'notfound.heading');
 const message = getTranslation(Astro.currentLocale, 'notfound.message');
 const homeLink = getTranslation(Astro.currentLocale, 'notfound.home');

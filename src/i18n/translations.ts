@@ -1,10 +1,8 @@
 export const translations = {
   ja: {
     // サイト基本情報
-    'site.title': '芳賀 雅樹 / Masaki Haga',
-    'site.name': '芳賀 雅樹 のページ',
+    'site.name-suffix': ' のページ',
     'site.tagline': 'Trust, but verify.',
-    'site.description': '芳賀 雅樹 / Masaki Haga (@silasolla) の個人サイト / Trust, but verify.',
 
     // ページタイトル
     'page.home': 'ホーム',
@@ -27,6 +25,7 @@ export const translations = {
 
     // 記事ページ
     'posts.title': '記事',
+    'posts.description': '技術記事，お知らせ，日記などの記事一覧です．',
     'posts.all': 'すべての記事',
     'posts.filter-by-tag': 'タグで絞り込み',
     'posts.show-all': 'すべて表示',
@@ -37,23 +36,16 @@ export const translations = {
     'posts.rss-tech': '技術記事',
     'posts.rss-diary': '日記',
 
-    // RSS フィードタイトル
-    'rss.feed-title': '芳賀 雅樹 / Masaki Haga - すべての記事',
-    'rss.feed-title-news': '芳賀 雅樹 / Masaki Haga - お知らせ',
-    'rss.feed-title-tech': '芳賀 雅樹 / Masaki Haga - 技術記事',
-    'rss.feed-title-diary': '芳賀 雅樹 / Masaki Haga - 日記',
+    // RSS フィードタイトル（接尾辞）
+    'rss.feed-title-suffix': 'すべての記事',
+    'rss.feed-title-news-suffix': 'お知らせ',
+    'rss.feed-title-tech-suffix': '技術記事',
+    'rss.feed-title-diary-suffix': '日記',
 
     // タグ
     'tag.news': 'お知らせ',
     'tag.tech': '技術',
     'tag.diary': '日記',
-
-    // Aboutページ
-    'about.name': '芳賀 雅樹 / Masaki Haga',
-    'about.username': '@silasolla',
-
-    // フッター
-    'footer.copyright': '© 2025, Masaki Haga (silasolla)',
 
     // テーマ・言語切り替え
     'theme.toggle': 'テーマ切り替え',
@@ -90,10 +82,8 @@ export const translations = {
   },
   en: {
     // Site basics
-    'site.title': 'Masaki Haga / 芳賀 雅樹',
-    'site.name': "Masaki Haga's Web Page",
+    'site.name-suffix': "'s Web Page",
     'site.tagline': 'Trust, but verify.',
-    'site.description': 'Personal website of Masaki Haga (@silasolla). Trust, but verify.',
 
     // Page titles
     'page.home': 'Home',
@@ -116,6 +106,7 @@ export const translations = {
 
     // Posts page
     'posts.title': 'Posts',
+    'posts.description': 'A collection of tech articles, news, and diary entries.',
     'posts.all': 'All Posts',
     'posts.filter-by-tag': 'Filter by Tag',
     'posts.show-all': 'Show All',
@@ -126,23 +117,16 @@ export const translations = {
     'posts.rss-tech': 'Tech',
     'posts.rss-diary': 'Diary',
 
-    // RSS feed titles
-    'rss.feed-title': 'Masaki Haga / 芳賀 雅樹 - All Posts',
-    'rss.feed-title-news': 'Masaki Haga / 芳賀 雅樹 - News',
-    'rss.feed-title-tech': 'Masaki Haga / 芳賀 雅樹 - Tech',
-    'rss.feed-title-diary': 'Masaki Haga / 芳賀 雅樹 - Diary',
+    // RSS feed titles (suffixes)
+    'rss.feed-title-suffix': 'All Posts',
+    'rss.feed-title-news-suffix': 'News',
+    'rss.feed-title-tech-suffix': 'Tech',
+    'rss.feed-title-diary-suffix': 'Diary',
 
     // Tags
     'tag.news': 'News',
     'tag.tech': 'Tech',
     'tag.diary': 'Diary',
-
-    // About page
-    'about.name': 'Masaki Haga / 芳賀 雅樹',
-    'about.username': '@silasolla',
-
-    // Footer
-    'footer.copyright': '© 2025, Masaki Haga (silasolla)',
 
     // Theme/Language toggle
     'theme.toggle': 'Toggle theme',

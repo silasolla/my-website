@@ -36,7 +36,7 @@ const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close')
     </li>
     <li>
       <a
-        href={`${baseUrl}/about`}
+        href={`${baseUrl}/about/`}
         class={currentPath === `${baseUrl}/about` || currentPath === `${baseUrl}/about/`
           ? 'active'
           : ''}>{aboutText}</a
@@ -44,13 +44,13 @@ const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close')
     </li>
     <li>
       <a
-        href={`${baseUrl}/posts`}
+        href={`${baseUrl}/posts/`}
         class={currentPath.startsWith(`${baseUrl}/posts`) ? 'active' : ''}>{postsText}</a
       >
     </li>
     <li>
       <a
-        href={`${baseUrl}/links`}
+        href={`${baseUrl}/links/`}
         class={currentPath === `${baseUrl}/links` || currentPath === `${baseUrl}/links/`
           ? 'active'
           : ''}>{linksText}</a

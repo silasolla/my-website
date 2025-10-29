@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../../../i18n/translations';
+import { getSiteName } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
@@ -35,7 +36,7 @@ const shareTwitter = getTranslation(Astro.currentLocale, 'share.twitter');
 const shareBluesky = getTranslation(Astro.currentLocale, 'share.bluesky');
 const shareCopy = getTranslation(Astro.currentLocale, 'share.copy');
 
-const siteName = getTranslation(Astro.currentLocale, 'site.name');
+const siteName = getSiteName(Astro.currentLocale);
 ---
 
 <Layout title={`${entry.data.title} - ${siteName}`} description={entry.data.description}>
