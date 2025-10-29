@@ -22,8 +22,11 @@ export async function getStaticPaths() {
     const data = await response.json();
 
     // 各記事のパスを生成
-    const paths = data.articles.map((article: { slug: string }) => ({
-      params: { slug: article.slug },
+    // slugs 配列（軽量版）または articles 配列（後方互換）に対応
+    const slugs = data.slugs || data.articles?.map((a: { slug: string }) => a.slug) || [];
+
+    const paths = slugs.map((slug: string) => ({
+      params: { slug },
     }));
 
     console.log(`[Special Articles] Generated ${paths.length} paths`);
