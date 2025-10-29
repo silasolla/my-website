@@ -34,7 +34,7 @@ fi
 FULL_SLUG="${TODAY}-${SEQUENCE}_${SLUG_BASE}"
 
 # ファイルとディレクトリのパス
-POST_FILE="${CONTENT_DIR}/${FULL_SLUG}.md"
+POST_FILE="${CONTENT_DIR}/${FULL_SLUG}.mdx"
 IMAGE_DIR="public/posts/images/${FULL_SLUG}"
 
 # 既に存在する場合は終了

@@ -5,7 +5,7 @@
 ## 概要
 
 このリポジトリは，Masaki Haga (@silasolla) の個人サイトのソースコードです．
-Markdown によって記事を管理します．
+Markdown/MDX によって記事を管理します．
 
 ## 技術スタック
 

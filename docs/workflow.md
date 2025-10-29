@@ -17,7 +17,7 @@ make new SLUG=my-article-title
 2. **以下が自動生成される**
 
    ```
-   src/content/posts/2025-10-26-01_my-article-title.md
+   src/content/posts/2025-10-26-01_my-article-title.mdx
    public/posts/images/2025-10-26-01_my-article-title/
    ```
 
@@ -48,7 +48,7 @@ make new SLUG=my-article-title
 
 ```bash
 # クリップボードからパスを貼り付けてエディタで開く
-code src/content/posts/2025-10-26-01_my-article-title.md
+code src/content/posts/2025-10-26-01_my-article-title.mdx
 ```
 
 記事の内容を書きます：
@@ -89,7 +89,7 @@ fun factorial 0 = 1
 
 ### 2.3 Twitter (X) の埋め込み
 
-MDX ファイル (`.mdx`) で Twitter の投稿を埋め込めます：
+記事の冒頭で `Tweet` コンポーネントをインポートして使用します：
 
 ```mdx
 ---
@@ -105,7 +105,10 @@ import Tweet from '@/components/Tweet.astro';
 <Tweet id="1234567890123456789" user="username" />
 ```
 
-**注意：** Tweet ID は投稿URLの数字部分です (e.g. `https://twitter.com/user/status/1234567890123456789`)
+**ポイント：**
+- Tweet ID は投稿URLの数字部分です (例: `https://twitter.com/user/status/1234567890123456789`)
+- `user` パラメータは省略可能（省略時は `x` がデフォルト）
+- ダークモードに自動対応します
 
 ### 2.4 画像を配置
 
@@ -202,7 +205,7 @@ https://image.example.com/posts/2025-10-26-01_my-article-title/diagram.svg
 
 ```bash
 # 記事ファイルをコミット (画像は含めない)
-git add src/content/posts/2025-10-26-01_my-article-title.md
+git add src/content/posts/2025-10-26-01_my-article-title.mdx
 git commit -m "Add: Standard MLの記事を追加"
 git push
 ```
@@ -211,7 +214,7 @@ git push
 
 **Gitに含まれる (コミットする)：**
 
-- `src/content/posts/2025-10-26-01_my-article-title.md`
+- `src/content/posts/2025-10-26-01_my-article-title.mdx`
 
 **Gitに含まれない (`.gitignore`で除外)：**
 
@@ -268,7 +271,7 @@ npx wrangler r2 object delete your-bucket-name/posts/2025-10-26-01_my-article-ti
 
 ```bash
 # 1. 記事ファイルを削除
-git rm src/content/posts/2025-10-26-01_my-article-title.md
+git rm src/content/posts/2025-10-26-01_my-article-title.mdx
 git commit -m "Remove: 不要な記事を削除"
 git push
 
@@ -324,7 +327,7 @@ description: ''
 
 ### Q6: PC版で画像サイズを細かく調整したい
 
-**方法1: Markdown記法 (シンプル)**
+**通常の画像表示**
 
 通常のMarkdown記法では，PC版で最大700pxに制限されます：
 
@@ -332,14 +335,9 @@ description: ''
 ![画像の説明](@@/2025-10-26-01_my-post/image.webp)
 ```
 
-**方法2: MDXを使う (幅を指定したい場合)**
+**サイズを指定したい場合**
 
-画像サイズを細かく調整したい場合は，記事を`.mdx`ファイルにして`Img`コンポーネントを使用します：
-
-1. **ファイル名を`.mdx`に変更**
-   - 例：`2025-10-26-01_my-post.md` → `2025-10-26-01_my-post.mdx`
-
-2. **記事の冒頭でコンポーネントをインポート**
+画像サイズを細かく調整したい場合は，記事の冒頭で `Img` コンポーネントをインポートして使用します：
 
 ```mdx
 ---
@@ -373,13 +371,12 @@ import Img from '@/components/Img.astro';
 <Img src="@@/2025-10-26-01_my-post/chart.webp" alt="チャート" caption="グラフ" width="50%" />
 ```
 
-**注意：**
+**ポイント：**
 
-- `.mdx`ファイルでは通常のMarkdown記法とAstroコンポーネントの両方が使えます
-- `width`はピクセル値 (`400`) またはパーセント (`"50%"`) で指定
-- `caption`を指定すると画像の下にキャプションが表示されます
+- 記事ファイルは MDX 形式なので，通常の Markdown 記法と Astro コンポーネントの両方が使えます
+- `width` はピクセル値 (`400`) またはパーセント (`"50%"`) で指定
+- `caption` を指定すると画像の下にキャプションが表示されます
 - SP版 (モバイル) では自動的に画面幅に調整されます (最小75%)
-- 画像サイズ調整が不要な記事は`.md`のままでOK
 
 ## ワークフローまとめ
 
@@ -425,7 +422,7 @@ import Img from '@/components/Img.astro';
 #### パターン1：日本語記事のみ (デフォルト)
 
 ```yaml
-# src/content/posts/2025-10-26-01_welcome.md
+# src/content/posts/2025-10-26-01_welcome.mdx
 ---
 title: 'このサイトを新しくしました'
 # lang 未指定 → 両言語版に表示
@@ -437,7 +434,7 @@ title: 'このサイトを新しくしました'
 1. **日本語版に言語を明示**:
 
    ```yaml
-   # src/content/posts/2025-10-26-01_welcome.md
+   # src/content/posts/2025-10-26-01_welcome.mdx
    ---
    title: 'このサイトを新しくしました'
    lang: 'ja' # ← 追加
@@ -447,7 +444,7 @@ title: 'このサイトを新しくしました'
 2. **英語版を作成**:
 
    ```yaml
-   # src/content/posts/2025-10-26-01_welcome.en.md
+   # src/content/posts/2025-10-26-01_welcome.en.mdx
    ---
    title: 'Site Renewed'
    lang: 'en'
@@ -466,6 +463,6 @@ lang: 'en'
 
 ### 注意事項
 
-- **スラッグ名**：同じでも異なっていてもOK (例：`welcome.md` と `welcome.en.md`)
+- **スラッグ名**：同じでも異なっていてもOK (例：`welcome.mdx` と `welcome.en.mdx`)
 - **画像の共有**：両言語版で同じ画像パスを使用可能 (`@@/2025-10-26-01_welcome/image.webp`)
 - **RSS**：日本語版RSSには `lang: 'ja'` または未定義の記事のみ含まれます
