@@ -72,17 +72,13 @@ Standard MLは関数型プログラミング言語です．
 fun factorial 0 = 1
   | factorial n = n * factorial (n - 1)
 ```
-````
 
 ## 実行例
 
 ![実行結果のスクリーンショット](@@/2025-10-26-01_standard-ml-intro/result.png)
+````
 
-<!-- PC版で画像サイズを調整したい場合はファイルを mdx にして Astro コンポーネントをインポートして使用 -->
-<Img src="@@/2025-10-26-01_standard-ml-intro/diagram.png" alt="図解" width="400" caption="図解" />
-```
-
-### 2.3 引用の使用
+### 2.2 引用の使用
 
 マークダウンの引用記法 (`>`) を使えます：
 
@@ -91,7 +87,7 @@ fun factorial 0 = 1
 > 複数行にわたって書くこともできます．
 ```
 
-### 2.4 Twitter (X) の埋め込み
+### 2.3 Twitter (X) の埋め込み
 
 MDX ファイル (`.mdx`) で Twitter の投稿を埋め込めます：
 
@@ -111,7 +107,7 @@ import Tweet from '@/components/Tweet.astro';
 
 **注意：** Tweet ID は投稿URLの数字部分です (e.g. `https://twitter.com/user/status/1234567890123456789`)
 
-### 2.5 画像を配置
+### 2.4 画像を配置
 
 ```bash
 # 画像ディレクトリに画像をコピー
@@ -128,7 +124,7 @@ public/posts/images/2025-10-26-01_my-article-title/
 
 **重要：この画像はGitにコミットしません** (`.gitignore`で除外済み)
 
-### 2.3 ローカルで確認
+### 2.5 ローカルで確認
 
 ```bash
 npm run dev
