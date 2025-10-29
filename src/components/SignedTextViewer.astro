@@ -1,0 +1,182 @@
+---
+import { getTranslation } from '../i18n/translations';
+
+export interface Props {
+  textUrl: string;
+  platform: string;
+  account: string;
+}
+
+const { textUrl, platform, account } = Astro.props;
+
+const loading = getTranslation(Astro.currentLocale, 'component.signed-text.loading');
+const copy = getTranslation(Astro.currentLocale, 'component.signed-text.copy');
+const openFile = getTranslation(Astro.currentLocale, 'component.signed-text.open-file');
+const copied = getTranslation(Astro.currentLocale, 'component.signed-text.copied');
+const copyFailed = getTranslation(Astro.currentLocale, 'component.signed-text.copy-failed');
+const error = getTranslation(Astro.currentLocale, 'component.signed-text.error');
+---
+
+<div class="signed-text-container">
+  <textarea id="signedText" readonly>{loading}</textarea>
+  <div class="button-group">
+    <button id="copyButton" class="copy-button">{copy}</button>
+    <a href={textUrl} target="_blank" class="copy-button secondary-button">
+      {openFile}
+    </a>
+  </div>
+  <div id="copyMessage" class="copy-message"></div>
+</div>
+
+<script define:vars={{ textUrl, copied, copyFailed, error }}>
+  const textarea = document.getElementById('signedText');
+  const copyButton = document.getElementById('copyButton');
+  const copyMessage = document.getElementById('copyMessage');
+
+  // 署名付きテキストを取得
+  fetch(textUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch signed text');
+      }
+      return response.text();
+    })
+    .then((text) => {
+      textarea.value = text;
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    })
+    .catch((err) => {
+      textarea.value = `${error}: ${err.message}`;
+      copyButton.disabled = true;
+    });
+
+  // コピーボタンのイベント
+  copyButton.addEventListener('click', () => {
+    textarea.select();
+    navigator.clipboard
+      .writeText(textarea.value)
+      .then(() => {
+        copyMessage.textContent = copied;
+        copyMessage.classList.add('show');
+        setTimeout(() => {
+          copyMessage.classList.remove('show');
+        }, 2000);
+      })
+      .catch((err) => {
+        copyMessage.textContent = copyFailed;
+        copyMessage.classList.add('show', 'error');
+        setTimeout(() => {
+          copyMessage.classList.remove('show', 'error');
+        }, 2000);
+      });
+  });
+</script>
+
+<style>
+  .signed-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  #signedText {
+    width: 100%;
+    min-height: 300px;
+    max-height: 600px;
+    padding: 1rem;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    resize: vertical;
+    overflow-y: auto;
+  }
+
+  #signedText:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .copy-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .copy-button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+  }
+
+  .copy-button:active {
+    transform: translateY(0);
+  }
+
+  .copy-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .secondary-button {
+    background: var(--color-bg-alt);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .secondary-button:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .copy-message {
+    opacity: 0;
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+
+  .copy-message.show {
+    opacity: 1;
+  }
+
+  .copy-message.error {
+    color: #ef4444;
+  }
+
+  @media (max-width: 640px) {
+    #signedText {
+      min-height: 250px;
+      font-size: 0.75rem;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+
+    .copy-button {
+      width: 100%;
+    }
+  }
+</style>

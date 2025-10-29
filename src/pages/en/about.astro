@@ -43,6 +43,23 @@ const username = `@${profileData.username} / ${profileData.usernameJa}`;
       <div class="profile-header">
         <div class="profile-image-container">
           <ImageGallery images={profileImages} alt={profileData.nameEn} />
+          <a href="/en/identity/key/" class="pgp-key-badge" title="View PGP Public Key">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+              ></path>
+            </svg>
+          </a>
         </div>
         <div class="profile-info">
           <h2>{name}</h2>
@@ -151,8 +168,41 @@ const username = `@${profileData.username} / ${profileData.usernameJa}`;
   }
 
   .profile-image-container {
+    position: relative;
     width: 100%;
     max-width: 300px;
+  }
+
+  .pgp-key-badge {
+    position: absolute;
+    /* デフォルト位置 (タブレット・中サイズ) */
+    bottom: 4rem;
+    right: 1rem;
+    /* デフォルトサイズ */
+    width: 56px;
+    height: 56px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .pgp-key-badge:hover {
+    background: var(--color-primary-dark);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .pgp-key-badge svg {
+    /* デフォルト: 56px ボタンに対して約50%のアイコン */
+    width: 28px;
+    height: 28px;
   }
 
   .profile-image-container :global(.main-image) {
@@ -199,11 +249,39 @@ const username = `@${profileData.username} / ${profileData.usernameJa}`;
     .profile-image-container {
       max-width: 600px;
     }
+
+    /* PC版: アイコンを少し大きく，位置も調整 */
+    .pgp-key-badge {
+      bottom: 4rem;
+      right: 10rem;
+      width: 64px;
+      height: 64px;
+    }
+
+    .pgp-key-badge svg {
+      /* PC版: 64px ボタンに対して約50%のアイコン */
+      width: 32px;
+      height: 32px;
+    }
   }
 
   @media (max-width: 640px) {
     .profile-image-container {
       max-width: 220px;
+    }
+
+    /* SP版: アイコンを少し小さく，位置も調整 */
+    .pgp-key-badge {
+      bottom: 3.5rem;
+      right: 0.5rem;
+      width: 42px;
+      height: 42px;
+    }
+
+    .pgp-key-badge svg {
+      /* SP版: 42px ボタンに対して約50%のアイコン */
+      width: 21px;
+      height: 21px;
     }
 
     .profile-info h2 {

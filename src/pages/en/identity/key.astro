@@ -1,0 +1,230 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { profileData } from '../../../data/profile';
+import { getSiteName } from '../../../i18n/utils';
+
+const siteName = getSiteName('en');
+const title = `PGP Public Key - ${siteName}`;
+const description = `PGP public key for ${profileData.nameEn} (${profileData.username})`;
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section">
+      <h3 class="section-title">PGP Public Key</h3>
+      <div class="section-content">
+        <p>
+          PGP public key for {profileData.nameEn} ({profileData.username}).
+        </p>
+      </div>
+
+      <div class="key-container">
+        <textarea id="pgpKeys" readonly>Loading...</textarea>
+        <div class="button-group">
+          <button id="copyButton" class="copy-button"> Copy to Clipboard </button>
+          <a
+            href={profileData.pgpKeyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="copy-button secondary-button"
+          >
+            Open Original File
+          </a>
+        </div>
+        <div id="copyMessage" class="copy-message"></div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script define:vars={{ keyUrl: profileData.pgpKeyUrl }}>
+  const textarea = document.getElementById('pgpKeys');
+  const copyButton = document.getElementById('copyButton');
+  const copyMessage = document.getElementById('copyMessage');
+
+  // Fetch PGP key
+  fetch(keyUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch PGP key');
+      }
+      return response.text();
+    })
+    .then((text) => {
+      textarea.value = text;
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    })
+    .catch((error) => {
+      textarea.value = `Error: ${error.message}`;
+      copyButton.disabled = true;
+    });
+
+  // Copy button event
+  copyButton.addEventListener('click', () => {
+    textarea.select();
+    navigator.clipboard
+      .writeText(textarea.value)
+      .then(() => {
+        copyMessage.textContent = 'Copied!';
+        copyMessage.classList.add('show');
+        setTimeout(() => {
+          copyMessage.classList.remove('show');
+        }, 2000);
+      })
+      .catch((err) => {
+        copyMessage.textContent = 'Failed to copy';
+        copyMessage.classList.add('show', 'error');
+        setTimeout(() => {
+          copyMessage.classList.remove('show', 'error');
+        }, 2000);
+      });
+  });
+</script>
+
+<style>
+  .about-page {
+    padding: 2rem 0;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .section-content {
+    color: var(--color-text);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-content p {
+    margin-bottom: 1rem;
+  }
+
+  .section-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .section-content a:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .key-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  #pgpKeys {
+    width: 100%;
+    min-height: 400px;
+    max-height: 600px;
+    padding: 1rem;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    resize: vertical;
+    overflow-y: auto;
+  }
+
+  #pgpKeys:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .copy-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .copy-button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+  }
+
+  .copy-button:active {
+    transform: translateY(0);
+  }
+
+  .copy-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .secondary-button {
+    background: var(--color-bg-alt);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .secondary-button:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .copy-message {
+    opacity: 0;
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+
+  .copy-message.show {
+    opacity: 1;
+  }
+
+  .copy-message.error {
+    color: #ef4444;
+  }
+
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.4rem;
+    }
+
+    #pgpKeys {
+      min-height: 300px;
+      font-size: 0.75rem;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+
+    .copy-button {
+      width: 100%;
+    }
+  }
+</style>

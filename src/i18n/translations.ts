@@ -73,6 +73,12 @@ export const translations = {
     'component.details': '詳細を見る',
     'component.open-link': 'リンクを開く',
     'component.view-badge': 'Credly バッジを見る',
+    'component.signed-text.loading': '読み込み中...',
+    'component.signed-text.copy': 'クリップボードにコピー',
+    'component.signed-text.open-file': '元のファイルを開く',
+    'component.signed-text.copied': 'コピーしました！',
+    'component.signed-text.copy-failed': 'コピーに失敗しました',
+    'component.signed-text.error': 'エラー',
 
     // 404ページ
     'notfound.title': 'ページが見つかりません',
@@ -154,6 +160,12 @@ export const translations = {
     'component.details': 'View details',
     'component.open-link': 'Open link',
     'component.view-badge': 'View Credly badge',
+    'component.signed-text.loading': 'Loading...',
+    'component.signed-text.copy': 'Copy to Clipboard',
+    'component.signed-text.open-file': 'Open Original File',
+    'component.signed-text.copied': 'Copied!',
+    'component.signed-text.copy-failed': 'Failed to copy',
+    'component.signed-text.error': 'Error',
 
     // 404 page
     'notfound.title': 'Page Not Found',

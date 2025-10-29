@@ -1,0 +1,11 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+mixi2 アカウント @silasolla の所有者は Masaki Haga (keybase.io/silasolla) と同一人物です．
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQGmm+zi6etGaAOA1s19mpbpacMvgUCZ1/RCwAKCRA19mpbpacM
+vhjgAP9yowNyo5x5zaQKcXebzixjlZP/6O4zPDe87FFOGHShBAEA68Nw0T8PBwPq
+dtJ4+ORcvge2Ble3D/IfpX7OS7g6mA8=
+=Db+Q
+-----END PGP SIGNATURE-----

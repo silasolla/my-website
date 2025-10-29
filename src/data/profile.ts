@@ -3,6 +3,11 @@
  * SEO，構造化データ，OGP などで使用
  */
 
+export interface IdentityProof {
+  platform: string;
+  account: string;
+}
+
 export interface ProfileData {
   name: string;
   nameEn: string;
@@ -13,6 +18,8 @@ export interface ProfileData {
   description: string;
   url: string;
   avatar: string;
+  pgpKeyUrl?: string;
+  identityProofs?: IdentityProof[];
   social: {
     github?: string;
     bluesky?: string;
@@ -31,6 +38,13 @@ export const profileData: ProfileData = {
     'ソフトウェアエンジニアとして，アプリケーションの開発や，開発プロセスの内製化支援のお仕事をしています．',
   url: 'https://silasol.la',
   avatar: '/avatar.png',
+  pgpKeyUrl: 'https://keybase.io/silasolla/pgp_keys.asc',
+  identityProofs: [
+    { platform: 'twitter', account: 'silasolla' },
+    { platform: 'twitter', account: 'cosilasolla' },
+    { platform: 'instagram', account: 'cosilasolla' },
+    { platform: 'mixi2', account: 'silasolla' },
+  ],
   social: {
     github: 'https://github.com/silasolla',
     bluesky: 'https://bsky.app/profile/silasol.la',

@@ -106,6 +106,7 @@ import Tweet from '@/components/Tweet.astro';
 ```
 
 **ポイント：**
+
 - Tweet ID は投稿URLの数字部分です (例: `https://twitter.com/user/status/1234567890123456789`)
 - `user` パラメータは省略可能（省略時は `x` がデフォルト）
 - ダークモードに自動対応します

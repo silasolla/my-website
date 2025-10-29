@@ -1,0 +1,11 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Instagram / Threads アカウント @cosilasolla の所有者は Masaki Haga (keybase.io/silasolla) と同一人物です．
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQGmm+zi6etGaAOA1s19mpbpacMvgUCZ2JJWwAKCRA19mpbpacM
+vuvkAP4yrD/Sr4J1M0r6/51jAOKwtyyBdbwi/uq1HnAt9SQmzwEAqDdKUtZBptB5
+XwHOCTVZp2R8f53JUfln44sKqv48wQQ=
+=XPjU
+-----END PGP SIGNATURE-----

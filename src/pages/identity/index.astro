@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { profileData } from '../../data/profile';
+import { getSiteName } from '../../i18n/utils';
+import { formatPlatformName } from '../../utils/platform';
+
+const siteName = getSiteName('ja');
+const title = `アカウント証明 - ${siteName}`;
+const description = `${profileData.nameEn} (${profileData.username}) のアカウント証明と PGP 公開鍵`;
+
+const proofs = profileData.identityProofs || [];
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section intro-section">
+      <div class="section-content">
+        <p>
+          {profileData.nameEn} ({profileData.username}) のアカウントを証明するための情報です．
+          アカウントが本人のものであることを PGP 署名で証明しています．
+        </p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">PGP 公開鍵</h3>
+      <div class="links-grid">
+        <a href="/identity/key/" class="link-card">
+          <h4 class="link-name">PGP 公開鍵</h4>
+          <p class="link-description">公開鍵の確認とダウンロード</p>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">アカウント証明</h3>
+      <div class="section-content">
+        <p>以下のアカウントについて，PGP 署名による所有の証明を提供しています．</p>
+      </div>
+      <div class="links-grid">
+        {
+          proofs.map((proof) => (
+            <a href={`/identity/${proof.platform}/${proof.account}/signed/`} class="link-card">
+              <h4 class="link-name">{formatPlatformName(proof.platform)}</h4>
+              <p class="link-description">@{proof.account}</p>
+              <span class="link-arrow">→</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="verification-note">
+        <h4>署名の検証方法</h4>
+        <ol>
+          <li>
+            <a href="/identity/key/">PGP 公開鍵ページ</a> から公開鍵を取得し，インポート
+          </li>
+          <li>各アカウントの <code>signed.txt</code> をダウンロード</li>
+          <li><code>gpg --verify signed.txt</code> で署名を検証</li>
+        </ol>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .about-page {
+    padding: 2rem 0;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .intro-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .section-content {
+    color: var(--color-text);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-content p {
+    margin-bottom: 1rem;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .link-card {
+    position: relative;
+    display: block;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .link-card:hover {
+    background: var(--color-bg);
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(90, 138, 94, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .link-name {
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.5rem;
+    padding-right: 2rem;
+  }
+
+  .link-description {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .link-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    transition: transform 0.2s ease;
+  }
+
+  .link-card:hover .link-arrow {
+    transform: translateX(4px);
+  }
+
+  .verification-note {
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .verification-note h4 {
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .verification-note ol {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: var(--color-text);
+    line-height: 1.8;
+  }
+
+  .verification-note li {
+    margin-bottom: 0.5rem;
+  }
+
+  .verification-note a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .verification-note a:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .verification-note code {
+    padding: 0.2rem 0.4rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.875em;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.4rem;
+    }
+
+    .links-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .link-card {
+      padding: 1.25rem;
+    }
+
+    .link-name {
+      font-size: 1.1rem;
+    }
+
+    .verification-note {
+      padding: 1rem;
+    }
+
+    .verification-note h4 {
+      font-size: 1.1rem;
+    }
+  }
+</style>

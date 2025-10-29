@@ -1,0 +1,175 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import SignedTextViewer from '../../../../components/SignedTextViewer.astro';
+import { profileData } from '../../../../data/profile';
+import { getSiteName } from '../../../../i18n/utils';
+import { formatPlatformName } from '../../../../utils/platform';
+
+export function getStaticPaths() {
+  const proofs = profileData.identityProofs || [];
+
+  return proofs.map((proof) => ({
+    params: {
+      platform: proof.platform,
+      account: proof.account,
+    },
+  }));
+}
+
+const { platform, account } = Astro.params;
+const platformDisplay = formatPlatformName(platform);
+
+const siteName = getSiteName('ja');
+const title = `${platformDisplay}/${account} の署名 - ${siteName}`;
+const description = `${profileData.nameEn} (${profileData.username}) が ${platformDisplay} の ${account} アカウントを所有していることの証明`;
+
+const textUrl = `/identity/${platform}/${account}/signed.txt`;
+const proofUrl = `/identity/${platform}/${account}/proof.txt`;
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section">
+      <h3 class="section-title">{platformDisplay}/{account} の署名</h3>
+      <div class="section-content">
+        <p>
+          {profileData.nameEn} ({profileData.username}) が <strong>{platformDisplay}</strong> の <strong
+            >{account}</strong
+          > アカウントを所有していることを述べた署名付きテキストです．
+        </p>
+      </div>
+
+      <SignedTextViewer textUrl={textUrl} platform={platform} account={account} />
+    </section>
+
+    <section class="about-section">
+      <div class="verification-note">
+        <h4>検証方法</h4>
+        <p><strong>A: Keybase でブラウザから検証</strong></p>
+        <ol>
+          <li>
+            <a href="https://keybase.io/verify" target="_blank" rel="noopener noreferrer"
+              >Keybase.io</a
+            > にアクセス
+          </li>
+          <li>上記の署名付きテキスト全体をコピーして貼り付け</li>
+          <li>"Verify" ボタンをクリック</li>
+        </ol>
+        <p><strong>B: GPG コマンドで検証</strong></p>
+        <ol>
+          <li>
+            <a href="/identity/key/">PGP 公開鍵</a> をインポート
+          </li>
+          <li>上記のテキストをファイルに保存</li>
+          <li><code>gpg --verify signed.txt</code> で検証</li>
+        </ol>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .about-page {
+    padding: 2rem 0;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .section-content {
+    color: var(--color-text);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-content p {
+    margin-bottom: 1rem;
+  }
+
+  .section-content strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .verification-note {
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .verification-note h4 {
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .verification-note p {
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+    line-height: 1.8;
+  }
+
+  .verification-note ol {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: var(--color-text);
+    line-height: 1.8;
+  }
+
+  .verification-note li {
+    margin-bottom: 0.5rem;
+  }
+
+  .verification-note code {
+    padding: 0.2rem 0.4rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.875em;
+    color: var(--color-text);
+  }
+
+  .verification-note a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .verification-note a:hover {
+    color: var(--color-primary-dark);
+  }
+
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.4rem;
+    }
+
+    .file-links {
+      flex-direction: column;
+    }
+
+    .file-link {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .verification-note {
+      padding: 1rem;
+    }
+
+    .verification-note h4 {
+      font-size: 1.1rem;
+    }
+  }
+</style>

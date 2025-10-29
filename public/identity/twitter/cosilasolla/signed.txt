@@ -1,0 +1,12 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Twitter (currently X) アカウント @cosilasolla の所有者は Masaki Haga (keybase.io/silasolla) と同一人物です．
+-----BEGIN PGP SIGNATURE-----
+
+iJoEARYKAEIWIQQGmm+zi6etGaAOA1s19mpbpacMvgUCZp8SiiQcbWFzYWtpLmhh
+Z2EuYWthLnNpbGFzb2xsYUBnbWFpbC5jb20ACgkQNfZqW6WnDL5FtQD9ErJSrKHu
+XWWKWgBfTHxwAFVD1gHbU+67TU/gkjxtRrQBAMZtjBySUfZtAjMBrDWX21gQkdKY
+wP/WzY9KeUZG2s0A
+=4QFL
+-----END PGP SIGNATURE-----
