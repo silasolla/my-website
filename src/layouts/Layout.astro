@@ -66,6 +66,9 @@ const ogImage = image ? new URL(image, siteUrl).href : `${siteUrl}/avatar.png`;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href={currentUrl} />
+
     <!-- RSS Feeds -->
     <link
       rel="alternate"
