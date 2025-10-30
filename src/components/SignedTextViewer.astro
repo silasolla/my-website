@@ -3,18 +3,18 @@ import { getTranslation } from '../i18n/translations';
 
 export interface Props {
   textUrl: string;
-  platform: string;
-  account: string;
+  platform?: string;
+  account?: string;
 }
 
-const { textUrl, platform, account } = Astro.props;
+const { textUrl } = Astro.props;
 
 const loading = getTranslation(Astro.currentLocale, 'component.signed-text.loading');
 const copy = getTranslation(Astro.currentLocale, 'component.signed-text.copy');
 const openFile = getTranslation(Astro.currentLocale, 'component.signed-text.open-file');
 const copied = getTranslation(Astro.currentLocale, 'component.signed-text.copied');
 const copyFailed = getTranslation(Astro.currentLocale, 'component.signed-text.copy-failed');
-const error = getTranslation(Astro.currentLocale, 'component.signed-text.error');
+const errorPrefix = getTranslation(Astro.currentLocale, 'component.signed-text.error');
 ---
 
 <div class="signed-text-container">
@@ -28,7 +28,7 @@ const error = getTranslation(Astro.currentLocale, 'component.signed-text.error')
   <div id="copyMessage" class="copy-message"></div>
 </div>
 
-<script define:vars={{ textUrl, copied, copyFailed, error }}>
+<script is:inline define:vars={{ textUrl, copied, copyFailed, errorPrefix }}>
   const textarea = document.getElementById('signedText');
   const copyButton = document.getElementById('copyButton');
   const copyMessage = document.getElementById('copyMessage');
@@ -47,13 +47,12 @@ const error = getTranslation(Astro.currentLocale, 'component.signed-text.error')
       textarea.style.height = textarea.scrollHeight + 'px';
     })
     .catch((err) => {
-      textarea.value = `${error}: ${err.message}`;
+      textarea.value = `${errorPrefix}: ${err.message}`;
       copyButton.disabled = true;
     });
 
   // コピーボタンのイベント
   copyButton.addEventListener('click', () => {
-    textarea.select();
     navigator.clipboard
       .writeText(textarea.value)
       .then(() => {
@@ -63,7 +62,7 @@ const error = getTranslation(Astro.currentLocale, 'component.signed-text.error')
           copyMessage.classList.remove('show');
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         copyMessage.textContent = copyFailed;
         copyMessage.classList.add('show', 'error');
         setTimeout(() => {

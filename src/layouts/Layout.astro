@@ -132,7 +132,7 @@ const structuredData = {
     <meta name="keywords" content={seoKeywords.join(',')} />
 
     <!-- Structured Data (JSON-LD) for Person -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
     <!-- Theme initialization script (runs before page renders to prevent flash) -->
     <script is:inline>

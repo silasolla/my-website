@@ -37,7 +37,7 @@ const description = `PGP public key for ${profileData.nameEn} (${profileData.use
   </article>
 </Layout>
 
-<script define:vars={{ keyUrl: profileData.pgpKeyUrl }}>
+<script is:inline define:vars={{ keyUrl: profileData.pgpKeyUrl }}>
   const textarea = document.getElementById('pgpKeys');
   const copyButton = document.getElementById('copyButton');
   const copyMessage = document.getElementById('copyMessage');
@@ -62,7 +62,6 @@ const description = `PGP public key for ${profileData.nameEn} (${profileData.use
 
   // Copy button event
   copyButton.addEventListener('click', () => {
-    textarea.select();
     navigator.clipboard
       .writeText(textarea.value)
       .then(() => {
@@ -72,7 +71,7 @@ const description = `PGP public key for ${profileData.nameEn} (${profileData.use
           copyMessage.classList.remove('show');
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         copyMessage.textContent = 'Failed to copy';
         copyMessage.classList.add('show', 'error');
         setTimeout(() => {
