@@ -190,6 +190,12 @@ export const aboutDataJa: AboutData = {
           badgeImage:
             'https://images.credly.com/size/680x680/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png',
         },
+        {
+          name: 'AI Practitioner - Foundational',
+          credlyUrl: 'https://www.credly.com/badges/efb6e86c-7499-4ed2-8b60-460efb24646a',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png',
+        },
       ],
     },
   ],
@@ -477,6 +483,12 @@ export const aboutDataEn: AboutData = {
           credlyUrl: 'https://www.credly.com/badges/bdb601e7-1fa4-4d34-9384-dccc8586adcd',
           badgeImage:
             'https://images.credly.com/size/680x680/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png',
+        },
+        {
+          name: 'AI Practitioner - Foundational',
+          credlyUrl: 'https://www.credly.com/badges/efb6e86c-7499-4ed2-8b60-460efb24646a',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png',
         },
       ],
     },
