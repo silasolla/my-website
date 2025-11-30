@@ -31,6 +31,26 @@ function formatDate(date: Date): string {
 // Filter headings to only h2 and h3
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
+// Convert @@/ notation in coverImage
+function resolveImageUrl(path: string | undefined): string | undefined {
+  if (!path) return undefined;
+
+  if (path.startsWith('@@/')) {
+    const cleanPath = path.slice(3); // Remove @@/
+    const imageBaseUrl = import.meta.env.IMAGE_BASE_URL || '';
+
+    if (imageBaseUrl) {
+      return `${imageBaseUrl}/posts/${cleanPath}`;
+    } else {
+      return `/posts/images/${cleanPath}`;
+    }
+  }
+
+  return path;
+}
+
+const coverImage = resolveImageUrl(entry.data.coverImage);
+
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
 const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
@@ -45,7 +65,7 @@ const siteName = getSiteName(Astro.currentLocale);
 <Layout
   title={`${entry.data.title} - ${siteName}`}
   description={entry.data.description}
-  image={entry.data.coverImage}
+  image={coverImage}
 >
   <div class="post-layout">
     <header class="article-header">
