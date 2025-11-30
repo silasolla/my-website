@@ -59,6 +59,7 @@ title: Standard MLを始めよう
 date: 2025-10-26
 tags: ['tech'] # ← タグを変更
 description: 'Standard MLの基本的な使い方を紹介します' # ← 説明を追加
+coverImage: '@@/2025-10-26-01_standard-ml-intro/ogp.jpg' # ← 省略可能 (OGP 画像)
 # lang: 'ja' # ← 省略可能 (未定義の場合は両言語版に表示)
 ---
 
@@ -78,7 +79,28 @@ fun factorial 0 = 1
 ![実行結果のスクリーンショット](@@/2025-10-26-01_standard-ml-intro/result.png)
 ````
 
-### 2.2 引用の使用
+### 2.2 OGP 画像の設定
+
+SNSでシェアされたときに表示される画像を指定できます：
+
+```markdown
+---
+title: 記事タイトル
+date: 2025-10-26
+tags: ['tech']
+description: '記事の説明'
+coverImage: '@@/2025-10-26-01_my-article/ogp.jpg' # ← OGP 画像
+---
+```
+
+**ポイント：**
+
+- `coverImage` を指定すると Twitter Card や Facebook などの OGP 画像として使用されます
+- 省略した場合は，デフォルトのアバター画像が使われます
+- `@@/` 記法を使うことで，開発環境と本番環境で自動的に適切なURLに変換されます
+- 画像は記事の画像と同じく R2 にアップロードします (推奨サイズ：1200 × 630 px)
+
+### 2.3 引用の使用
 
 マークダウンの引用記法 (`>`) を使えます：
 
@@ -87,7 +109,7 @@ fun factorial 0 = 1
 > 複数行にわたって書くこともできます．
 ```
 
-### 2.3 Twitter (X) の埋め込み
+### 2.4 Twitter (X) の埋め込み
 
 記事の冒頭で `Tweet` コンポーネントをインポートして使用します：
 
@@ -111,7 +133,7 @@ import Tweet from '@/components/Tweet.astro';
 - `user` パラメータは省略可能（省略時は `x` がデフォルト）
 - ダークモードに自動対応します
 
-### 2.4 画像を配置
+### 2.5 画像を配置
 
 ```bash
 # 画像ディレクトリに画像をコピー
@@ -128,7 +150,7 @@ public/posts/images/2025-10-26-01_my-article-title/
 
 **重要：この画像はGitにコミットしません** (`.gitignore`で除外済み)
 
-### 2.5 ローカルで確認
+### 2.6 ローカルで確認
 
 ```bash
 npm run dev
@@ -326,7 +348,35 @@ description: ''
 
 画像を配置しない場合は，`make upload-images` をスキップして直接コミット・プッシュしてください．
 
-### Q6: PC版で画像サイズを細かく調整したい
+### Q6: OGP 画像だけを設定したい
+
+記事本文には画像を使わないが SNS シェア用のOGP画像だけ設定したい場合：
+
+```markdown
+---
+title: テキストだけの記事
+date: 2025-10-26
+tags: ['news']
+description: 'SNSでシェアしたときに画像を表示させたい'
+coverImage: '@@/2025-10-26-01_text-only/ogp.jpg'
+---
+
+# テキストだけの記事
+
+本文には画像を使いません．
+```
+
+画像ディレクトリに OGP 画像だけを配置してアップロード：
+
+```bash
+# OGP 画像のみ配置
+cp /path/to/ogp.jpg public/posts/images/2025-10-26-01_text-only/
+
+# R2 にアップロード
+make upload-images SLUG=2025-10-26-01_text-only
+```
+
+### Q7: PC 版で画像サイズを細かく調整したい
 
 **通常の画像表示**
 
