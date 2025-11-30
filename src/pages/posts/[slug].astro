@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString('ja-JP', {
@@ -27,6 +27,9 @@ function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+// 見出しをh2とh3のみにフィルタリング
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
@@ -39,7 +42,11 @@ const shareCopy = getTranslation(Astro.currentLocale, 'share.copy');
 const siteName = getSiteName(Astro.currentLocale);
 ---
 
-<Layout title={`${entry.data.title} - ${siteName}`} description={entry.data.description}>
+<Layout
+  title={`${entry.data.title} - ${siteName}`}
+  description={entry.data.description}
+  image={entry.data.coverImage}
+>
   <div class="post-layout">
     <header class="article-header">
       <div class="article-tags">
@@ -60,10 +67,24 @@ const siteName = getSiteName(Astro.currentLocale);
     <!-- PC版：サイドバー (目次とシェア) -->
     <aside class="sidebar-pc">
       <!-- 目次 (PC版：常に表示) -->
-      <div class="toc-section">
-        <h3 class="sidebar-title">目次</h3>
-        <nav id="table-of-contents-pc" class="toc-nav"></nav>
-      </div>
+      {
+        tocHeadings.length > 0 && (
+          <div class="toc-section">
+            <h3 class="sidebar-title">目次</h3>
+            <nav class="toc-nav">
+              <ul class="toc-list">
+                {tocHeadings.map((heading) => (
+                  <li class={heading.depth === 3 ? 'toc-item toc-item-h3' : 'toc-item'}>
+                    <a href={`#${heading.slug}`} class="toc-link">
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        )
+      }
 
       <!-- シェア (PC版) -->
       <div class="share-section">
@@ -83,12 +104,26 @@ const siteName = getSiteName(Astro.currentLocale);
     </aside>
 
     <!-- スマホ版：目次 (記事の前, デフォルト畳み込み) -->
-    <aside class="toc-mobile">
-      <details class="toc-details">
-        <summary class="toc-summary">目次</summary>
-        <nav id="table-of-contents-mobile" class="toc-nav"></nav>
-      </details>
-    </aside>
+    {
+      tocHeadings.length > 0 && (
+        <aside class="toc-mobile">
+          <details class="toc-details">
+            <summary class="toc-summary">目次</summary>
+            <nav class="toc-nav">
+              <ul class="toc-list">
+                {tocHeadings.map((heading) => (
+                  <li class={heading.depth === 3 ? 'toc-item toc-item-h3' : 'toc-item'}>
+                    <a href={`#${heading.slug}`} class="toc-link">
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
+        </aside>
+      )
+    }
 
     <div class="article-content">
       <Content />
@@ -116,59 +151,8 @@ const siteName = getSiteName(Astro.currentLocale);
   </div>
 
   <script>
-    // 目次の自動生成
+    // シェア機能
     document.addEventListener('DOMContentLoaded', () => {
-      const content = document.querySelector('.article-content');
-      const tocNavPC = document.getElementById('table-of-contents-pc');
-      const tocNavMobile = document.getElementById('table-of-contents-mobile');
-
-      if (content) {
-        const headings = content.querySelectorAll('h2, h3');
-
-        // 目次を生成する関数
-        const generateTOC = (targetNav: HTMLElement | null, parentSection: HTMLElement | null) => {
-          if (!targetNav) return;
-
-          if (headings.length > 0) {
-            const tocList = document.createElement('ul');
-            tocList.className = 'toc-list';
-
-            headings.forEach((heading, index) => {
-              const id = heading.id || `heading-${index}`;
-              if (!heading.id) heading.id = id;
-
-              const li = document.createElement('li');
-              li.className = heading.tagName === 'H3' ? 'toc-item toc-item-h3' : 'toc-item';
-
-              const a = document.createElement('a');
-              a.href = `#${id}`;
-              a.textContent = heading.textContent;
-              a.className = 'toc-link';
-
-              li.appendChild(a);
-              tocList.appendChild(li);
-            });
-
-            targetNav.appendChild(tocList);
-          } else {
-            // 目次が無い場合は、目次セクション全体を非表示
-            if (parentSection) {
-              parentSection.style.display = 'none';
-            }
-          }
-        };
-
-        // PC版とモバイル版の両方に目次を生成
-        const tocSectionPC = document.querySelector(
-          '.sidebar-pc .toc-section'
-        ) as HTMLElement | null;
-        const tocSectionMobile = document.querySelector('.toc-mobile') as HTMLElement | null;
-
-        generateTOC(tocNavPC, tocSectionPC);
-        generateTOC(tocNavMobile, tocSectionMobile);
-      }
-
-      // シェア機能
       const shareButtons = document.querySelectorAll('.share-button');
       const currentUrl = window.location.href;
       const title = document.querySelector('.article-title')?.textContent || '';

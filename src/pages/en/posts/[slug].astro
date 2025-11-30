@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString('en-US', {
@@ -27,6 +27,9 @@ function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+// Filter headings to only h2 and h3
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
@@ -39,7 +42,11 @@ const shareCopy = getTranslation(Astro.currentLocale, 'share.copy');
 const siteName = getSiteName(Astro.currentLocale);
 ---
 
-<Layout title={`${entry.data.title} - ${siteName}`} description={entry.data.description}>
+<Layout
+  title={`${entry.data.title} - ${siteName}`}
+  description={entry.data.description}
+  image={entry.data.coverImage}
+>
   <div class="post-layout">
     <header class="article-header">
       <div class="article-tags">
@@ -60,10 +67,24 @@ const siteName = getSiteName(Astro.currentLocale);
     <!-- PC: Sidebar (TOC and Share) -->
     <aside class="sidebar-pc">
       <!-- Table of Contents (PC: Always visible) -->
-      <div class="toc-section">
-        <h3 class="sidebar-title">Table of Contents</h3>
-        <nav id="table-of-contents-pc" class="toc-nav"></nav>
-      </div>
+      {
+        tocHeadings.length > 0 && (
+          <div class="toc-section">
+            <h3 class="sidebar-title">Table of Contents</h3>
+            <nav class="toc-nav">
+              <ul class="toc-list">
+                {tocHeadings.map((heading) => (
+                  <li class={heading.depth === 3 ? 'toc-item toc-item-h3' : 'toc-item'}>
+                    <a href={`#${heading.slug}`} class="toc-link">
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        )
+      }
 
       <!-- Share (PC) -->
       <div class="share-section">
@@ -83,12 +104,26 @@ const siteName = getSiteName(Astro.currentLocale);
     </aside>
 
     <!-- Mobile: TOC (Before content, collapsed by default) -->
-    <aside class="toc-mobile">
-      <details class="toc-details">
-        <summary class="toc-summary">Table of Contents</summary>
-        <nav id="table-of-contents-mobile" class="toc-nav"></nav>
-      </details>
-    </aside>
+    {
+      tocHeadings.length > 0 && (
+        <aside class="toc-mobile">
+          <details class="toc-details">
+            <summary class="toc-summary">Table of Contents</summary>
+            <nav class="toc-nav">
+              <ul class="toc-list">
+                {tocHeadings.map((heading) => (
+                  <li class={heading.depth === 3 ? 'toc-item toc-item-h3' : 'toc-item'}>
+                    <a href={`#${heading.slug}`} class="toc-link">
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
+        </aside>
+      )
+    }
 
     <div class="article-content">
       <Content />
@@ -116,59 +151,8 @@ const siteName = getSiteName(Astro.currentLocale);
   </div>
 
   <script>
-    // Auto-generate table of contents
+    // Share functionality
     document.addEventListener('DOMContentLoaded', () => {
-      const content = document.querySelector('.article-content');
-      const tocNavPC = document.getElementById('table-of-contents-pc');
-      const tocNavMobile = document.getElementById('table-of-contents-mobile');
-
-      if (content) {
-        const headings = content.querySelectorAll('h2, h3');
-
-        // Function to generate TOC
-        const generateTOC = (targetNav: HTMLElement | null, parentSection: HTMLElement | null) => {
-          if (!targetNav) return;
-
-          if (headings.length > 0) {
-            const tocList = document.createElement('ul');
-            tocList.className = 'toc-list';
-
-            headings.forEach((heading, index) => {
-              const id = heading.id || `heading-${index}`;
-              if (!heading.id) heading.id = id;
-
-              const li = document.createElement('li');
-              li.className = heading.tagName === 'H3' ? 'toc-item toc-item-h3' : 'toc-item';
-
-              const a = document.createElement('a');
-              a.href = `#${id}`;
-              a.textContent = heading.textContent;
-              a.className = 'toc-link';
-
-              li.appendChild(a);
-              tocList.appendChild(li);
-            });
-
-            targetNav.appendChild(tocList);
-          } else {
-            // Hide TOC section entirely if no headings
-            if (parentSection) {
-              parentSection.style.display = 'none';
-            }
-          }
-        };
-
-        // Generate TOC for both PC and mobile
-        const tocSectionPC = document.querySelector(
-          '.sidebar-pc .toc-section'
-        ) as HTMLElement | null;
-        const tocSectionMobile = document.querySelector('.toc-mobile') as HTMLElement | null;
-
-        generateTOC(tocNavPC, tocSectionPC);
-        generateTOC(tocNavMobile, tocSectionMobile);
-      }
-
-      // Share functionality
       const shareButtons = document.querySelectorAll('.share-button');
       const currentUrl = window.location.href;
       const title = document.querySelector('.article-title')?.textContent || '';
