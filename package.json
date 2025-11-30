@@ -20,16 +20,19 @@
     "@astrojs/rss": "^4.0.13",
     "@astrojs/sitemap": "^3.6.0",
     "astro": "^5.15.9",
-    "playwright": "^1.56.1"
+    "dotenv": "^16.4.5",
+    "rehype-katex": "^7.0.1",
+    "remark-link-card": "^1.3.1",
+    "remark-math": "^6.0.0",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.5",
-    "dotenv": "^16.4.5",
     "editorconfig-checker": "^6.1.1",
+    "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.6.0",
-    "unist-util-visit": "^5.0.0",
     "wrangler": "^4.45.0"
   }
 }
