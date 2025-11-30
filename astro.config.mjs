@@ -6,8 +6,12 @@ import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-// @ts-ignore - .mjsファイルの型定義なし
 import { remarkImageUrl } from './src/plugins/remark-image-url.mjs';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import remarkLinkCard from 'remark-link-card';
+import { rehypeLinkCardTarget } from './src/plugins/rehype-link-card-target.mjs';
+import { rehypeExternalLinks } from './src/plugins/rehype-external-links.mjs';
 
 // .envファイルを読み込み
 dotenv.config();
@@ -50,7 +54,18 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: [remarkImageUrl],
+    remarkPlugins: [
+      remarkImageUrl,
+      remarkMath,
+      [
+        remarkLinkCard,
+        {
+          cache: true,
+          shortenUrl: true,
+        },
+      ],
+    ],
+    rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeExternalLinks],
     shikiConfig: {
       theme: 'github-dark',
       langs: [smlGrammar],
