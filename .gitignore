@@ -22,6 +22,9 @@ pnpm-debug.log*
 public/_headers
 public/robots.txt
 
+# remark-link-card cache
+public/remark-link-card/
+
 # macOS-specific files
 .DS_Store
 
