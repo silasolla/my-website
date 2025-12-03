@@ -18,7 +18,7 @@ export const translations = {
     'nav.links': 'リンク',
 
     // ホームページ
-    'home.pinned': 'ピン留めされたお知らせ',
+    'home.pinned': 'ピン留めされた記事',
     'home.important': '重要',
     'home.latest': '最新の記事',
     'home.no-posts': 'まだ記事がありません．',
@@ -105,7 +105,7 @@ export const translations = {
     'nav.links': 'Links',
 
     // Home page
-    'home.pinned': 'Pinned Announcements',
+    'home.pinned': 'Pinned Posts',
     'home.important': 'Important',
     'home.latest': 'Latest Posts',
     'home.no-posts': 'No posts yet.',
