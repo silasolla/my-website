@@ -1,0 +1,71 @@
+---
+title: 'AlloyDB vs. Cloud Spanner: The Boundaries of Scalability'
+date: 2025-12-05
+tags: ['tech']
+description: 'This post explains the architectural differences and scalability boundaries between AlloyDB and Cloud Spanner.'
+coverImage: '@@/2025-12-05-01_alloy-db-and-spanner/ogp.webp'
+lang: 'en'
+---
+
+This post is part of the [3-shake Advent Calendar 2025 (Day 5)](https://qiita.com/advent-calendar/2025/3-shake).
+
+## Introduction
+
+I recently published a deep-dive article on our company Tech Blog exploring the internal architecture of Cloud Spanner (covering topics like sharding and timestamps). It goes beyond a simple "how-to" and unravels the core architecture—usually a black box—from a technical perspective. It is a piece I am particularly proud of, so please give it a read if you have the time.
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+This process led me to re-examine Google Cloud's database services, specifically reflecting on the two giants of high-end options: AlloyDB for PostgreSQL and Cloud Spanner. While both boast high availability and performance, their design philosophies are diametrically opposed. They take decisively different paths, particularly in their approach to "how to scale write performance."
+
+In this article, I will organize these differences from an architectural perspective, focusing on the "boundaries of scalability."
+
+## AlloyDB: Maximizing the Single-Writer Architecture
+
+AlloyDB achieves significant speed improvements by separating the storage and compute layers and offloading log processing (WAL), all while maintaining full PostgreSQL compatibility. By configuring a cluster, it allows for horizontal scaling of reads through read replicas, enabling it to flexibly handle large-scale reference loads.
+
+However, regarding writes, it adopts a single-writer configuration where the primary instance handles everything, similar to Amazon Aurora. Even if you vertically scale the instance resources to the maximum or utilize AlloyDB's proprietary optimization engine, the upper limit of write performance ultimately depends on the CPU and memory resources of that single primary instance.
+
+This architecture—where "reads scale out" and "writes scale up"—has clear strengths compared to distributed systems like Spanner. Since there is no need for a distributed consensus process between multiple nodes during a commit, network hops are minimal. This often gives AlloyDB an advantage in terms of single-query latency.
+
+## Cloud Spanner: Breaking the Physical Limits of a Single Node
+
+Cloud Spanner is dedicated to read/write scale-out (horizontal distribution). Table data is automatically split (sharded) based on primary key ranges and distributed across thousands of physical servers. Even if the write load increases, adding nodes triggers automatic data rebalancing to distribute the load.
+
+Therefore, if the load is evenly distributed through appropriate key design, there is theoretically no upper limit to write throughput. If AlloyDB is designed to "localize data geography to minimize latency," Spanner is designed to "distribute data broadly to maximize parallelism and scale throughput indefinitely."
+
+However, to maintain consistency between distant nodes, writing inevitably incurs overhead from distributed consensus algorithms and network communication. A structural characteristic of Spanner is that it accepts higher single-query latency as a trade-off for unlimited throughput.
+
+## Which Should You Choose?
+
+Based on these characteristics, the selection criteria are clear when viewed through the boundary of "Write Scale."
+
+### Choose AlloyDB if:
+
+- You want to leverage the PostgreSQL ecosystem as-is.
+- You prioritize latency for single queries above all else (avoiding the overhead of distributed consensus).
+- A maximum-spec single node can handle your write load (most use cases fall into this category).
+
+### Choose Cloud Spanner if:
+
+- You require overwhelming throughput (processing volume) rather than single-shot latency.
+- There is a possibility that write requests will reach the limits of a single node (tens of thousands to millions per second).
+- You require global-scale availability (writing must continue even during specific zone or region failures).
+
+## Maintaining Consistency
+
+Let's consider consistency during commits. With a single-writer configuration like AlloyDB, maintaining consistency is (relatively) easy because there is only one primary managing the order.
+
+On the other hand, in a system like Spanner where nodes performing writes are scattered around the world (especially in multi-region configurations), how do you strictly guarantee the order of "which write came first" across the entire system? Here, the "CAP theorem" barrier of distributed systems stands in the way, but Spanner technically overcomes this constraint through hardware investment and algorithms.
+
+Why can Spanner behave like an RDB despite being a distributed system? If you are interested in Spanner's approach to the difficult challenge of "guaranteeing consistency in a distributed environment," please check out my explanation article below.
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+## Summary
+
+AlloyDB, which seeks to draw out the full potential of a single-writer configuration, and Spanner, which attempts to break through single-node resource constraints as a distributed system—it is not a question of which is superior. Rather, we should distinguish between them by weighing their respective designs against the characteristics of the workload (Latency vs. Throughput).
+
+## References
+
+1. [AlloyDB overview](https://docs.cloud.google.com/alloydb/docs/overview) - Google Cloud Documentation.
+2. [What is Cloud Spanner?](https://cloud.google.com/blog/topics/developers-practitioners/what-cloud-spanner) - Google Cloud Blog.

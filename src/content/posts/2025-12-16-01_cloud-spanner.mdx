@@ -1,0 +1,138 @@
+---
+title: "Cloud Spanner の記事を書きました (+ 技術的な蛇足)"
+date: 2025-12-16
+pinned: true
+tags: ['tech', 'news']
+description: "Cloud Spanner のコアアーキテクチャについて，職場の Tech Blog 補足と技術的な余談 (Paxos, CAP 定理, NewSQL) をまとめました．"
+coverImage: '@@/2025-12-16-01_cloud-spanner/ogp.webp'
+lang: 'ja'
+---
+
+この記事は [3-shake Advent Calendar 2025](https://qiita.com/advent-calendar/2025/3-shake) (17日目) の投稿です．そういうことにしました．
+
+先日，職場の Tech Blog で Spanner (Google Cloud) の記事を公開しました．単なる使い方の紹介ではなく，普段はブラックボックスのコアアーキテクチャを技術的な視点から紐解きました．個人的に力作なので，もし良ければご一読ください．
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+アドカレにこじつけようとして，ちょっとした前日譚みたいなのも書いています．
+
+https://silasol.la/posts/2025-12-05-01_alloy-db-and-spanner/
+
+実を言うと，自分は別に分散システムの専門家でも，Cloud Spanner のコアユーザーでもありません．だからこそ，我々が Cloud Spanner の料金試算を見たときの「高いな」という素朴な感想からスタートして「なぜ Spanner はこれらの機能を実現できるのか？」や「このコストは一体何の対価なのか？」といった裏側の仕組み (原子時計や分散アルゴリズム) に焦点を当てて調べました．
+
+元の記事では「物理法則へ立ち向かうために物理 (資金力とハードウェア) で殴った」というオチのため，あえて深入りしなかった内容も幾つかあります．この記事では，そのあたりを個人的な視点で補足 (蛇足) として紹介します．可能な限り原典にあたって正確な理解に努めましたが，あくまで現時点での自分の理解をまとめたものなので，もし認識違いがあれば (優しく) ご指摘いただけると幸いです．
+
+というわけで，興味があればお付き合いください．
+
+## 記事を書いた動機と収穫
+
+そもそも，この記事を書いたきっかけは，現在の職場に転職してから AWS よりも Google Cloud に触れる機会が多くなり，そのキャッチアップの一環として，何かアウトプットをしようということでした．
+
+その題材として，Google Cloud の中でも特に異彩を放っている Cloud Spanner を選んだのですが，記事を書くにあたって一番避けたかったのは「コンソールの使い方」や「SQL の書き方」といった機能紹介に終始することです．
+
+公式ドキュメントを読めば分かるのに，わざわざ二番煎じの記事として書く必要はありません．(強い主張)
+
+自分は昔から「どう使うか」よりも「どういう仕組みで動いているのか」というブラックボックスの中身が気になる性分だったので，今回も基礎へ基礎へと掘り下げるアプローチを取りました．そうしてサービスの設計 (原子時計や Paxos) を調べていくうちに，巷で言われる「Cloud Spanner は高い」という評判についても，ふと合点がいきました．
+
+そもそも Spanner は，Google のドル箱である広告システム (Google Ads) や Play Store の決済を支えるデータベース (F1) のバックエンド (基盤) として開発された経緯があり，現在もその巨大なビジネスの中核を担い続けています．
+
+これらの領域において「整合性が合わない (課金したのに反映されない，広告予算を超えて配信してしまう)」ことは，Google にとって巨額のビジネス損失を意味します．だからこそ，採算度外視とも思えるほどのハードウェア投資をしてでも「絶対に整合性が狂わないシステム」が必要だったわけです．
+
+この料金は単なる「データベースのライセンス料」や「サーバ代」ではなく，地球規模の時刻同期システム (TrueTime) と，それを維持するための特殊なハードウェア，それを運用する Google の SRE チームへの外注費なんだろうなということです．技術的な仕組みを掘り下げた結果として「高い」というお気持ちが **"物理的な対価 (Time is Money)"** なのだと裏付けられたのが，今回の最大の収穫でした．
+
+## Paxos とその生みの親について
+
+レプリケーションに整合性を持たせるための仕組みとして「Spanner は分散合意に Paxos を採用しました」と流しましたが，そもそも Paxos とは何なのでしょうか．
+
+これは簡潔に言えば，いつ誰が故障するかわからない分散環境において，システム全体として「ただ一つの合意」を形成するためのアルゴリズムです．口で言うのは簡単ですが，不安定なネットワーク上で矛盾なくコンセンサスに至ることは，計算機科学において最も解決が困難な問題の一つとして知られています．
+
+この難問に対して Paxos という解を提示したのが Leslie Lamport です．彼は分散システムの巨人として知られていますが，実は分散システム界隈でなくても馴染み深い一面がもう一つあります．彼は論文執筆や数式組版で広く使われる **$\LaTeX$ の開発者その人** です．$\LaTeX$ の La は Lamport の La なので．
+
+$\TeX$ を開発した Donald Knuth もそうですが，Lamport は自身の理論を納得できる形で記述するために組版システム $\LaTeX$ を開発し，それを使って現代のクラウドを支える理論 (Paxos) を書き上げたわけですね．Cloud Spanner の源流を辿ると，そんな一人の計算機科学者やお世話になった組版システムに行き着くというのも面白い話です．
+
+## Multi-Paxos について
+
+分散合意の仕組みは，論文に倣って "Paxos" と単に書きましたが，厳密には "Multi-Paxos" と呼ばれるものを Spanner は実装しています．教科書的な "Basic Paxos" は1つの値 (e.g. ランチはカレーにする？) を決めたらそこで合意プロセスが終了してしまいます．しかしながら，データベースは「A が入金」「B が購入」「C が退会」といった，連続する操作 (ログ) を延々と処理し続けなければなりません．
+
+ここで，その都度 Basic Paxos を最初からやり直すと通信コストが高すぎます．ランチの例で言えば，誰かが一皿注文するたびに「本当に注文して良いか？」と全員で会議を開くのは，あまりにも非効率です．そのため Spanner の Multi-Paxos では「オーダー係（Leader) を一度決めたら，**その任期中 (Lease) は会議を省略して，次々と注文 (ログ) を通す**」ように最適化しています．
+
+## Effectively CA と FLP 不可能性
+
+分散システムの「CAP 定理」において，Spanner は CP (一貫性 + 分断耐性) のシステムであり，ネットワークの分断が発生すれば，整合性を守るために書き込みを止めます．(可用性 A を犠牲にする)
+
+しかしながら，Google は「Spanner は実質的に CA (Effectively CA) だ」と主張しています．
+
+これは，論理的に分断を克服したというわけではありません．Google 自慢の専用線を張り巡らせたプライベートネットワークは強靭で，**現実的に分断が起きる確率は無視できるほど低い** (i.e. 実質 A も満たしているようなもの) と見なす，ある種の脳筋理論です．
+
+一般的な分散システム設計ではネットワーク分断を考慮に入れるのが定石ですが，Google は世界中に張り巡らせた自社のプライベートネットワーク (海底ケーブル含む) に絶対的な信頼を置いており，自社の管理下であれば分断は起きないものと見なすことで，可用性と整合性を両立させています．
+
+他のクラウドベンダーも強力なバックボーンを持っていますが，データベースのコアアルゴリズムがこれほどまで物理インフラの信頼性を前提としている点は，Spanner の際立った特徴と言えます．
+
+また，分散システムには「FLP 不可能性 (完全な非同期システムでは，1プロセスでも故障する可能性があると合意不可能)」という厳しい結果が知られていますが，Spanner は TrueTime によって時間を同期させることで，システムを同期的なモデルに近づけ，この壁を物理的に乗り越えようとしています．
+
+理論上の限界を，圧倒的なハードウェア投資でねじ伏せるのが Spanner の本質です．(たぶん)
+
+## 当初 SQL を喋れなかった Spanner
+
+Spanner の目指していた姿として「RDB の顔をしながら」と書きましたが，実は 2012 年の論文時点では Spanner は，厳密には SQL をサポートしていませんでした．当時の Spanner は，あくまでも「ACID トランザクションを備えた分散 Key-Value ストア (semirelational)」であり，インターフェースも Get や Put といった API ベースでした．
+
+では誰が SQL を処理していたのかというと，前述した F1 という別システムです．Spanner がストレージとトランザクションの役割を担い，F1 が SQL エンジンとして働く分業体制だったわけですね．
+
+その後，2017 年には Spanner 自身が F1 のクエリ技術を取り込み，ネイティブに SQL をサポートするようになりました．("Spanner: Becoming a SQL System" という論文)
+
+つまり「NoSQL (Bigtable) のスケーラビリティ」から出発し「RDB のトランザクション」を実装して，最後に「SQL インターフェース」を獲得して完全体になった．この「NoSQL から NewSQL へ」という進化の過程を知ると，Spanner のアーキテクチャについて，より深く理解できる気がします．
+
+## 富豪的な解決 (Spanner) と職人的な解決 (OSS の NewSQL)
+
+Spanner は Google の潤沢なハードウェアリソース (原子時計，GPS など) があって初めて成立する富豪的解決です．しかしながら，一般的なオンプレミス環境や，特定のハードウェアに依存しない OSS の世界では，それらを前提にすることはできません．そんな OSS の土俵で，Spanner の思想を受け継ぎつつも，ポータビリティを最優先に設計されたのが CockroachDB, TiDB といった NewSQL です．
+
+これらは Spanner のコアアーキテクチャをそのままコピーしたわけではありません．最大の壁は「時計」です．原子時計のない一般的な NTP 環境で Spanner と同じ「時間を待つ (Commit Wait)」戦略を採ると，時計の誤差 (数百ミリ秒) がそのまま待ち時間となり，実用的な書き込み性能が出ないからです．
+
+そのため，これらはソフトウェアによる独自の工夫を取り入れました．分散合意には実装難度が高い Paxos の代わりに，理解しやすさを最優先に設計された **"Raft アルゴリズム"** を採用し，時計に関しても **CockroachDB は "HLC (Hybrid Logical Clock)"** を，**TiDB は "TSO (Timestamp Oracle)"** を用いて，原子時計というチートアイテム無しで因果関係を保つアプローチを採っています．
+
+パフォーマンスや厳密さの絶対値では Spanner に分がありますが **"ハードウェアから再定義して物理で殴る Spanner"** に対して **"ソフトウェア層の工夫で制約に挑む CockroachDB, TiDB"** という対比構造になっています．
+
+Google Cloud のハードウェアと心中する覚悟で完全な整合性を買うか，アルゴリズムで工夫してインフラの自由を得るか．Spanner とは異なる進化系統として，こちらも技術的に興味深いです．(詳細な実装差異は各ドキュメントを参照ください)
+
+なお，直近の 2024 年 (re:Invent) に発表された Amazon Aurora DSQL も Spanner と同様に，原子時計を用いた高精度な時刻同期 (Amazon Time Sync Service) が前提のアーキテクチャを採用しています．結局のところ，巨大クラウドベンダーにおける分散データベースの設計は「ハードウェアによる高精度な時刻同期」という方向へ収束しつつあると言えます．
+
+## マネージドサービスの本質
+
+先日，技術カンファレンスでベテランのエンジニアの方とお話しする機会がありました．
+
+その方が懐かしそうに語っていた「インフラエンジニア」の仕事は，データセンターに通って物理サーバをラッキングしたり，床下を這って LAN ケーブルを配線したり，今ではあまり聞かなくなった「ミドルウェアエンジニア」としてネットワーク周りのカーネルパラメータなどを職人芸でチューニングしたり...という，非常に物理的で泥臭いものでした．
+
+その話を聞いて，改めて「パブリッククラウドのマネージドサービスを使う」ということの本質に気づかされました．
+
+我々がクラウドベンダーに支払っている料金は，単なるコンピューティングリソースの対価ではありません．かつて人間が汗をかいて行っていた物理的な調達や，職人芸のようなチューニングといった複雑怪奇な業務を **"ベンダー側に押し付ける (NoOps) ための代行手数料"** でもあります．
+
+Cloud Spanner は，その最も極端な例と言えるでしょう．原子時計の設置も，大陸間ネットワークの配線も，シャーディングもリバランシングも，全てクラウドベンダー (Google) が裏側でやってくれている．だからこそ，我々はアプリケーションのコードを書くことだけに集中できるわけです．
+
+自前で MySQL をシャーディングし，整合性を保つためのアプリケーションロジックを書き，データセンターに走る運用メンバーの人件費を考えれば，Cloud Spanner の料金はむしろ安すぎる (実現できること自体が本来ぶっとんでいる) のではないでしょうか？
+
+「高い」と言われる Cloud Spanner のランニングコストの向こう側には，データセンターで戦ってきた先人たちの苦労と，それを抽象化・自動化したベンダーの企業努力が詰まっている．そう考えると，毎月の請求額の見え方も少し変わってくるかもしれません．
+
+## おわりに
+
+ブラックボックスとして普段は扱っているマネージドサービスも，蓋を開けてみればアカデミックな理論と物理的なインフラの結晶です．自分は，大学院 (修士) まで情報工学を専攻していたこともあって，アカデミックな世界で培われた理論 (Paxos) が，現代の巨大な商用サービス (Cloud Spanner) のコアとして脈々と息づいているという事実に触れられたことが，純粋に嬉しい体験でした．
+
+職業エンジニアとして，先人たちが積み上げてきた知見や OSS の恩恵を享受するだけでなく，こうしてその仕組みを紐解いて発信することが，ささやかながらコミュニティへの還元になれば良いなと思います．純粋にサービスの中身を掘り下げてみるのも，エンジニアとしての楽しみの一つだなと改めて感じました．というわけで，良ければ読んでね．
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+## 参考文献
+
+1. Corbett, J. C., et al. (2012). [Spanner: Google's Globally-Distributed Database.](https://research.google/pubs/spanner-googles-globally-distributed-database-2/) Proceedings of OSDI 2012. (現在にも活きている Spanner のコアアーキテクチャについてです)
+2. Shute, J., et al. (2013). [F1: A Distributed SQL Database That Scales.](https://research.google/pubs/f1-a-distributed-sql-database-that-scales/) VLDB 2013. (記事内で触れた Google の広告システムを支える DB の論文で Spanner の上で動く SQL エンジンについて解説されています)
+3. Bacon, D. F., et al. (2017). [Spanner: Becoming a SQL System.](https://research.google/pubs/spanner-becoming-a-sql-system/) SIGMOD 2017. (元々は NoSQL だった Spanner が F1 で培われた技術を取り込んで SQL をネイティブサポートするまでの進化について書かれています)
+4. Brewer, E. (2017). [Spanner, TrueTime and the CAP Theorem.](https://research.google/pubs/spanner-truetime-and-the-cap-theorem/) Google Research. (Spanner は CAP 定理をどう攻略したのか CAP 定理を提唱した Eric Brewer 本人が解説しています ("Effectively CA" という言葉はここで登場する))
+5. Google Cloud. [What is Cloud Spanner?](https://cloud.google.com/blog/topics/developers-practitioners/what-cloud-spanner) Google Cloud Blog. (Cloud Spanner の概念レベルの公式解説です)
+6. Lamport, L. (1998). [The Part-Time Parliament.](https://dl.acm.org/doi/10.1145/279227.279229) ACM Transactions on Computer Systems, 16(2):133–169. (Lamport による最初の Paxos の論文です (難解すぎて当時誰にも理解されなかったという伝説があるそうです))
+7. Lamport, L. (2001). [Paxos Made Simple.](https://www.microsoft.com/en-us/research/publication/paxos-made-simple/) ACM SIGACT News (Distributed Computing Column) 32(4):51-58. ("The Part-Time Parliament" が意味わからんと言われて Lamport が説明を書き直したものです ("Made Simple" というタイトルだが...))
+8. Ongaro, D., & Ousterhout, J. (2014). [In Search of an Understandable Consensus Algorithm.](https://raft.github.io/raft.pdf) USENIX ATC 2014. (Paxos と対比して「理解しやすさ」を主眼に置いて設計された Raft のアイデアについてです)
+9. [Raft Consensus Algorithm.](https://raft.github.io/) The Raft Site. (Raft アルゴリズムの動作を視覚的に確認できるデモがあります)
+10. Kulkarni, S. R., et al. (2014). [Logical Physical Clocks and Consistent Snapshots in Globally Distributed Databases.](https://www.semanticscholar.org/paper/Logical-Physical-Clocks-and-Consistent-Snapshots-in-Demirbas-Leone/3179127ec316644bfc4643d0263c306f890c1d36) (物理時計と論理時計を組み合わせる HLC  の論文です)
+11. Huang, D., et al. (2020). [TiDB: A Raft-based HTAP Database.](https://www.vldb.org/pvldb/vol13/p3072-huang.pdf) VLDB 2020. (TiDB のアーキテクチャに関する論文で TSO を用いたトランザクション管理についても触れられています)
+12. Cockroach Labs. [CockroachDB Architecture Overview.](https://www.cockroachlabs.com/docs/stable/architecture/overview.html) Official Documentation. (CockroachDB のアーキテクチャ概要です)
+13. PingCAP. [TiDB Architecture.](https://docs.pingcap.com/tidb/stable/tidb-architecture) Official Documentation. (TiDB のアーキテクチャ概要です)
+14. Amazon Web Services. [Amazon Aurora DSQL Overview.](https://aws.amazon.com/rds/aurora/dsql/) Official Page. (Spanner の影響を受けた AWS の分散データベースです)

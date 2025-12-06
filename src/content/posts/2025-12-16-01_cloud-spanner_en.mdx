@@ -1,0 +1,140 @@
+---
+title: "I Wrote an Article on Cloud Spanner (+ Technical Tangents)"
+date: 2025-12-16
+pinned: true
+tags: ['tech', 'news']
+description: "A supplement to my company Tech Blog post on Cloud Spanner's core architecture, including technical tangents on Paxos, the CAP theorem, and NewSQL."
+coverImage: '@@/2025-12-16-01_cloud-spanner/ogp.webp'
+lang: 'en'
+---
+
+This post is part of the [3-shake Advent Calendar 2025 (Day 17)](https://qiita.com/advent-calendar/2025/3-shake).
+
+I recently published a deep-dive article about Spanner (Google Cloud) on our company's Tech Blog. Rather than a simple usage guide, I attempted to unravel its core architecture—usually a black box—from a technical perspective. It is a piece I am particularly proud of, so please give it a read if you have the time.
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+I also wrote a sort of "prequel" to connect it to the Advent Calendar here:
+
+https://silasol.la/posts/2025-12-05-01_alloy-db-and-spanner_en/
+
+To be honest, I am neither a distributed systems expert nor a core user of Cloud Spanner. That is precisely why I started from that simple, raw impression we all have when looking at Spanner's pricing: **"It's expensive."** From there, I investigated the underlying mechanisms (atomic clocks and distributed algorithms) to answer questions like, "How does Spanner achieve these features?" and "What exactly are we paying for?"
+
+In the original article, to land the punchline that "Google fought the laws of physics by hitting them with physics (money and hardware)," I intentionally omitted some deeper technical details. In this post, I will introduce those omitted topics as personal "tangents" or side notes. While I have strived for accuracy by consulting original sources, this is a summary of my current understanding. If there are any misconceptions, I would appreciate it if you could (gently) point them out.
+
+So, if you are interested, please read on.
+
+## Motivation and Takeaways
+
+The motivation for writing the original article came from my transition to my current job, where I have more opportunities to use Google Cloud than AWS. As part of my ramp-up, I decided to output what I learned.
+
+I chose Cloud Spanner because it stands out as unique within Google Cloud. However, the one thing I wanted to avoid was writing a post that just explained "how to use the console" or "how to write SQL."
+
+Since anyone can understand that by reading the official documentation, there is no need to write a rehashed article. (Strong opinion)
+
+I have always been the type of person who is more curious about "how it works inside the black box" than "how to use it," so I took an approach that dug deeper into the fundamentals. As I investigated the service design (atomic clocks and Paxos), the reputation that "Cloud Spanner is expensive" suddenly made perfect sense.
+
+Spanner was originally developed as the backend infrastructure for Google's cash cows: the advertising system (Google Ads) and Play Store payments (F1 database). It continues to serve as the core of these massive businesses today.
+
+In these domains, "inconsistency" (e.g., payments not reflecting, ads running over budget) means huge business losses for Google. Therefore, they needed a system that "absolutely never falls out of sync," even if it meant investing in hardware to a degree that might seem economically irrational for others.
+
+The fee is not just a "database license fee" or "server cost"; it is the cost of a planetary-scale time synchronization system (TrueTime), the specialized hardware to maintain it, and the outsourcing fee for the Google SRE team that operates it. My biggest takeaway was confirming that the feeling of "it's expensive" is actually the **"physical price of Time (Time is Money)."**
+
+## About Paxos and its Creator
+
+I briefly mentioned that "Spanner adopted Paxos for distributed consensus" to maintain replication consistency, but what exactly is Paxos?
+
+Simply put, it is an algorithm for forming "a single agreement" across a system in a distributed environment where you never know when or who might fail. While easy to say, reaching a consensus without contradiction over an unstable network is known as one of the most difficult problems to solve in computer science.
+
+The person who presented Paxos as a solution to this conundrum is **Leslie Lamport**. He is known as a giant in distributed systems, but he has another face that is familiar even outside that field. He is the **developer of $\LaTeX$**, which is widely used for writing academic papers and typesetting mathematical formulas. The "La" in $\LaTeX$ stands for Lamport.
+
+Just like Donald Knuth, who developed $\TeX$, Lamport developed the typesetting system $\LaTeX$ to describe his own theories in a way he found satisfactory, and used it to write up the theory that supports the modern cloud (Paxos). It is a fascinating story that tracing the origins of Cloud Spanner leads to a single computer scientist and the typesetting system we all rely on.
+
+## About Multi-Paxos
+
+I simply wrote "Paxos" following the papers, but strictly speaking, Spanner implements what is called "Multi-Paxos." Textbook "Basic Paxos" ends the consensus process once a single value is decided (e.g., "Shall we have curry for lunch?"). However, a database must continuously process a sequence of operations (logs) like "A deposited money," "B purchased an item," and "C canceled a subscription."
+
+If we were to restart Basic Paxos from scratch each time, the communication cost would be too high. In the lunch example, it would be incredibly inefficient to hold a meeting with everyone to ask "Is it okay to order this?" every time someone orders a single dish. Therefore, Spanner's Multi-Paxos optimizes this by deciding on an "Order Taker (Leader)" once, and **skipping the meetings during their term (Lease) to pass orders (logs) one after another.**
+
+## "Effectively CA" and FLP Impossibility
+
+Regarding the "CAP theorem" in distributed systems, Spanner is technically a CP system (Consistency + Partition tolerance). If a network partition occurs, it stops writing to protect consistency (sacrificing Availability).
+
+However, Google claims that "Spanner is **Effectively CA**."
+
+This does not mean they have logically overcome network partitioning. It is a sort of "brute-force theory" that assumes Google's private network, with its dedicated lines, is so robust that **the probability of a partition occurring in reality is negligible** (i.e., practically satisfying A as well).
+
+While standard distributed system design takes network partitioning into account, Google places absolute trust in its private network (including submarine cables) spread across the globe. By assuming that partitions do not occur under their control, they achieve both Availability and Consistency.
+
+Other cloud vendors also have strong backbones, but the fact that the core algorithm of the database relies so heavily on the reliability of the physical infrastructure is a distinctive feature of Spanner.
+
+Furthermore, there is a known harsh result in distributed systems called "FLP Impossibility" (consensus is impossible in a completely asynchronous system if even one process can fail). Spanner attempts to physically overcome this wall by using TrueTime to synchronize time, bringing the system closer to a synchronous model.
+
+The essence of Spanner is to crush theoretical limits with overwhelming hardware investment. (Probably.)
+
+## Spanner Initially Couldn't Speak SQL
+
+I wrote that Spanner acts "with the face of an RDB," but actually, at the time of the 2012 paper, Spanner did not strictly support SQL. The Spanner of that time was merely a "distributed Key-Value store with ACID transactions (semirelational)," and the interface was API-based with Get and Put methods.
+
+So who was processing the SQL? It was a separate system called **F1**, mentioned earlier. It was a division of labor where Spanner handled storage and transactions, and F1 worked as the SQL engine.
+
+Later, in 2017, Spanner itself absorbed F1's query technology and came to support SQL natively (documented in the paper "Spanner: Becoming a SQL System").
+
+In other words, it started with "NoSQL (Bigtable) scalability," implemented "RDB transactions," and finally acquired a "SQL interface" to become complete. Knowing this evolutionary process of "NoSQL to NewSQL" helps in understanding Spanner's architecture more deeply.
+
+## The "Rich" Solution (Spanner) vs. The "Craftsman" Solution (OSS NewSQL)
+
+Spanner is a "rich" solution that only works because of Google's abundant hardware resources (atomic clocks, GPS, etc.). However, in general on-premise environments or the OSS world, which cannot depend on specific hardware, one cannot assume such luxuries. In the OSS arena, NewSQL databases like **CockroachDB** and **TiDB** were designed to prioritize portability while inheriting Spanner's philosophy.
+
+They are not direct copies of Spanner's core architecture. The biggest barrier is the "clock." In a general NTP environment without atomic clocks, if you adopt Spanner's strategy of "waiting for time (Commit Wait)," the clock error (hundreds of milliseconds) directly becomes latency, making practical write performance impossible.
+
+Therefore, they incorporated unique software-based innovations. For distributed consensus, they adopted the **"Raft algorithm,"** designed with understandability as a priority, instead of the complex Paxos. Regarding clocks, **CockroachDB uses "HLC (Hybrid Logical Clock)"** and **TiDB uses "TSO (Timestamp Oracle)"** to maintain causality without the "cheat item" known as an atomic clock.
+
+While Spanner may have the upper hand in absolute values of performance and strictness, the contrast is interesting: **"Spanner redefines hardware and solves problems with physics"** versus **"CockroachDB/TiDB challenge constraints with software layer ingenuity."**
+
+Do you buy perfect consistency by going all-in with Google Cloud's hardware? Or do you gain infrastructure freedom by being clever with algorithms? As a different evolutionary branch from Spanner, this is also technically fascinating. (Please refer to each documentation for detailed implementation differences.)
+
+Note that Amazon Aurora DSQL, announced recently at re:Invent 2024, also adopts an architecture premised on high-precision time synchronization using atomic clocks (Amazon Time Sync Service), similar to Spanner. Ultimately, the design of distributed databases at giant cloud vendors seems to be converging toward "high-precision time synchronization via hardware."
+
+## The Essence of Managed Services
+
+I recently had the opportunity to talk with a veteran engineer at a tech conference.
+
+He spoke nostalgically about the work of an "infrastructure engineer": going to the data center to rack physical servers, crawling under the floor to lay LAN cables, and tuning kernel parameters around the network like a craftsman as a "middleware engineer"—tasks we don't hear about much anymore. It was very physical and gritty work.
+
+Hearing that story made me realize the essence of "using public cloud managed services."
+
+The fees we pay to cloud vendors are not just for computing resources. They are also an **"agency fee to push complex and bizarre tasks onto the vendor (NoOps),"** replacing the physical procurement and artisanal tuning that humans used to sweat over.
+
+Cloud Spanner is perhaps the most extreme example of this. Installing atomic clocks, wiring intercontinental networks, sharding, and rebalancing—the cloud vendor (Google) does it all behind the scenes. That is why we can focus solely on writing application code.
+
+If you consider the labor costs of manually sharding MySQL, writing application logic to maintain consistency, and operational members running to data centers, Cloud Spanner's pricing might actually be too cheap (the fact that it's possible at all is mind-blowing).
+
+Beyond the running costs of Cloud Spanner that people call "expensive," there lies the struggle of predecessors who fought in data centers and the corporate effort of vendors who abstracted and automated it. Thinking of it that way might change how the monthly bill looks.
+
+## Closing
+
+Managed services are treated as black boxes, but if you open the lid, they are the crystallization of academic theory and physical infrastructure. Having majored in Information Engineering up to my Master's, it was a genuinely happy experience to touch the fact that theories cultivated in the academic world (Paxos) are alive and breathing as the core of modern, massive commercial services (Cloud Spanner).
+
+As a professional engineer, I hope that unraveling and sharing these mechanisms—rather than just enjoying the benefits of the knowledge accumulated by predecessors and OSS—will serve as a small contribution to the community. I reaffirmed that digging into the contents of a service is purely one of the joys of being an engineer.
+
+So, please give it a read.
+
+https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/
+
+## References
+
+1. Corbett, J. C., et al. (2012). [Spanner: Google's Globally-Distributed Database.](https://research.google/pubs/spanner-googles-globally-distributed-database-2/) Proceedings of OSDI 2012. (Discusses the core architecture of Spanner that is still relevant today.)
+2. Shute, J., et al. (2013). [F1: A Distributed SQL Database That Scales.](https://research.google/pubs/f1-a-distributed-sql-database-that-scales/) VLDB 2013. (A paper on the DB supporting Google's ad system mentioned in the article, explaining the SQL engine running on top of Spanner.)
+3. Bacon, D. F., et al. (2017). [Spanner: Becoming a SQL System.](https://research.google/pubs/spanner-becoming-a-sql-system/) SIGMOD 2017. (Describes the evolution of Spanner from NoSQL to natively supporting SQL by incorporating technology cultivated in F1.)
+4. Brewer, E. (2017). [Spanner, TrueTime and the CAP Theorem.](https://research.google/pubs/spanner-truetime-and-the-cap-theorem/) Google Research. (Eric Brewer, who proposed the CAP theorem, explains how Spanner conquered it. The term "Effectively CA" appears here.)
+5. Google Cloud. [What is Cloud Spanner?](https://cloud.google.com/blog/topics/developers-practitioners/what-cloud-spanner) Google Cloud Blog. (Official conceptual explanation of Cloud Spanner.)
+6. Lamport, L. (1998). [The Part-Time Parliament.](https://dl.acm.org/doi/10.1145/279227.279229) ACM Transactions on Computer Systems, 16(2):133–169. (The first Paxos paper by Lamport. Legend has it that it was too difficult for anyone to understand at the time.)
+7. Lamport, L. (2001). [Paxos Made Simple.](https://www.microsoft.com/en-us/research/publication/paxos-made-simple/) ACM SIGACT News (Distributed Computing Column) 32(4):51-58. (Lamport rewrote the explanation because people said "The Part-Time Parliament" made no sense. Though titled "Made Simple"...)
+8. Ongaro, D., & Ousterhout, J. (2014). [In Search of an Understandable Consensus Algorithm.](https://raft.github.io/raft.pdf) USENIX ATC 2014. (About the idea of Raft, designed with a focus on "understandability" in contrast to Paxos.)
+9. [Raft Consensus Algorithm.](https://raft.github.io/) The Raft Site. (There is a demo where you can visually check the behavior of the Raft algorithm.)
+10. Kulkarni, S. R., et al. (2014). [Logical Physical Clocks and Consistent Snapshots in Globally Distributed Databases.](https://www.semanticscholar.org/paper/Logical-Physical-Clocks-and-Consistent-Snapshots-in-Demirbas-Leone/3179127ec316644bfc4643d0263c306f890c1d36) (Paper on HLC, which combines physical and logical clocks.)
+11. Huang, D., et al. (2020). [TiDB: A Raft-based HTAP Database.](https://www.vldb.org/pvldb/vol13/p3072-huang.pdf) VLDB 2020. (Paper on TiDB architecture, also touching on transaction management using TSO.)
+12. Cockroach Labs. [CockroachDB Architecture Overview.](https://www.cockroachlabs.com/docs/stable/architecture/overview.html) Official Documentation.
+13. PingCAP. [TiDB Architecture.](https://docs.pingcap.com/tidb/stable/tidb-architecture) Official Documentation.
+14. Amazon Web Services. [Amazon Aurora DSQL Overview.](https://aws.amazon.com/rds/aurora/dsql/) Official Page. (A distributed database from AWS influenced by Spanner.)
