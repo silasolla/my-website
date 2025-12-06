@@ -1,6 +1,7 @@
 export interface ExperienceItem {
   period: string;
   company: string;
+  companyLink: string;
   role: string;
   description?: string;
 }
@@ -62,6 +63,7 @@ export const aboutDataJa: AboutData = {
     {
       period: '2025年6月 - 現在',
       company: '株式会社スリーシェイク - Sreake 事業部',
+      companyLink: 'https://3-shake.com/',
       role: 'アプリケーション開発支援チーム (Full Stack)',
       description:
         'アプリケーションの開発やクラウドネイティブな開発プロセスの内製化支援をやっています．',
@@ -69,6 +71,7 @@ export const aboutDataJa: AboutData = {
     {
       period: '2022年4月 - 2025年5月',
       company: '株式会社ソニックムーブ - 開発部 (Solution 事業)',
+      companyLink: 'https://sonicmoov.com/',
       role: 'ソフトウェアエンジニア (Web Backend / Public Cloud)',
       description:
         'Web アプリケーションの受託開発やレガシーなシステムのリプレイスなどをやっていました．',
@@ -355,6 +358,7 @@ export const aboutDataEn: AboutData = {
     {
       period: 'June 2025 - Present',
       company: '3-shake Inc. - Sreake',
+      companyLink: 'https://3-shake.com/en/',
       role: 'Application Development Support (Full Stack)',
       description:
         'Supporting application development and helping teams establish cloud-native development processes.',
@@ -362,6 +366,7 @@ export const aboutDataEn: AboutData = {
     {
       period: 'April 2022 - May 2025',
       company: 'Sonicmoov Co., Ltd. - Solution Division',
+      companyLink: 'https://sonicmoov.com/',
       role: 'Software Engineer (Web Backend / Public Cloud)',
       description:
         'Engaged in contract development of web applications and modernization of legacy systems.',
