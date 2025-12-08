@@ -117,6 +117,12 @@ export const aboutDataJa: AboutData = {
             'https://images.credly.com/size/680x680/images/d96faaa1-8c14-4d2d-8927-46f33ccf4523/image.png',
         },
         {
+          name: 'Professional Cloud Database Engineer',
+          credlyUrl: 'https://www.credly.com/badges/a2865c33-33ba-44c7-9920-00125391e438',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/b170e960-57d8-4c4a-883d-21b9e420b9dd/image.png',
+        },
+        {
           name: 'Professional Cloud Developer',
           credlyUrl: 'https://www.credly.com/badges/b37ff2c8-763e-4722-bf75-cd01f98619ad',
           badgeImage:
@@ -411,6 +417,12 @@ export const aboutDataEn: AboutData = {
           credlyUrl: 'https://www.credly.com/badges/8ff07024-e4bf-436f-b7b3-768d7be2a2aa',
           badgeImage:
             'https://images.credly.com/size/680x680/images/d96faaa1-8c14-4d2d-8927-46f33ccf4523/image.png',
+        },
+        {
+          name: 'Professional Cloud Database Engineer',
+          credlyUrl: 'https://www.credly.com/badges/a2865c33-33ba-44c7-9920-00125391e438',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/b170e960-57d8-4c4a-883d-21b9e420b9dd/image.png',
         },
         {
           name: 'Professional Cloud Developer',
