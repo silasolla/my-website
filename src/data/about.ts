@@ -367,7 +367,7 @@ export const aboutDataEn: AboutData = {
       companyLink: 'https://3-shake.com/en/',
       role: 'Application Development Support (Full Stack)',
       description:
-        'Supporting application development and helping teams establish cloud-native development processes.',
+        'Providing hands-on support for application development and facilitating the internalization (in-housing) of cloud-native development processes for client teams.',
     },
     {
       period: 'April 2022 - May 2025',
@@ -375,7 +375,7 @@ export const aboutDataEn: AboutData = {
       companyLink: 'https://sonicmoov.com/',
       role: 'Software Engineer (Web Backend / Public Cloud)',
       description:
-        'Engaged in contract development of web applications and modernization of legacy systems.',
+        'Engaged in client-facing web application development and led the modernization of legacy systems (system replacement/refactoring).',
     },
   ],
   educations: [
@@ -384,7 +384,7 @@ export const aboutDataEn: AboutData = {
       institution: 'Graduate School of Science and Technology, Niigata University',
       degree: 'Master of Engineering',
       description:
-        'Researched the foundational theory of programming languages, focusing on the properties of term rewriting systems.',
+        'Researched the foundational theory of programming languages, specifically investigating the computational properties of Term Rewriting Systems.',
     },
     {
       period: 'April 2016 - March 2020',
@@ -392,7 +392,7 @@ export const aboutDataEn: AboutData = {
         'Faculty of Engineering, Department of Information Engineering, Niigata University',
       degree: 'Bachelor of Engineering',
       description:
-        'Studied information engineering comprehensively, developing an interest not only in programming but also in its underlying theoretical foundations.',
+        'Studied Computer Science systematically, with a passion not just for writing code, but for understanding the underlying mechanisms of computers.',
     },
     {
       period: 'April 2013 - March 2016',
