@@ -81,8 +81,9 @@ Markdown/MDX によって記事を管理します．
 │   ├── new-post.sh          # 新規記事作成
 │   └── upload-images.sh     # 画像アップロード
 ├── .github/
-│   └── workflows/
-│       └── deploy.yml       # GitHub Actions デプロイ設定
+│   ├── workflows/
+│   │   └── deploy.yml       # GitHub Actions デプロイ設定
+│   └── dependabot.yml       # Dependabot
 └── Makefile                 # タスク管理
 ```
 

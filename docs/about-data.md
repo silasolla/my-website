@@ -1,45 +1,63 @@
 # About データ管理
 
-`src/data/` ディレクトリには，「私について」ページのコンテンツデータが格納されています．
+`src/data/about/` ディレクトリには「私について」ページのコンテンツデータが格納されています．
 
 ## ファイル構成
 
-- `src/data/about.ts`: 経歴，学歴，出版物，資格などのデータを管理
+- `src/data/about/types.ts`: データの型定義
+- `src/data/about/index.ts`: `aboutDataJa` と `aboutDataEn` をエクスポート
+- `src/data/about/ja.ts`: 日本語版のコンテンツデータ
+- `src/data/about/en.ts`: 英語版のコンテンツデータ
 
 ## データの編集方法
 
 ### 1. 経歴 (Experience) を追加
 
 ```typescript
-experience: [
+experiences: [
   {
-    period: '2020年 - 現在',
-    company: '会社名',
-    role: '役職名',
-    description: '業務内容の説明 (オプション)',
+    period: '2025年6月 - 現在',
+    company: 'やばい会社',
+    companyLink: 'https://example.com',
+    role: 'エンジニア',
+    description: '闇の技術開発に従事しています．',
   },
-  // 新しい経歴を追加
   {
-    period: '2018年 - 2020年',
-    company: '別の会社',
-    role: '別の役職',
+    period: '2022年4月 - 2025年5月',
+    company: 'すごい会社',
+    companyLink: 'https://example.com',
+    role: 'エンジニア',
   },
 ];
 ```
 
+**フィールド説明：**
+
+- `period`: 期間 (必須)
+- `company`: 会社名 (必須)
+- `companyLink`: 会社のウェブサイトへのリンク (必須)
+- `role`: 役職名 (必須)
+- `description`: 業務内容の説明 (オプション)
+
 ### 2. 学歴 (Education) を追加
 
 ```typescript
-education: [
+educations: [
   {
-    period: '2013年 - 2017年',
-    institution: '大学名',
-    degree: '学部・専攻', // オプション
+    period: '2020年4月 - 2022年3月',
+    institution: 'すごい先端科学技術大学院大学',
+    degree: '修士 (衒学)',
+    description: 'すごい研究を行っていました．',
   },
   {
-    period: '2010年 - 2013年',
-    institution: '高校名',
-    description: '学歴の詳細説明 (オプション)', // 学位がない場合の説明
+    period: '2016年4月 - 2020年3月',
+    institution: 'すごい大学',
+    degree: '学士 (衒学)',
+  },
+  {
+    period: '2013年4月 - 2016年3月',
+    institution: 'すごい高等学校',
+    description: '普通科に在籍していました．',
   },
 ];
 ```
@@ -58,29 +76,56 @@ education: [
 ```typescript
 publications: [
   {
-    title: '出版物のタイトル',
-    url: 'https://example.com/publication', // オプション
+    title: 'ひよこはすごい',
+    url: 'https://example.com',
+    description: 'この出版物は，ひよこに関する研究成果をまとめたものです．',
+    date: '2025年1月',
   },
   {
-    title: 'URL なしの出版物',
+    title: 'URL と詳細情報がない出版物',
   },
 ];
 ```
+
+**フィールド説明：**
+
+- `title`: 出版物のタイトル (必須)
+- `url`: 出版物のリンク (オプション)
+- `description`: 出版物の説明 (オプション)
+- `date`: 出版日 (オプション)
 
 ### 4. 資格 (Certifications) を追加
 
 ```typescript
 certifications: [
   {
-    category: 'カテゴリ名',
+    category: '認定資格',
     items: [
-      { name: '資格名1' },
-      { name: '資格名2', credlyUrl: 'https://www.credly.com/badges/...' }, // Credly リンク付き
-      { name: '資格名3' },
+      {
+        name: 'Super Engineer',
+        credlyUrl: 'https://www.credly.com/badges/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+        description: 'すごい認定資格です．',
+        date: '2025年1月',
+        badgeImage:
+          'https://images.credly.com/size/680x680/images/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/image.png',
+      },
+      {
+        name: 'Hyper Engineer',
+      },
     ],
   },
 ];
 ```
+
+**フィールド説明：**
+
+- `category`: 資格のカテゴリ (必須)
+- `items`: カテゴリ内の資格リスト (必須)
+  - `name`: 資格の名前 (必須)
+  - `credlyUrl`: Credly のバッジページ URL (オプション)
+  - `description`: 資格の説明 (オプション)
+  - `date`: 取得日 (オプション)
+  - `badgeImage`: バッジ画像のパス (オプション)
 
 **Credly リンクについて：**
 
@@ -90,21 +135,62 @@ certifications: [
 
 **詳細情報の追加：**
 
-- `description`: 資格の詳細説明 (オプション)
-- `date`: 取得日 (オプション)
-- `badgeImage`: バッジ画像のパス (オプション)
-- 詳細情報を設定すると，カード内で「詳細を見る」をクリックして展開できます．
+- `description`, `date`, `badgeImage` を設定すると，カードの「詳細を見る」をクリックして展開できます．
 - バッジ画像を設定すると，PC版ではカード中央に，SP版ではテキストの左側に表示されます．
 
-### 5. 趣味 (Hobby) を追加
+### 5. その他 (Misc) を追加
 
 ```typescript
-hobby: [
-  { name: '趣味名1' },
-  { name: '趣味名2', note: '趣味についてのメモや説明' },
-  { name: '趣味名3' },
+misc: [
+  {
+    category: 'ノート',
+    items: [
+      {
+        name: 'ひよこに関する考察',
+        url: 'https://example.com',
+        description: '個人的なメモです．',
+      },
+    ],
+  },
+  {
+    category: 'ツール',
+    items: [
+      {
+        name: 'ひよこマシン',
+        url: 'https://example.com',
+        description: '便利ツールです．',
+      },
+    ],
+  },
 ];
 ```
+
+**フィールド説明：**
+
+- `category`: カテゴリ名 (必須)
+- `items`: カテゴリ内の項目リスト (必須)
+  - `name`: 項目の名前 (必須)
+  - `url`: 項目のリンク (オプション)
+  - `description`: 項目の説明 (オプション)
+
+### 6. 趣味 (Hobby) を追加
+
+```typescript
+hobbies: [
+  {
+    name: 'プログラミング',
+    note: '新しい技術を学ぶのが好きです．',
+  },
+  {
+    name: '読書',
+  },
+];
+```
+
+**フィールド説明：**
+
+- `name`: 趣味の名前 (必須)
+- `note`: 趣味の説明 (オプション)
 
 **メモについて：**
 
@@ -126,6 +212,7 @@ hobby: [
 - `EducationSection.astro`: 学歴の表示
 - `PublicationSection.astro`: 出版物の表示 (カードタイプ)
 - `CertificationSection.astro`: 資格の表示 (カードタイプ)
+- `MiscSection.astro`: その他の表示 (カードタイプ)
 - `HobbySection.astro`: 趣味の表示 (タグ形式)
 
 これらのコンポーネントを変更することで，表示スタイルをカスタマイズできます．
