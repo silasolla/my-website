@@ -216,7 +216,7 @@ const structuredData = {
       referrerpolicy="no-referrer"
     />
   </head>
-  <body data-dev={isDev} data-image-base={imageBaseUrl}>
+  <body {...isDev ? { 'data-dev': 'true', 'data-image-base': imageBaseUrl } : {}}>
     <Header />
     <main class="main-content">
       <div class="container">
