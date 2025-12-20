@@ -1,4 +1,6 @@
 declare module 'remark-link-card' {
+  import type { Root } from 'mdast';
+
   export interface RemarkLinkCardOptions {
     /**
      * Cache images for next/image
@@ -15,7 +17,7 @@ declare module 'remark-link-card' {
   /**
    * Remark plugin to convert text links to link cards
    */
-  function remarkLinkCard(options?: RemarkLinkCardOptions): any;
+  function remarkLinkCard(options?: RemarkLinkCardOptions): (tree: Root) => void;
 
   export default remarkLinkCard;
 }

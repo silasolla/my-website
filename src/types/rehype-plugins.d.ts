@@ -1,11 +1,14 @@
 declare module './plugins/rehype-link-card-target.mjs' {
-  export function rehypeLinkCardTarget(): any;
+  import type { Root } from 'hast';
+  export function rehypeLinkCardTarget(): (tree: Root) => void;
 }
 
 declare module './plugins/rehype-external-links.mjs' {
-  export function rehypeExternalLinks(): any;
+  import type { Root } from 'hast';
+  export function rehypeExternalLinks(): (tree: Root) => void;
 }
 
 declare module './plugins/remark-image-url.mjs' {
-  export function remarkImageUrl(): any;
+  import type { Root } from 'mdast';
+  export function remarkImageUrl(): (tree: Root) => void;
 }
