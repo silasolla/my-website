@@ -30,7 +30,7 @@
     "@astrojs/check": "^0.9.6",
     "editorconfig-checker": "^6.1.1",
     "playwright": "^1.56.1",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.6.0",
     "wrangler": "^4.45.0"
