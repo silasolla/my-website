@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../../i18n/translations';
 import { getSiteName, formatDate } from '../../i18n/utils';
+import { resolveImageUrl } from '../../utils/image';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
@@ -25,23 +26,6 @@ const locale = Astro.currentLocale;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // coverImageの@@/記法を変換
-function resolveImageUrl(path: string | undefined): string | undefined {
-  if (!path) return undefined;
-
-  if (path.startsWith('@@/')) {
-    const cleanPath = path.slice(3); // Remove @@/
-    const imageBaseUrl = import.meta.env.IMAGE_BASE_URL || '';
-
-    if (imageBaseUrl) {
-      return `${imageBaseUrl}/posts/${cleanPath}`;
-    } else {
-      return `/posts/images/${cleanPath}`;
-    }
-  }
-
-  return path;
-}
-
 const coverImage = resolveImageUrl(entry.data.coverImage);
 
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');

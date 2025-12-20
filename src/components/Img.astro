@@ -7,6 +7,8 @@
  *   <Img src="@@/2025-10-26-03_test/image.webp" alt="説明" caption="図1: 実行結果" width="400" />
  */
 
+import { resolveImageUrl } from '../utils/image';
+
 interface Props {
   src: string;
   alt: string;
@@ -18,19 +20,7 @@ interface Props {
 
 const { src, alt, caption, width, height, class: className } = Astro.props;
 
-// @@/ を解決
-function resolveImageUrl(path: string): string {
-  const IMAGE_BASE_URL = import.meta.env.IMAGE_BASE_URL || '';
-  const cleanPath = path.replace(/^@@\//, '').replace(/^\/+/, '');
-
-  if (IMAGE_BASE_URL) {
-    return `${IMAGE_BASE_URL}/posts/${cleanPath}`;
-  } else {
-    return `/posts/images/${cleanPath}`;
-  }
-}
-
-const resolvedSrc = src.startsWith('@@/') ? resolveImageUrl(src) : src;
+const resolvedSrc = resolveImageUrl(src) || src;
 ---
 
 {
