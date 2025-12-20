@@ -1,0 +1,221 @@
+/* ===========================================
+   remark-link-card Styles
+   =========================================== */
+
+.article-content a.rlc-container {
+  display: flex;
+  max-width: 700px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem auto;
+  background: var(--color-bg-alt);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.article-content a.rlc-container:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(90, 138, 94, 0.15);
+  transform: translateY(-2px);
+}
+
+[data-theme='dark'] .article-content a.rlc-container:hover {
+  box-shadow: 0 4px 12px rgba(127, 173, 130, 0.15);
+}
+
+.article-content .rlc-container .rlc-info {
+  flex: 1;
+  padding: 1.5rem 1.75rem;
+  text-decoration: none;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.article-content .rlc-container .rlc-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  line-height: 1.4;
+  margin: 0 0 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.article-content .rlc-container .rlc-description {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.5;
+  margin: 0 0 0.5rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.article-content .rlc-container .rlc-url-container {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: auto 0 0 0;
+  min-height: 18px;
+  justify-content: flex-end;
+}
+
+.article-content .rlc-container .rlc-url-container img.rlc-favicon {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  max-width: 14px;
+  max-height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  order: 1;
+}
+
+.article-content .rlc-container .rlc-url-container .rlc-url {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  flex-shrink: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  order: 2;
+}
+
+.article-content .rlc-container .rlc-image-container {
+  width: 250px;
+  height: 250px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.article-content .rlc-container .rlc-image-container img.rlc-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* ===========================================
+   Responsive - Tablet
+   =========================================== */
+
+@media (max-width: 768px) {
+  .article-content a.rlc-container {
+    flex-direction: column;
+    max-width: 380px;
+    margin: 1.5rem auto;
+  }
+
+  .article-content .rlc-container .rlc-image-container {
+    width: 100%;
+    height: 200px;
+    order: -1;
+  }
+
+  .article-content .rlc-container .rlc-info {
+    padding: 0.875rem 1rem;
+  }
+
+  .article-content .rlc-container .rlc-title {
+    font-size: 0.95rem;
+  }
+
+  .article-content .rlc-container .rlc-description {
+    font-size: 0.8rem;
+  }
+
+  .article-content .rlc-container .rlc-url-container {
+    gap: 0.25rem;
+    min-height: 16px;
+    justify-content: flex-end;
+  }
+
+  .article-content .rlc-container .rlc-url-container img.rlc-favicon {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
+    max-width: 12px;
+    max-height: 12px;
+    margin: 0;
+    padding: 0;
+    order: 1;
+  }
+
+  .article-content .rlc-container .rlc-url-container .rlc-url {
+    font-size: 0.75rem;
+    flex-shrink: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    order: 2;
+  }
+}
+
+/* ===========================================
+   Responsive - Mobile
+   =========================================== */
+
+@media (max-width: 480px) {
+  .article-content a.rlc-container {
+    margin: 1rem auto;
+    max-width: 340px;
+  }
+
+  .article-content .rlc-container .rlc-image-container {
+    height: 180px;
+  }
+
+  .article-content .rlc-container .rlc-info {
+    padding: 0.75rem 0.875rem;
+  }
+
+  .article-content .rlc-container .rlc-title {
+    font-size: 0.9rem;
+  }
+
+  .article-content .rlc-container .rlc-description {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .article-content .rlc-container .rlc-url-container {
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+
+  .article-content .rlc-container .rlc-url-container img.rlc-favicon {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
+    max-width: 12px;
+    max-height: 12px;
+  }
+}
+

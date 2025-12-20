@@ -1,0 +1,194 @@
+/* ===========================================
+   Theme Variables
+   =========================================== */
+
+:root {
+  /* Light theme */
+  --color-primary: #5a8a5e;
+  --color-primary-dark: #2a4a2d;
+  --color-primary-light: #e8f0e9;
+  --color-text: #1a2a1c;
+  --color-text-light: #4a5a4e;
+  --color-border: #c8d5ca;
+  --color-bg: #fafbfa;
+  --color-bg-alt: #f2f5f3;
+}
+
+[data-theme='dark'] {
+  /* Dark theme */
+  --color-primary: #7fad82;
+  --color-primary-dark: #9bc29e;
+  --color-primary-light: #1e2d20;
+  --color-text: #d4e0d6;
+  --color-text-light: #a0b3a3;
+  --color-border: #2d3e2f;
+  --color-bg: #15181a;
+  --color-bg-alt: #1d2122;
+}
+
+/* ===========================================
+   Base Reset & Layout
+   =========================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  font-size: 16px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+
+/* ===========================================
+   Typography
+   =========================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-primary-dark);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* ===========================================
+   Tag Styles
+   =========================================== */
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.tag-news {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+[data-theme='dark'] .tag-news {
+  background: #1e3a5f;
+  color: #90caf9;
+}
+
+.tag-tech {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+[data-theme='dark'] .tag-tech {
+  background: #4a1f5f;
+  color: #ce93d8;
+}
+
+.tag-diary {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+[data-theme='dark'] .tag-diary {
+  background: #5f3a1e;
+  color: #ffb74d;
+}
+
+/* ===========================================
+   Responsive Layout
+   =========================================== */
+
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 16px;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
