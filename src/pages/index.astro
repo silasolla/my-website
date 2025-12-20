@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName } from '../i18n/utils';
+import { getSiteName, formatDate } from '../i18n/utils';
 
 const allPosts = await getCollection('posts', (post) => {
   // 日本語版：lang が 'ja' または未定義の記事のみ
@@ -33,14 +33,7 @@ const noPostsText = getTranslation(Astro.currentLocale, 'home.no-posts');
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
 const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
-
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
+const locale = Astro.currentLocale;
 ---
 
 <Layout title={`${pageTitle} - ${siteName}`}>
@@ -62,7 +55,7 @@ function formatDate(date: Date): string {
                 )}
                 <div class="post-meta">
                   <time class="post-date" datetime={post.data.date.toISOString()}>
-                    {formatDate(post.data.date)}
+                    {formatDate(post.data.date, locale)}
                   </time>
                   <div class="post-tags">
                     {post.data.tags.map((tag) => (
@@ -95,7 +88,7 @@ function formatDate(date: Date): string {
               <a href={`/posts/${post.slug}/`} class="post-link">
                 <div class="post-meta">
                   <time class="post-date" datetime={post.data.date.toISOString()}>
-                    {formatDate(post.data.date)}
+                    {formatDate(post.data.date, locale)}
                   </time>
                   <div class="post-tags">
                     {post.data.tags.map((tag) => (

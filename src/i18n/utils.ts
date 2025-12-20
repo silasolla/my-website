@@ -51,3 +51,21 @@ export function getRssFeedTitle(
 
   return `${title} - ${suffix}`;
 }
+
+/**
+ * 日付をロケールに応じたフォーマットで表示
+ */
+export function formatDate(date: Date, locale?: string): string {
+  const localeMap: Record<string, string> = {
+    ja: 'ja-JP',
+    en: 'en-US',
+  };
+
+  const resolvedLocale = localeMap[locale || 'ja'] || 'ja-JP';
+
+  return date.toLocaleDateString(resolvedLocale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}

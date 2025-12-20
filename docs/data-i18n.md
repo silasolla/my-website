@@ -209,6 +209,15 @@ getRssFeedTitle('ja', 'tech'); // "Taro Yamada / 山田 太郎 - 技術記事"
 getRssFeedTitle('en', 'tech'); // "Taro Yamada / 山田 太郎 - Tech Articles"
 ```
 
+##### `formatDate(date: Date, locale?: string): string`
+
+日付をロケールに応じたフォーマットで表示します．
+
+```typescript
+formatDate(new Date('2025-01-15'), 'ja'); // "2025年1月15日"
+formatDate(new Date('2025-01-15'), 'en'); // "January 15, 2025"
+```
+
 ---
 
 ## 使用例
