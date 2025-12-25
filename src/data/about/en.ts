@@ -156,6 +156,14 @@ export const aboutDataEn: AboutData = {
         },
       ],
     },
+    {
+      category: 'Information Technology Engineers Examination (ITEE)',
+      items: [
+        {
+          name: 'Applied Information Technology Engineer Examination',
+        },
+      ],
+    },
   ],
   misc: [],
   hobbies: [],

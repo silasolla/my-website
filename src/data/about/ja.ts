@@ -155,6 +155,14 @@ export const aboutDataJa: AboutData = {
         },
       ],
     },
+    {
+      category: 'Information Technology Engineers Examination (ITEE)',
+      items: [
+        {
+          name: '応用情報技術者試験 合格',
+        },
+      ],
+    },
   ],
   misc: [
     {
