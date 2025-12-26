@@ -2,7 +2,8 @@
 export type {
   ExperienceItem,
   EducationItem,
-  PublicationItem,
+  WritingItem,
+  WritingCategory,
   CertificationItem,
   CertificationCategory,
   HobbyItem,

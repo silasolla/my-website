@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import ImageGallery from '../../components/ImageGallery.astro';
 import ExperienceSection from '../../components/ExperienceSection.astro';
 import EducationSection from '../../components/EducationSection.astro';
-import PublicationSection from '../../components/PublicationSection.astro';
+import WritingsSection from '../../components/WritingsSection.astro';
 import CertificationSection from '../../components/CertificationSection.astro';
 import MiscSection from '../../components/MiscSection.astro';
 import HobbySection from '../../components/HobbySection.astro';
@@ -106,9 +106,9 @@ const username = `@${profileData.username} / ${profileData.usernameJa}`;
     </section>
 
     <section class="about-section">
-      <h3 class="section-title">Publications</h3>
+      <h3 class="section-title">Writings</h3>
       <div class="section-content">
-        <PublicationSection items={aboutDataEn.publications} />
+        <WritingsSection items={aboutDataEn.writings} />
       </div>
     </section>
 

@@ -1,0 +1,181 @@
+---
+import type { WritingCategory, WritingItem } from '../data/about';
+import { getTranslation } from '../i18n/translations';
+
+interface Props {
+  items: WritingCategory[];
+}
+
+const { items } = Astro.props;
+const detailsText = getTranslation(Astro.currentLocale, 'component.details');
+const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
+---
+
+{
+  items.map((category) => (
+    <section class="writing-category">
+      <h3 class="writing-category-title">{category.category}</h3>
+      <div class="writing-grid">
+        {category.items.map((item: WritingItem) => (
+          <div class="writing-card">
+            <div class="card-header">
+              {item.date && <span class="writing-date">{item.date}</span>}
+              <h4 class="writing-title">{item.title}</h4>
+            </div>
+            {item.description && (
+              <details class="writing-details">
+                <summary class="writing-summary">{detailsText}</summary>
+                <p class="writing-description">{item.description}</p>
+              </details>
+            )}
+            {item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" class="writing-link">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                {openLinkText}
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  ))
+}
+
+<style>
+  .writing-category {
+    margin-bottom: 3rem;
+  }
+
+  .writing-category-title {
+    font-size: 1.5rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .writing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .writing-card {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .writing-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .writing-date {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .writing-title {
+    font-size: 1.1rem;
+    color: var(--color-primary-dark);
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  @media (min-width: 768px) {
+    .writing-title {
+      min-height: calc(1.1rem * 1.4 * 2);
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .writing-details {
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+  }
+
+  .writing-summary {
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    list-style: none;
+    user-select: none;
+  }
+
+  .writing-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .writing-summary::after {
+    content: ' ▼';
+    font-size: 0.75rem;
+  }
+
+  .writing-details[open] .writing-summary::after {
+    content: ' ▲';
+  }
+
+  .writing-description {
+    margin: 0.75rem 0 0 0;
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    white-space: pre-line;
+  }
+
+  .writing-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+    margin-top: auto;
+  }
+
+  .writing-link:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .writing-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .writing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

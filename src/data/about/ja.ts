@@ -39,13 +39,30 @@ export const aboutDataJa: AboutData = {
       institution: '福島県立安積高等学校 普通科',
     },
   ],
-  publications: [
+  writings: [
     {
-      title: '修士論文：置換に関する不動点制約を用いた名目書き換え',
-      url: 'https://doc.silasol.la/thesis/mthesis.pdf',
-      description:
-        '名目書き換えシステム (Nominal Rewriting System) という計算モデルの性質について．\nPPL 2022 (第24回プログラミングおよびプログラミング言語ワークショップ) でも発表しました．',
-      date: '2022年3月',
+      category: 'Thesis',
+      items: [
+        {
+          title: '修士論文：置換に関する不動点制約を用いた名目書き換え',
+          url: 'https://doc.silasol.la/thesis/mthesis.pdf',
+          description:
+            '名目書き換えシステム (Nominal Rewriting System) という計算モデルの性質について．\nPPL 2022 (第24回プログラミングおよびプログラミング言語ワークショップ) でも発表しました．',
+          date: '2022年3月',
+        },
+      ],
+    },
+    {
+      category: 'Articles',
+      items: [
+        {
+          title: 'Tech Blog：地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
+          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
+          description:
+            '職場の Tech Blog です．Cloud Spanner のコアアーキテクチャについて，マルチリージョン構成を支える分散合意 (Paxos) や原子時計を用いた TrueTime の仕組みなど Google Cloud のブラックボックスを掘り下げています．',
+          date: '2025年12月',
+        },
+      ],
     },
   ],
   certifications: [

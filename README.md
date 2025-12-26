@@ -35,7 +35,7 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── ImageGallery.astro
 │   │   ├── ExperienceSection.astro
 │   │   ├── EducationSection.astro
-│   │   ├── PublicationSection.astro
+│   │   ├── WritingsSection.astro
 │   │   ├── CertificationSection.astro
 │   │   ├── HobbySection.astro
 │   │   └── MiscSection.astro

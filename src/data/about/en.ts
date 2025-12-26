@@ -40,13 +40,30 @@ export const aboutDataEn: AboutData = {
       institution: 'Fukushima Prefectural Asaka Senior High School',
     },
   ],
-  publications: [
+  writings: [
     {
-      title: "Master's Thesis: Nominal Rewriting with Permutation Fixed Point Constraints",
-      url: 'https://doc.silasol.la/thesis/mthesis.pdf',
-      description:
-        'A study on the properties of a computational model known as the Nominal Rewriting System. Also presented at PPL 2022 (Programming and Programming Languages Workshop).',
-      date: 'March 2022',
+      category: 'Thesis',
+      items: [
+        {
+          title: "Master's Thesis: Nominal Rewriting with Permutation Fixed Point Constraints",
+          url: 'https://doc.silasol.la/thesis/mthesis.pdf',
+          description:
+            'A study on the properties of a computational model known as the Nominal Rewriting System. Also presented at PPL 2022 (Programming and Programming Languages Workshop).',
+          date: 'March 2022',
+        },
+      ],
+    },
+    {
+      category: 'Articles',
+      items: [
+        {
+          title: 'Tech Blog: How Cloud Spanner Solved the Global "Time Lag"',
+          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
+          description:
+            "Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. We examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
+          date: 'December 2025',
+        },
+      ],
     },
   ],
   certifications: [

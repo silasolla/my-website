@@ -71,18 +71,28 @@ educations: [
 
 `degree`と`description`は両方オプションで，どちらか一方，または両方を設定できます．
 
-### 3. 出版物 (Publications) を追加
+### 3. 著作 (Writings) を追加
 
 ```typescript
-publications: [
+writings: [
   {
-    title: 'ひよこはすごい',
-    url: 'https://example.com',
-    description: 'この出版物は，ひよこに関する研究成果をまとめたものです．',
-    date: '2025年1月',
+    category: 'Thesis',
+    items: [
+      {
+        title: 'ひよこはすごい',
+        url: 'https://example.com',
+        description: 'この出版物は，ひよこに関する研究成果をまとめたものです．',
+        date: '2025年1月',
+      },
+    ],
   },
   {
-    title: 'URL と詳細情報がない出版物',
+    category: 'Articles',
+    items: [
+      {
+        title: 'URL と詳細情報がない記事',
+      },
+    ],
   },
 ];
 ```
@@ -210,7 +220,7 @@ hobbies: [
 
 - `ExperienceSection.astro`: 経歴の表示
 - `EducationSection.astro`: 学歴の表示
-- `PublicationSection.astro`: 出版物の表示 (カードタイプ)
+- `WritingsSection.astro`: 著作の表示 (カードタイプ)
 - `CertificationSection.astro`: 資格の表示 (カードタイプ)
 - `MiscSection.astro`: その他の表示 (カードタイプ)
 - `HobbySection.astro`: 趣味の表示 (タグ形式)

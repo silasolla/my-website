@@ -13,11 +13,16 @@ export interface EducationItem {
   description?: string;
 }
 
-export interface PublicationItem {
+export interface WritingItem {
   title: string;
   url?: string;
   description?: string;
   date?: string;
+}
+
+export interface WritingCategory {
+  category: string;
+  items: WritingItem[];
 }
 
 export interface CertificationItem {
@@ -52,7 +57,7 @@ export interface MiscCategory {
 export interface AboutData {
   experiences: ExperienceItem[];
   educations: EducationItem[];
-  publications: PublicationItem[];
+  writings: WritingCategory[];
   certifications: CertificationCategory[];
   misc?: MiscCategory[];
   hobbies?: HobbyItem[];
