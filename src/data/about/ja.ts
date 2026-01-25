@@ -112,6 +112,12 @@ export const aboutDataJa: AboutData = {
             'https://images.credly.com/size/680x680/images/fd53cb0e-6622-4a14-a7d0-5793c8703a4c/image.png',
         },
         {
+          name: 'Professional Machine Learning Engineer',
+          credlyUrl: 'https://www.credly.com/badges/a6392b42-8cc0-4a4c-a386-4cea63e5af58',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/00096281-8052-4cf1-b412-37702a94b539/image.png',
+        },
+        {
           name: 'Associate Cloud Engineer',
           credlyUrl: 'https://www.credly.com/badges/2c9c34f4-88e6-4267-8bb2-08394f2f08f5',
           badgeImage:
