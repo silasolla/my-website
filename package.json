@@ -33,6 +33,6 @@
     "prettier": "^3.8.0",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.6.0",
-    "wrangler": "^4.59.2"
+    "wrangler": "^4.61.1"
   }
 }
