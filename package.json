@@ -33,7 +33,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.6.0",
-    "wrangler": "^4.61.1"
+    "wrangler": "^4.63.0"
   },
   "overrides": {
     "lodash": "^4.17.21"
