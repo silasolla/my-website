@@ -119,6 +119,12 @@ export const aboutDataEn: AboutData = {
             'https://images.credly.com/size/680x680/images/00096281-8052-4cf1-b412-37702a94b539/image.png',
         },
         {
+          name: 'Professional Security Operations Engineer',
+          credlyUrl: 'https://www.credly.com/badges/4a1c0765-ebd9-402a-abc8-6614bd4643d1',
+          badgeImage:
+            'https://images.credly.com/size/680x680/images/59ad6615-4b4c-4508-88f5-0c397597f437/blob',
+        },
+        {
           name: 'Associate Cloud Engineer',
           credlyUrl: 'https://www.credly.com/badges/2c9c34f4-88e6-4267-8bb2-08394f2f08f5',
           badgeImage:
