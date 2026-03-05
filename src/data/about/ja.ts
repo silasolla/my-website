@@ -244,6 +244,12 @@ export const aboutDataJa: AboutData = {
             'すべての人類が一生に一度は書くことで知られるインタプリタです．\nStandard ML で書いてます．',
         },
         {
+          name: 'もけ寄生',
+          url: 'https://github.com/silasolla/moke',
+          description:
+            'Gleam で作成した CSR で動作する簡単なプロジェクトです．\nCloudflare Pages にデプロイします．',
+        },
+        {
           name: '担々麺屋',
           url: 'https://assets.silasol.la/extra/tangtang.html',
           description:
