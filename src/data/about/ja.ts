@@ -67,7 +67,7 @@ export const aboutDataJa: AboutData = {
   ],
   certifications: [
     {
-      category: 'Google Cloud Certifications',
+      category: 'Google Cloud Certifications (2026-02-14: 全冠しました！)',
       items: [
         {
           name: 'Professional Cloud Architect',
