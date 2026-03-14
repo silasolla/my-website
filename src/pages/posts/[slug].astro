@@ -61,9 +61,9 @@ const siteName = getSiteName(Astro.currentLocale);
       </time>
     </header>
 
-    <!-- PC版：サイドバー (目次とシェア) -->
+    {/* PC版：サイドバー (目次とシェア) */}
     <aside class="sidebar-pc">
-      <!-- 目次 (PC版：常に表示) -->
+      {/* 目次 (PC版：常に表示) */}
       {
         tocHeadings.length > 0 && (
           <div class="toc-section">
@@ -83,7 +83,7 @@ const siteName = getSiteName(Astro.currentLocale);
         )
       }
 
-      <!-- シェア (PC版) -->
+      {/* シェア (PC版) */}
       <div class="share-section">
         <h3 class="sidebar-title">シェア</h3>
         <div class="share-buttons">
@@ -100,7 +100,7 @@ const siteName = getSiteName(Astro.currentLocale);
       </div>
     </aside>
 
-    <!-- スマホ版：目次 (記事の前, デフォルト畳み込み) -->
+    {/* スマホ版：目次 (記事の前, デフォルト畳み込み) */}
     {
       tocHeadings.length > 0 && (
         <aside class="toc-mobile">
@@ -126,7 +126,7 @@ const siteName = getSiteName(Astro.currentLocale);
       <Content />
     </div>
 
-    <!-- スマホ版：シェア (記事の後) -->
+    {/* スマホ版：シェア (記事の後) */}
     <aside class="share-mobile">
       <h3 class="sidebar-title">シェア</h3>
       <div class="share-buttons">

@@ -61,9 +61,9 @@ const siteName = getSiteName(Astro.currentLocale);
       </time>
     </header>
 
-    <!-- PC: Sidebar (TOC and Share) -->
+    {/* PC: Sidebar (TOC and Share) */}
     <aside class="sidebar-pc">
-      <!-- Table of Contents (PC: Always visible) -->
+      {/* Table of Contents (PC: Always visible) */}
       {
         tocHeadings.length > 0 && (
           <div class="toc-section">
@@ -83,7 +83,7 @@ const siteName = getSiteName(Astro.currentLocale);
         )
       }
 
-      <!-- Share (PC) -->
+      {/* Share (PC) */}
       <div class="share-section">
         <h3 class="sidebar-title">Share</h3>
         <div class="share-buttons">
@@ -100,7 +100,7 @@ const siteName = getSiteName(Astro.currentLocale);
       </div>
     </aside>
 
-    <!-- Mobile: TOC (Before content, collapsed by default) -->
+    {/* Mobile: TOC (Before content, collapsed by default) */}
     {
       tocHeadings.length > 0 && (
         <aside class="toc-mobile">
@@ -126,7 +126,7 @@ const siteName = getSiteName(Astro.currentLocale);
       <Content />
     </div>
 
-    <!-- Mobile: Share (After content) -->
+    {/* Mobile: Share (After content) */}
     <aside class="share-mobile">
       <h3 class="sidebar-title">Share</h3>
       <div class="share-buttons">

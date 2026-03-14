@@ -54,7 +54,7 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content={`${profileData.nameEn} (${profileData.username})`} />
 
-    <!-- Robots meta tag (特別記事用) -->
+    {/* Robots meta tag (特別記事用) */}
     {
       noIndex && (
         <>
@@ -64,19 +64,19 @@ const structuredData = {
       )
     }
 
-    <!-- Favicons -->
-    <!-- Apple Touch Icons (iOS Safari) -->
+    {/* Favicons */}
+    {/* Apple Touch Icons (iOS Safari) */}
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
     <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
-    <!-- Standard favicons -->
+    {/* Standard favicons */}
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <!-- Android/Chrome -->
+    {/* Android/Chrome */}
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -85,10 +85,10 @@ const structuredData = {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
-    <!-- Canonical URL -->
+    {/* Canonical URL */}
     <link rel="canonical" href={currentUrl} />
 
-    <!-- RSS Feeds -->
+    {/* RSS Feeds */}
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -114,7 +114,7 @@ const structuredData = {
       href="/rss/diary.xml"
     />
 
-    <!-- Open Graph -->
+    {/* Open Graph */}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -124,7 +124,7 @@ const structuredData = {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- Twitter Card -->
+    {/* Twitter Card */}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content={`@${profileData.username}`} />
     <meta name="twitter:creator" content={`@${profileData.username}`} />
@@ -132,13 +132,13 @@ const structuredData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Keywords for search -->
+    {/* Keywords for search */}
     <meta name="keywords" content={seoKeywords.join(',')} />
 
-    <!-- Structured Data (JSON-LD) for Person -->
+    {/* Structured Data (JSON-LD) for Person */}
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-    <!-- Theme initialization script (runs before page renders to prevent flash) -->
+    {/* Theme initialization script (runs before page renders to prevent flash) */}
     <script is:inline>
       const getThemePreference = () => {
         const stored = localStorage.getItem('theme');
@@ -162,7 +162,7 @@ const structuredData = {
       });
     </script>
 
-    <!-- 開発環境での画像フォールバック -->
+    {/* 開発環境での画像フォールバック */}
     <script>
       // 開発環境での画像フォールバック（data属性から取得）
       const isDev = document.body.getAttribute('data-dev') === 'true';
@@ -211,7 +211,7 @@ const structuredData = {
       }
     </script>
 
-    <!-- 数式 -->
+    {/* 数式 */}
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
