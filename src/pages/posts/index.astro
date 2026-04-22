@@ -11,7 +11,7 @@ const allPosts = await getCollection('posts', (post) => {
 const sortedPosts = allPosts.sort((a, b) => {
   const dateDiff = b.data.date.getTime() - a.data.date.getTime();
   if (dateDiff !== 0) return dateDiff;
-  return b.slug.localeCompare(a.slug); // 同じ日付の場合はslugで降順ソート
+  return b.id.localeCompare(a.id); // 同じ日付の場合はidで降順ソート
 });
 
 const postsTitle = getTranslation(Astro.currentLocale, 'posts.title');
@@ -105,7 +105,7 @@ const siteName = getSiteName(Astro.currentLocale);
         <div class="posts-list">
           {sortedPosts.map((post) => (
             <article class="post-item" data-tags={post.data.tags.join(',')}>
-              <a href={`/posts/${post.slug}/`} class="post-link">
+              <a href={`/posts/${post.id}/`} class="post-link">
                 <div class="post-meta">
                   <time datetime={post.data.date.toISOString()} class="post-date">
                     {post.data.date.toLocaleDateString('ja-JP', {

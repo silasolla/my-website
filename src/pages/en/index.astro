@@ -15,14 +15,14 @@ const pinnedPosts = allPosts
   .sort((a, b) => {
     const dateDiff = b.data.date.getTime() - a.data.date.getTime();
     if (dateDiff !== 0) return dateDiff;
-    return b.slug.localeCompare(a.slug); // 同じ日付の場合はslugで降順ソート
+    return b.id.localeCompare(a.id); // 同じ日付の場合はidで降順ソート
   });
 const regularPosts = allPosts
   .filter((post) => !post.data.pinned)
   .sort((a, b) => {
     const dateDiff = b.data.date.getTime() - a.data.date.getTime();
     if (dateDiff !== 0) return dateDiff;
-    return b.slug.localeCompare(a.slug); // 同じ日付の場合はslugで降順ソート
+    return b.id.localeCompare(a.id); // 同じ日付の場合はidで降順ソート
   });
 const latestPosts = regularPosts.slice(0, 5);
 
@@ -47,7 +47,7 @@ const locale = Astro.currentLocale;
         <ul class="posts-list pinned-posts">
           {pinnedPosts.map((post) => (
             <li class={`post-item ${post.data.important ? 'important-post' : ''}`}>
-              <a href={`/en/posts/${post.slug}/`} class="post-link">
+              <a href={`/en/posts/${post.id}/`} class="post-link">
                 {post.data.important && <span class="important-badge">{importantBadge}</span>}
                 <div class="post-meta">
                   <time class="post-date" datetime={post.data.date.toISOString()}>
@@ -81,7 +81,7 @@ const locale = Astro.currentLocale;
         <ul class="posts-list">
           {latestPosts.map((post) => (
             <li class="post-item">
-              <a href={`/en/posts/${post.slug}/`} class="post-link">
+              <a href={`/en/posts/${post.id}/`} class="post-link">
                 <div class="post-meta">
                   <time class="post-date" datetime={post.data.date.toISOString()}>
                     {formatDate(post.data.date, locale)}
