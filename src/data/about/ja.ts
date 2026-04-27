@@ -56,11 +56,18 @@ export const aboutDataJa: AboutData = {
       category: 'Articles',
       items: [
         {
-          title: 'Tech Blog：地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
+          title: '地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
           url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
           description:
             '職場の Tech Blog です．Cloud Spanner のコアアーキテクチャについて，マルチリージョン構成を支える分散合意 (Paxos) や原子時計を用いた TrueTime の仕組みなど Google Cloud のブラックボックスを掘り下げています．',
           date: '2025年12月',
+        },
+        {
+          title: '順序の不確実性と決定性 〜 Cloud Dataflow における可換モノイド',
+          url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
+          description:
+            '職場の Tech Blog です．Cloud Dataflow のパイプラインの安定性に可換モノイドの構造が寄与しているという話題です．',
+          date: '2026年4月',
         },
       ],
     },

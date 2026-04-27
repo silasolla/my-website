@@ -57,11 +57,18 @@ export const aboutDataEn: AboutData = {
       category: 'Articles',
       items: [
         {
-          title: 'Tech Blog: How Cloud Spanner Solved the Global "Time Lag"',
+          title: 'How Cloud Spanner Solved the Global "Time Lag"',
           url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
           description:
-            "Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. We examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
+            "A post from my company's Tech Blog. Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. I examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
           date: 'December 2025',
+        },
+        {
+          title: 'Order Uncertainty and Determinism: Commutative Monoids in Cloud Dataflow',
+          url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
+          description:
+            "A post from my company's Tech Blog. It discusses how commutative monoid structures contribute to the stability of Cloud Dataflow pipelines.",
+          date: 'April 2026',
         },
       ],
     },
