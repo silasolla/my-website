@@ -9,7 +9,16 @@ interface Props {
 const { items } = Astro.props;
 const detailsText = getTranslation(Astro.currentLocale, 'component.details');
 const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
+
+const postsHref = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
+const introPrefix = getTranslation(Astro.currentLocale, 'writings.intro.prefix');
+const introLinkText = getTranslation(Astro.currentLocale, 'writings.intro.link-text');
+const introSuffix = getTranslation(Astro.currentLocale, 'writings.intro.suffix');
 ---
+
+<p class="writings-intro">
+  {introPrefix}<a href={postsHref} class="writings-intro-link">{introLinkText}</a>{introSuffix}
+</p>
 
 {
   items.map((category) => (
@@ -53,6 +62,24 @@ const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
 }
 
 <style>
+  .writings-intro {
+    margin: 0 0 1.5rem 0;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .writings-intro-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .writings-intro-link:hover {
+    border-bottom-color: currentColor;
+  }
+
   .writing-category {
     margin-bottom: 3rem;
     display: flex;

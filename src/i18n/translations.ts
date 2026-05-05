@@ -80,6 +80,11 @@ export const translations = {
     'component.signed-text.copy-failed': 'コピーに失敗しました',
     'component.signed-text.error': 'エラー',
 
+    // Writings セクション
+    'writings.intro.prefix': 'サイト内にも',
+    'writings.intro.link-text': 'ブログ記事',
+    'writings.intro.suffix': 'があります．',
+
     // 404ページ
     'notfound.title': 'ページが見つかりません',
     'notfound.heading': 'ページが見つかりません',
@@ -166,6 +171,11 @@ export const translations = {
     'component.signed-text.copied': 'Copied!',
     'component.signed-text.copy-failed': 'Failed to copy',
     'component.signed-text.error': 'Error',
+
+    // Writings section
+    'writings.intro.prefix': 'Posts on this site are listed on the ',
+    'writings.intro.link-text': 'Posts',
+    'writings.intro.suffix': ' page.',
 
     // 404 page
     'notfound.title': 'Page Not Found',
