@@ -64,13 +64,25 @@ export const aboutDataEn: AboutData = {
           date: 'December 2025',
         },
         {
-          title: 'Order Uncertainty and Determinism: Commutative Monoids in Cloud Dataflow',
+          title: 'Commutative Monoids in Cloud Dataflow',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
             "A post from my company's Tech Blog. It discusses how commutative monoid structures contribute to the stability of Cloud Dataflow pipelines.",
           date: 'April 2026',
         },
       ],
+    },
+  ],
+  talks: [
+    {
+      title: 'Reflections on Practicing Spec-Driven Development',
+      event: 'AI を紡ぐ者たち #1',
+      eventUrl: 'https://3-shake.connpass.com/event/391906/',
+      date: 'May 20, 2026',
+      slideUrl: 'https://doc.silasol.la/talks/2026-05-20_3-shake_ai-1/slides.pdf',
+      postSlug: '2026-05-20-01_3-shake-ai-1',
+      description:
+        'Spoke at the meetup hosted by 3-shake Inc., sharing my reflections on adopting spec-driven development in real-world projects.',
     },
   ],
   certifications: [

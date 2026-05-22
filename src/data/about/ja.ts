@@ -72,6 +72,18 @@ export const aboutDataJa: AboutData = {
       ],
     },
   ],
+  talks: [
+    {
+      title: '先達もすなる仕様駆動といふものを、オタクもしてみむとてするなり。',
+      event: 'AI を紡ぐ者たち #1 〜 業務での生成 AI 活用のリアルを、現場の声から学ぶ 〜',
+      eventUrl: 'https://3-shake.connpass.com/event/391906/',
+      date: '2026年5月20日',
+      slideUrl: 'https://doc.silasol.la/talks/2026-05-20_3-shake_ai-1/slides.pdf',
+      postSlug: '2026-05-20-01_3-shake-ai-1',
+      description:
+        '職場で開催された勉強会です．仕様駆動開発を実務に取り入れて感じたことについて話しました．',
+    },
+  ],
   certifications: [
     {
       category: 'Google Cloud Certifications (2026-02-14: 全冠しました！)',

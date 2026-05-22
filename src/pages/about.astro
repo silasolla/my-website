@@ -4,6 +4,7 @@ import ImageGallery from '../components/ImageGallery.astro';
 import ExperienceSection from '../components/ExperienceSection.astro';
 import EducationSection from '../components/EducationSection.astro';
 import WritingsSection from '../components/WritingsSection.astro';
+import TalksSection from '../components/TalksSection.astro';
 import CertificationSection from '../components/CertificationSection.astro';
 import MiscSection from '../components/MiscSection.astro';
 import HobbySection from '../components/HobbySection.astro';
@@ -111,6 +112,17 @@ const username = `@${profileData.username} / ${profileData.usernameJa}`;
         <WritingsSection items={aboutDataJa.writings} />
       </div>
     </section>
+
+    {
+      aboutDataJa.talks && aboutDataJa.talks.length > 0 && (
+        <section class="about-section">
+          <h3 class="section-title">Talks</h3>
+          <div class="section-content">
+            <TalksSection items={aboutDataJa.talks} />
+          </div>
+        </section>
+      )
+    }
 
     <section class="about-section">
       <h3 class="section-title">Certifications</h3>

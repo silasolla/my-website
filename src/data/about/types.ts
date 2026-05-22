@@ -38,6 +38,16 @@ export interface CertificationCategory {
   items: CertificationItem[];
 }
 
+export interface TalkItem {
+  title: string;
+  event: string;
+  eventUrl?: string;
+  date: string;
+  slideUrl?: string;
+  postSlug?: string;
+  description?: string;
+}
+
 export interface HobbyItem {
   name: string;
   note?: string;
@@ -58,6 +68,7 @@ export interface AboutData {
   experiences: ExperienceItem[];
   educations: EducationItem[];
   writings: WritingCategory[];
+  talks?: TalkItem[];
   certifications: CertificationCategory[];
   misc?: MiscCategory[];
   hobbies?: HobbyItem[];

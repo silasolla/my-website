@@ -85,6 +85,10 @@ export const translations = {
     'writings.intro.link-text': 'ブログ記事',
     'writings.intro.suffix': 'があります．',
 
+    // Talks セクション
+    'talks.slides': 'スライド (PDF)',
+    'talks.post': '記事',
+
     // 404ページ
     'notfound.title': 'ページが見つかりません',
     'notfound.heading': 'ページが見つかりません',
@@ -176,6 +180,10 @@ export const translations = {
     'writings.intro.prefix': 'Posts on this site are listed on the ',
     'writings.intro.link-text': 'Posts',
     'writings.intro.suffix': ' page.',
+
+    // Talks section
+    'talks.slides': 'Slides (PDF)',
+    'talks.post': 'Post',
 
     // 404 page
     'notfound.title': 'Page Not Found',

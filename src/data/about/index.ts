@@ -4,6 +4,7 @@ export type {
   EducationItem,
   WritingItem,
   WritingCategory,
+  TalkItem,
   CertificationItem,
   CertificationCategory,
   HobbyItem,
