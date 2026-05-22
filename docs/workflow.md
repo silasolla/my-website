@@ -148,7 +148,36 @@ import Tweet from '@/components/Tweet.astro';
 - `user` パラメータは省略可能（省略時は `x` がデフォルト）
 - ダークモードに自動対応します
 
-### 2.6 画像を配置
+### 2.6 スライド (PDF) の埋め込み
+
+登壇スライドなどの PDF を，ページ送り・最大化・PDF リンク付きで埋め込めます．記事冒頭で `Slide` コンポーネントをインポートして使います：
+
+```mdx
+---
+title: 登壇しました
+date: 2025-01-01
+tags: ['news']
+---
+
+import Slide from '@/components/Slide.astro';
+
+<Slide src="https://example.com/talks/hiyoko/slides.pdf" title="ひよこ駆動開発入門" />
+```
+
+**Props：**
+
+- `src` (必須): PDF の URL．コントロール内の「PDF」リンクもこの URL を指します．
+- `title` (オプション): スライドのタイトル．キャプションとして下部に表示されます．
+- `ratio` (オプション, デフォルト `16 / 9`): フレームのアスペクト比．例: `"4 / 3"`．
+
+**ポイント：**
+
+- 内部では PDF.js で `<canvas>` に描画します．総ページ数は PDF から自動取得します．
+- 全画面ボタンは Fullscreen API でフレーム全体を全画面表示し，再押下で縮小します．
+- PDF は CORS 越しに `fetch` するため，`src` のオリジンに `Access-Control-Allow-Origin` を設定してください．
+- ダーク／ライト両モードに自動対応します．
+
+### 2.7 画像を配置
 
 ```bash
 # 画像ディレクトリに画像をコピー
@@ -165,7 +194,7 @@ public/posts/images/2025-10-26-01_my-article-title/
 
 **重要：この画像はGitにコミットしません** (`.gitignore`で除外済み)
 
-### 2.7 ローカルで確認
+### 2.8 ローカルで確認
 
 ```bash
 npm run dev

@@ -104,6 +104,32 @@ writings: [
 - `description`: 出版物の説明 (オプション)
 - `date`: 出版日 (オプション)
 
+### 3.5. 登壇 (Talks) を追加
+
+```typescript
+talks: [
+  {
+    title: 'ひよこ駆動開発入門',
+    event: 'ひよこ Conference 2025',
+    eventUrl: 'https://example.com/event',
+    date: '2025年1月1日',
+    slideUrl: 'https://example.com/talks/hiyoko/slides.pdf',
+    postSlug: '2025-01-01-01_hiyoko-talk',
+    description: '登壇のサマリです．',
+  },
+];
+```
+
+**フィールド説明：**
+
+- `title`: 登壇タイトル (必須)
+- `event`: イベント名 (必須)
+- `eventUrl`: イベントページの URL (オプション)
+- `date`: 登壇日 (必須)
+- `slideUrl`: スライドの URL (オプション) - PDF や SpeakerDeck などへの直リンク
+- `postSlug`: サイト内の関連記事のスラッグ (オプション) - 指定すると「記事」へのリンクが表示される
+- `description`: 登壇内容の説明 (オプション)
+
 ### 4. 資格 (Certifications) を追加
 
 ```typescript
@@ -221,6 +247,7 @@ hobbies: [
 - `ExperienceSection.astro`: 経歴の表示
 - `EducationSection.astro`: 学歴の表示
 - `WritingsSection.astro`: 著作の表示 (カードタイプ)
+- `TalksSection.astro`: 登壇の表示 (カードタイプ)
 - `CertificationSection.astro`: 資格の表示 (カードタイプ)
 - `MiscSection.astro`: その他の表示 (カードタイプ)
 - `HobbySection.astro`: 趣味の表示 (タグ形式)

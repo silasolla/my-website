@@ -1,0 +1,511 @@
+---
+export interface Props {
+  src: string;
+  title?: string;
+  ratio?: string;
+}
+
+const { src, title, ratio = '16 / 9' } = Astro.props;
+
+const aspectRatio = ratio.replace(':', ' / ');
+---
+
+<figure class="slide" data-src={src} style={`--slide-aspect: ${aspectRatio};`}>
+  <div class="slide-frame">
+    <div class="slide-stage">
+      <canvas class="slide-canvas"></canvas>
+    </div>
+
+    <div class="slide-status slide-status-loading" data-status="loading">
+      <span class="slide-spinner" aria-hidden="true"></span>
+      <span>スライドを読み込み中…</span>
+    </div>
+
+    <div class="slide-status slide-status-error" data-status="error" hidden>
+      <p>スライドを読み込めませんでした．</p>
+      <a class="slide-status-link" href={src} target="_blank" rel="noopener noreferrer">
+        PDF を別タブで開く
+      </a>
+    </div>
+  </div>
+
+  <div class="slide-controls" role="group" aria-label="スライド操作">
+    <button type="button" class="slide-btn slide-prev" aria-label="前のページ" disabled>
+      <svg class="slide-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <span class="slide-pager" aria-live="polite">
+      <span class="slide-page-current">1</span>
+      <span class="slide-pager-sep">/</span>
+      <span class="slide-page-total">?</span>
+    </span>
+
+    <button type="button" class="slide-btn slide-next" aria-label="次のページ" disabled>
+      <svg class="slide-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+
+    <span class="slide-spacer"></span>
+
+    <button
+      type="button"
+      class="slide-btn slide-fullscreen"
+      data-fs-state="expand"
+      aria-label="最大化"
+    >
+      <svg class="slide-icon slide-icon-expand" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+      <svg class="slide-icon slide-icon-compress is-hidden" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="14" y1="10" x2="21" y2="3"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+      </svg>
+    </button>
+
+    <a class="slide-link" href={src} target="_blank" rel="noopener noreferrer">
+      <svg class="slide-icon slide-icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+      <span>PDF</span>
+    </a>
+  </div>
+
+  {title && <figcaption class="slide-caption">{title}</figcaption>}
+</figure>
+
+<script is:inline type="module">
+  import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.min.mjs';
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.6.82/build/pdf.worker.min.mjs';
+
+  const setStatus = (root, status) => {
+    const loading = root.querySelector('[data-status="loading"]');
+    const error = root.querySelector('[data-status="error"]');
+    if (loading) loading.hidden = status !== 'loading';
+    if (error) error.hidden = status !== 'error';
+  };
+
+  const requestFullscreen = (el) => {
+    if (el.requestFullscreen) return el.requestFullscreen();
+    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+  };
+
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) return document.exitFullscreen();
+    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+  };
+
+  async function setupSlide(root) {
+    if (root.dataset.slideReady === '1') return;
+    root.dataset.slideReady = '1';
+
+    const src = root.dataset.src;
+    const stage = root.querySelector('.slide-stage');
+    const canvas = root.querySelector('.slide-canvas');
+    const ctx = canvas?.getContext('2d', { alpha: false }) ?? null;
+    const prev = root.querySelector('.slide-prev');
+    const next = root.querySelector('.slide-next');
+    const fsBtn = root.querySelector('.slide-fullscreen');
+    const fsExpandIcon = root.querySelector('.slide-icon-expand');
+    const fsCompressIcon = root.querySelector('.slide-icon-compress');
+    const currentEl = root.querySelector('.slide-page-current');
+    const totalEl = root.querySelector('.slide-page-total');
+
+    if (!src || !stage || !canvas || !ctx) {
+      setStatus(root, 'error');
+      return;
+    }
+
+    let pdf;
+    try {
+      pdf = await pdfjsLib.getDocument({ url: src, withCredentials: false }).promise;
+    } catch (err) {
+      console.error('Slide: failed to load PDF', err);
+      setStatus(root, 'error');
+      return;
+    }
+
+    const total = pdf.numPages;
+    let page = 1;
+    if (totalEl) totalEl.textContent = String(total);
+
+    let renderTask = null;
+    let renderToken = 0;
+
+    async function renderPage(num) {
+      const token = ++renderToken;
+      try {
+        renderTask?.cancel();
+      } catch {
+        /* noop */
+      }
+
+      const pdfPage = await pdf.getPage(num);
+      if (token !== renderToken) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const { width: cw, height: ch } = stage.getBoundingClientRect();
+      if (cw <= 0 || ch <= 0) return;
+
+      const base = pdfPage.getViewport({ scale: 1 });
+      const fitScale = Math.min(cw / base.width, ch / base.height);
+      const viewport = pdfPage.getViewport({ scale: fitScale * dpr });
+
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = `${viewport.width / dpr}px`;
+      canvas.style.height = `${viewport.height / dpr}px`;
+
+      renderTask = pdfPage.render({ canvasContext: ctx, viewport });
+      try {
+        await renderTask.promise;
+      } catch (err) {
+        if (err?.name !== 'RenderingCancelledException') {
+          console.error('Slide: render failed', err);
+        }
+      }
+    }
+
+    function syncButtons() {
+      if (prev) prev.disabled = page <= 1;
+      if (next) next.disabled = page >= total;
+    }
+
+    function go(target) {
+      const clamped = Math.min(Math.max(target, 1), total);
+      if (clamped === page) return;
+      page = clamped;
+      if (currentEl) currentEl.textContent = String(page);
+      syncButtons();
+      renderPage(page);
+    }
+
+    function syncFullscreenIcon() {
+      const isFs = document.fullscreenElement === root;
+      if (fsBtn) {
+        fsBtn.dataset.fsState = isFs ? 'compress' : 'expand';
+        fsBtn.setAttribute('aria-label', isFs ? '縮小' : '最大化');
+      }
+      fsExpandIcon?.classList.toggle('is-hidden', isFs);
+      fsCompressIcon?.classList.toggle('is-hidden', !isFs);
+    }
+
+    await renderPage(1);
+    setStatus(root, 'idle');
+    syncButtons();
+
+    prev?.addEventListener('click', (e) => {
+      e.preventDefault();
+      go(page - 1);
+    });
+    next?.addEventListener('click', (e) => {
+      e.preventDefault();
+      go(page + 1);
+    });
+
+    fsBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (document.fullscreenElement === root) {
+        exitFullscreen();
+      } else {
+        requestFullscreen(root);
+      }
+    });
+
+    let resizeTimer;
+    new ResizeObserver(() => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => renderPage(page), 120);
+    }).observe(stage);
+
+    document.addEventListener('fullscreenchange', () => {
+      root.classList.toggle('is-fullscreen', document.fullscreenElement === root);
+      syncFullscreenIcon();
+      setTimeout(() => renderPage(page), 80);
+    });
+  }
+
+  function init() {
+    document.querySelectorAll('.slide').forEach((root) => {
+      setupSlide(root).catch((err) => {
+        console.error('Slide: setup failed', err);
+        setStatus(root, 'error');
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  .slide {
+    --slide-aspect: 16 / 9;
+    margin: 1.5rem auto;
+    max-width: 900px;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--slide-aspect);
+    background: #1a1a1a;
+  }
+
+  .slide-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slide-canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .slide-status {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: #d8d8d8;
+    background: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .slide-status[hidden] {
+    display: none;
+  }
+
+  .slide-status-link {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 0.9rem;
+  }
+
+  .slide-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: slide-spin 0.9s linear infinite;
+  }
+
+  @keyframes slide-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .slide-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+    flex-wrap: wrap;
+  }
+
+  .slide-spacer {
+    flex: 1;
+  }
+
+  .slide-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .slide-btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+  }
+
+  .slide-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .slide-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .slide-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 5ch;
+    justify-content: center;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .slide-pager-sep {
+    color: var(--color-text-light);
+  }
+
+  .slide-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .slide-link:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    text-decoration: none;
+  }
+
+  .slide-icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .slide-icon-sm {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.2;
+  }
+
+  .slide-icon.is-hidden {
+    display: none;
+  }
+
+  .slide-caption {
+    padding: 0.6rem 0.9rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    text-align: center;
+  }
+
+  /* フルスクリーン時 */
+  .slide:fullscreen,
+  .slide.is-fullscreen {
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    background: #000;
+  }
+
+  .slide:fullscreen .slide-frame,
+  .slide.is-fullscreen .slide-frame {
+    aspect-ratio: auto;
+    flex: 1;
+    height: auto;
+  }
+
+  .slide:fullscreen .slide-controls,
+  .slide.is-fullscreen .slide-controls {
+    background: rgba(20, 20, 20, 0.92);
+    color: #fff;
+    border-top-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .slide:fullscreen .slide-btn,
+  .slide.is-fullscreen .slide-btn,
+  .slide:fullscreen .slide-link,
+  .slide.is-fullscreen .slide-link {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .slide:fullscreen .slide-btn:hover:not(:disabled),
+  .slide.is-fullscreen .slide-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .slide:fullscreen .slide-pager,
+  .slide.is-fullscreen .slide-pager,
+  .slide:fullscreen .slide-pager-sep,
+  .slide.is-fullscreen .slide-pager-sep {
+    color: #fff;
+  }
+
+  .slide:fullscreen .slide-caption,
+  .slide.is-fullscreen .slide-caption {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .slide-controls {
+      gap: 0.4rem;
+      padding: 0.45rem 0.6rem;
+    }
+
+    .slide-btn {
+      width: 34px;
+      height: 34px;
+    }
+
+    .slide-link span {
+      display: none;
+    }
+
+    .slide-link {
+      padding: 0.45rem 0.55rem;
+    }
+  }
+</style>

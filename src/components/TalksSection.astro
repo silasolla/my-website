@@ -1,0 +1,215 @@
+---
+import type { TalkItem } from '../data/about';
+import { getTranslation } from '../i18n/translations';
+
+interface Props {
+  items: TalkItem[];
+}
+
+const { items } = Astro.props;
+const detailsText = getTranslation(Astro.currentLocale, 'component.details');
+const slidesLabel = getTranslation(Astro.currentLocale, 'talks.slides');
+const postLabel = getTranslation(Astro.currentLocale, 'talks.post');
+const postsBase = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
+---
+
+<div class="talk-grid">
+  {
+    items.map((item) => (
+      <article class="talk-card">
+        <div class="talk-card-header">
+          <span class="talk-date">{item.date}</span>
+          <h4 class="talk-title">{item.title}</h4>
+          <p class="talk-event">
+            {item.eventUrl ? (
+              <a href={item.eventUrl} target="_blank" rel="noopener noreferrer">
+                {item.event}
+              </a>
+            ) : (
+              <span>{item.event}</span>
+            )}
+          </p>
+        </div>
+
+        {item.description && (
+          <details class="talk-details">
+            <summary class="talk-summary">{detailsText}</summary>
+            <p class="talk-description">{item.description}</p>
+          </details>
+        )}
+
+        <div class="talk-links">
+          {item.postSlug && (
+            <a href={`${postsBase}${item.postSlug}/`} class="talk-link">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              {postLabel}
+            </a>
+          )}
+          {item.slideUrl && (
+            <a href={item.slideUrl} target="_blank" rel="noopener noreferrer" class="talk-link">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              {slidesLabel}
+            </a>
+          )}
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .talk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .talk-card {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .talk-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .talk-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .talk-date {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+
+  .talk-title {
+    font-size: 1.1rem;
+    color: var(--color-primary-dark);
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .talk-event {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .talk-event a {
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .talk-event a:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .talk-details {
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+  }
+
+  .talk-summary {
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    list-style: none;
+    user-select: none;
+  }
+
+  .talk-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .talk-summary::after {
+    content: ' ▼';
+    font-size: 0.75rem;
+  }
+
+  .talk-details[open] .talk-summary::after {
+    content: ' ▲';
+  }
+
+  .talk-description {
+    margin: 0.75rem 0 0 0;
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    white-space: pre-line;
+  }
+
+  .talk-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: auto;
+  }
+
+  .talk-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+  }
+
+  .talk-link:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .talk-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .talk-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
