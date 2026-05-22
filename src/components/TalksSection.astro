@@ -8,6 +8,7 @@ interface Props {
 
 const { items } = Astro.props;
 const detailsText = getTranslation(Astro.currentLocale, 'component.details');
+const eventLabel = getTranslation(Astro.currentLocale, 'talks.event');
 const slidesLabel = getTranslation(Astro.currentLocale, 'talks.slides');
 const postLabel = getTranslation(Astro.currentLocale, 'talks.post');
 const postsBase = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
@@ -20,15 +21,7 @@ const postsBase = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
         <div class="talk-card-header">
           <span class="talk-date">{item.date}</span>
           <h4 class="talk-title">{item.title}</h4>
-          <p class="talk-event">
-            {item.eventUrl ? (
-              <a href={item.eventUrl} target="_blank" rel="noopener noreferrer">
-                {item.event}
-              </a>
-            ) : (
-              <span>{item.event}</span>
-            )}
-          </p>
+          <p class="talk-event">{item.event}</p>
         </div>
 
         {item.description && (
@@ -74,6 +67,24 @@ const postsBase = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
               {slidesLabel}
+            </a>
+          )}
+          {item.eventUrl && (
+            <a href={item.eventUrl} target="_blank" rel="noopener noreferrer" class="talk-link">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              {eventLabel}
             </a>
           )}
         </div>
@@ -131,17 +142,6 @@ const postsBase = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
     font-size: 0.9rem;
     color: var(--color-text);
     line-height: 1.5;
-  }
-
-  .talk-event a {
-    color: var(--color-primary);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
-  }
-
-  .talk-event a:hover {
-    border-bottom-color: currentColor;
   }
 
   .talk-details {

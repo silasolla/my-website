@@ -86,7 +86,8 @@ export const translations = {
     'writings.intro.suffix': 'があります．',
 
     // Talks セクション
-    'talks.slides': 'スライド (PDF)',
+    'talks.event': 'イベント',
+    'talks.slides': 'スライド',
     'talks.post': '記事',
 
     // 404ページ
@@ -182,7 +183,8 @@ export const translations = {
     'writings.intro.suffix': ' page.',
 
     // Talks section
-    'talks.slides': 'Slides (PDF)',
+    'talks.event': 'Event details',
+    'talks.slides': 'Slides',
     'talks.post': 'Post',
 
     // 404 page

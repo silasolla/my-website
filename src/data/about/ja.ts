@@ -75,7 +75,7 @@ export const aboutDataJa: AboutData = {
   talks: [
     {
       title: '先達もすなる仕様駆動といふものを、オタクもしてみむとてするなり。',
-      event: 'AI を紡ぐ者たち #1 〜 業務での生成 AI 活用のリアルを、現場の声から学ぶ 〜',
+      event: 'AI を紡ぐ者たち #1',
       eventUrl: 'https://3-shake.connpass.com/event/391906/',
       date: '2026年5月20日',
       slideUrl: 'https://doc.silasol.la/talks/2026-05-20_3-shake_ai-1/slides.pdf',
