@@ -96,12 +96,17 @@ const aspectRatio = ratio.replace(':', ' / ');
     if (error) error.hidden = status !== 'error';
   };
 
-  const requestFullscreen = (el) => {
+  const fsApiSupported =
+    typeof document !== 'undefined' &&
+    Boolean(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+
+  const nativeRequestFullscreen = (el) => {
     if (el.requestFullscreen) return el.requestFullscreen();
     if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+    return Promise.reject(new Error('fullscreen unsupported'));
   };
 
-  const exitFullscreen = () => {
+  const nativeExitFullscreen = () => {
     if (document.exitFullscreen) return document.exitFullscreen();
     if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
   };
@@ -191,14 +196,57 @@ const aspectRatio = ratio.replace(':', ' / ');
       renderPage(page);
     }
 
+    function isFullscreenActive() {
+      return document.fullscreenElement === root || root.classList.contains('is-pseudo-fullscreen');
+    }
+
     function syncFullscreenIcon() {
-      const isFs = document.fullscreenElement === root;
+      const isFs = isFullscreenActive();
       if (fsBtn) {
         fsBtn.dataset.fsState = isFs ? 'compress' : 'expand';
         fsBtn.setAttribute('aria-label', isFs ? '縮小' : '最大化');
       }
       fsExpandIcon?.classList.toggle('is-hidden', isFs);
       fsCompressIcon?.classList.toggle('is-hidden', !isFs);
+    }
+
+    function enterPseudoFullscreen() {
+      if (root.classList.contains('is-pseudo-fullscreen')) return;
+      root.classList.add('is-pseudo-fullscreen', 'is-fullscreen');
+      document.body.classList.add('slide-pseudo-fs-lock');
+      syncFullscreenIcon();
+      setTimeout(() => renderPage(page), 80);
+    }
+
+    function exitPseudoFullscreen() {
+      if (!root.classList.contains('is-pseudo-fullscreen')) return;
+      root.classList.remove('is-pseudo-fullscreen', 'is-fullscreen');
+      document.body.classList.remove('slide-pseudo-fs-lock');
+      syncFullscreenIcon();
+      setTimeout(() => renderPage(page), 80);
+    }
+
+    function enterFullscreen() {
+      if (fsApiSupported) {
+        try {
+          const result = nativeRequestFullscreen(root);
+          if (result && typeof result.catch === 'function') {
+            result.catch(() => enterPseudoFullscreen());
+          }
+          return;
+        } catch {
+          /* fall through */
+        }
+      }
+      enterPseudoFullscreen();
+    }
+
+    function leaveFullscreen() {
+      if (document.fullscreenElement === root) {
+        nativeExitFullscreen();
+        return;
+      }
+      exitPseudoFullscreen();
     }
 
     await renderPage(1);
@@ -216,10 +264,10 @@ const aspectRatio = ratio.replace(':', ' / ');
 
     fsBtn?.addEventListener('click', (e) => {
       e.preventDefault();
-      if (document.fullscreenElement === root) {
-        exitFullscreen();
+      if (isFullscreenActive()) {
+        leaveFullscreen();
       } else {
-        requestFullscreen(root);
+        enterFullscreen();
       }
     });
 
@@ -233,6 +281,12 @@ const aspectRatio = ratio.replace(':', ' / ');
       root.classList.toggle('is-fullscreen', document.fullscreenElement === root);
       syncFullscreenIcon();
       setTimeout(() => renderPage(page), 80);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && root.classList.contains('is-pseudo-fullscreen')) {
+        exitPseudoFullscreen();
+      }
     });
   }
 
@@ -444,9 +498,17 @@ const aspectRatio = ratio.replace(':', ' / ');
     max-width: none;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     margin: 0;
     border-radius: 0;
     background: #000;
+  }
+
+  /* iOS など Fullscreen API 非対応端末向けの擬似フルスクリーン */
+  .slide.is-pseudo-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
   }
 
   .slide:fullscreen .slide-frame,
@@ -487,6 +549,10 @@ const aspectRatio = ratio.replace(':', ' / ');
   .slide:fullscreen .slide-caption,
   .slide.is-fullscreen .slide-caption {
     display: none;
+  }
+
+  :global(body.slide-pseudo-fs-lock) {
+    overflow: hidden;
   }
 
   @media (max-width: 640px) {
