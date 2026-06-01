@@ -66,6 +66,9 @@ export default defineConfig({
       ],
     ],
     rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeExternalLinks],
+    remarkRehype: {
+      footnoteLabel: '脚注',
+    },
     shikiConfig: {
       theme: 'github-dark',
       langs: [smlGrammar],
