@@ -209,6 +209,8 @@ val _ = print ("Add Commutative (3 + 5 = 5 + 3)? : " ^
                Bool.toString (IntUtils.isAddCommutative (3, 5)) ^ "\n")
 val _ = print ("Mul Commutative (3 * 5 = 5 * 3)? : " ^
                Bool.toString (IntUtils.isMulCommutative (3, 5)) ^ "\n\n")
+val _ = print ("Left Distributive (3*(5+11) = 3*5 + 3*11)? : " ^
+               Bool.toString (IntUtils.isLeftDistributive (3, 5, 11)) ^ "\n")
 
 (* 行列の検証 *)
 structure Mat2Utils = RingUtils (Mat2)
@@ -238,6 +240,7 @@ val _ = print ("Left Distributive (A*(B+C) = A*B + A*C)? : " ^
 
 Add Commutative (3 + 5 = 5 + 3)? : true
 Mul Commutative (3 * 5 = 5 * 3)? : true
+Left Distributive (3*(5+11) = 3*5 + 3*11)? : true
 
 === Mat2 Tests ===
 -- Fibonacci Matrix ^ 10 --
@@ -253,7 +256,7 @@ Left Distributive (A*(B+C) = A*B + A*C)? : true
 
 ## あくまでも縛っているのは演算の型だけ
 
-`RingUtils` の中で `isMulCommutative` みたいなテストをやっていましたが，これは structure の実装によっては (環を期待している癖に) `false` になりかねません．Standard ML のモジュールシステムで定義した signature も Haskell の型クラスも，固定しているのはあくまでも演算の型であって，`add` や `mul` が結合法則や交換法則や分配法則を満たしていることとか，`>>=` や `return` が Monad 則を満たしていることとか，そういうものは保証しません．インスタンスを定義するユーザの責任になります．
+`RingUtils` の中で `isAddCommutative` みたいなテストをやっていましたが，これは structure の実装によっては (環を期待している癖に) `false` になりかねません．Standard ML のモジュールシステムで定義した signature も Haskell の型クラスも，固定しているのはあくまでも演算の型であって，`add` や `mul` が結合法則や交換法則や分配法則を満たしていることとか，`>>=` や `return` が Monad 則を満たしていることとか，そういうものは保証しません．インスタンスを定義するユーザの責任になります．
 
 そういうわけで，なんらかの方法を用いてチェックしたくなります．
 
