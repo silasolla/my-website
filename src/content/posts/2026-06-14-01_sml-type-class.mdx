@@ -1,0 +1,287 @@
+---
+title: Standard ML で一階の型クラスを作って遊ぶ (λ Kansai in Summer 2026 補足)
+date: 2026-06-14
+tags: ['tech', 'news']
+description: 'HKT よりもっと具体的な話をします．'
+coverImage: '@@/2026-06-14-01_sml-type-class/ogp.webp'
+---
+
+import Slide from '@/components/Slide.astro';
+import Img from '@/components/Img.astro';
+
+λ Kansai in Summer 2026 というイベントで HKT を備えた Haskell に SML でどこまで迫れるか Monad を作ったりして話しました．
+
+イベント詳細：[λ Kansai in Summer 2026](https://lambda-kansai.connpass.com/event/385059/)
+
+当日はオフラインで参加しましたが，発表を聴いていただいたり，質問や議論をしていただいたりして，とても楽しい時間でした．運営の皆さま，会場を提供してくださった皆さまにも感謝しております．ありがとうございました！
+
+やはり，OCaml が公用語 (??) になるようなイベントは，実家に帰ってきたような安心感がありますね．ML は Meta Language でも Machine Learning でもなく Major Language だったかもしれん．
+
+<Slide
+  src="https://doc.silasol.la/talks/2026-06-13_lambda-kansai/slides.pdf"
+  title="HKT のない言語で Monad をどう表現するか 〜 Standard ML の場合"
+/>
+
+直近の登壇予定：2026-07-12 - [関数型まつり 2026](https://fortee.jp/2026fp-matsuri/proposal/5fe03d91-00cc-476f-bfc3-073c6f44aa91)
+
+## HKT は抽象的すぎたので具体的なクラスの話をしよう
+
+発表では，Standard ML のモジュールシステムが Haskell の型クラスの役割をどう肩代わりするかという話をしましたが，いきなり Monad に焦点を当てたので，高階の型クラス (`'a t`, Kind `* -> *`) が必要になって，こういうのに馴染みが無いと消化不良で「SML でも Monad 書けるんだ」くらいになってしまったかもしれません．
+
+そういうわけで，この記事ではもう少し具体的に「一階」の型クラス (`Eq`, `Show`, `Num`, ...) に絞って，モジュールで型クラスを模倣する骨格の部分を説明できたらなと思います．
+
+値の比較や表示はやれたほうが嬉しいので，Haskell の `class Eq a` や `class Show a` みたいな signature を作ります．
+
+```sml
+(* 型の等値判定ができる *)
+signature EQ =
+sig
+  type t
+  val eq : t * t -> bool
+end
+
+(* 型を文字列に変換できる *)
+signature SHOW =
+sig
+  type t
+  val show : t -> string
+end
+```
+
+これらに対して，後から structure でインスタンスを作ることになります．
+
+では，これらの能力を受け継いで，足し算や掛け算もできるようにしていきましょう．まずは，足し算から．
+
+```sml
+(* 加法群 *)
+signature ABELIAN =
+sig
+  structure Eq   : EQ
+  structure Show : SHOW
+
+  type t
+  sharing type t = Eq.t = Show.t (* t と親クラスの型は全て同じ *)
+
+  val zero : t
+  val add  : t * t -> t
+  val neg  : t -> t
+end
+```
+
+加法の可換律や結合律などが気になるかもしれないが，取り敢えず今は置いておいて `Eq` と `Show` を `substructure` として持たせています．Haskell でいう `class (Eq a, Show a) => ...` をやろうとしていますが，共通する型変数 `a` を使い回しているのを明示しないと `Eq.t` と `Show.t` が別の型になってしまうので，`sharing type t = Eq.t = Show.t` と書くことで対処しています．
+
+それでは，足し算だけでなく，掛け算もできるようにしましょう．
+
+```sml
+(* 環 *)
+signature RING =
+sig
+  include ABELIAN
+
+  val one : t
+  val mul : t * t -> t
+end
+```
+
+`include` で signature を継承することで，加法群に乗法を加えて環にします．ここまでやってきたのを Haskell でやるなら，こんな感じでしょうか？
+
+```haskell
+class (Eq a, Show a) => Abelian a where
+  zero :: a
+  add  :: a -> a -> a
+  neg  :: a -> a
+
+class Abelian a => Ring a where
+  one :: a
+  mul :: a -> a -> a
+```
+
+## 整数環のインスタンスを作ってみる
+
+具体的なインスタンスとして，整数を定義してみましょう．素直に組み込み演算を割り当てます．
+
+```sml
+structure IntRing : RING =
+struct
+  type t = int
+
+  structure Eq =
+  struct
+    type t = t (* 内側の Eq.t = 外側の IntRing.t *)
+    fun eq (x, y) = x = y
+  end
+
+  structure Show =
+  struct
+    type t = t
+    val show = Int.toString
+  end
+
+  (* 整数の加法 *)
+  val zero = 0
+  fun add (x, y) = x + y
+  fun neg x = ~x
+
+  (* 整数の乗法 *)
+  val one = 1
+  fun mul (x, y) = x * y
+end
+```
+
+`RING` signature にある `sharing` 制約を満たすように外側の `t` と内側の `t` を一致させて `t` を定義します．Standard ML の `type` 束縛は再帰しないので安心してください．substructure に直接 `type t = int` って書いても良いんですが DRY にします．
+
+## 2 × 2 の整数行列を作ってみる
+
+同じ `RING` を signature に持つ 2 × 2 の整数行列を作ってみましょう．
+
+```sml
+structure Mat2 : RING =
+struct
+  type t = (int * int) * (int * int)
+
+  (* 構造として等しいか *)
+  structure Eq =
+  struct
+    type t = t (* 内側の Eq.t = 外側の Mat2.t *)
+    fun eq (m1, m2) = m1 = m2
+  end
+
+  (* 成分を並べて表示できるように *)
+  structure Show =
+  struct
+    type t = t
+    fun show ((a, b), (c, d)) = "[" ^ Int.toString a ^ ", " ^ Int.toString b ^ "]\n" ^
+                                "[" ^ Int.toString c ^ ", " ^ Int.toString d ^ "]"
+  end
+
+  (* 行列の加法 *)
+  val zero = ((0, 0), (0, 0))
+  fun add (((a1, b1), (c1, d1)), ((a2, b2), (c2, d2))) = ((a1 + a2, b1 + b2), (c1 + c2, d1 + d2))
+  fun neg ((a1, b1), (c1, d1)) = ((~a1, ~b1), (~c1, ~d1))
+
+  (* 行列の乗法 *)
+  val one = ((1, 0), (0, 1)) (* 単位行列 *)
+  fun mul (((a1, b1), (c1, d1)), ((a2, b2), (c2, d2))) = ((a1 * a2 + b1 * c2, a1 * b2 + b1 * d2),
+                                                          (c1 * a2 + d1 * c2, c1 * b2 + d1 * d2))
+end
+```
+
+同じ `RING` に対して別のインスタンスを複数作れました．
+
+## 汎用のユーティリティを作る
+
+それでは，型クラスの醍醐味として，同じ `RING` に対する共通演算を functor で書いていきます．
+
+```sml
+functor RingUtils (R : RING) =
+struct
+  (* 素朴な累乗, 二乗法にしてもいい *)
+  fun power (_, 0) = R.one
+    | power (x, n) = R.mul (x, power (x, n - 1))
+
+  (* 加法の可換性 *)
+  fun isAddCommutative (a, b) = R.Eq.eq (R.add (a, b), R.add (b, a))
+
+  (* 乗法の可換性 *)
+  fun isMulCommutative (a, b) = R.Eq.eq (R.mul (a, b), R.mul (b, a))
+
+  (* 左分配律 a * (b + c) = a * b + a * c *)
+  fun isLeftDistributive (a, b, c) = R.Eq.eq (R.mul (a, R.add (b, c)),
+                                              R.add (R.mul (a, b), R.mul (a, c)))
+
+  (* Pretty Print *)
+  fun printResult (name, value) = print ("-- " ^ name ^ " --\n" ^ R.Show.show value ^ "\n\n")
+end
+```
+
+Haskell なら `power :: Ring a => a -> Int -> a` と書くような部分ですね．Haskell では暗黙に辞書渡しされますが，Standard ML では明示的にモジュール引数を利用します．どちらも，同じ Ring を抽象した汎用コードってことになりますね．
+
+それでは動かしてみます．
+
+```sml
+(* 整数の検証 *)
+structure IntUtils = RingUtils (IntRing)
+val _ = print "=== IntRing Tests ===\n"
+
+val _ = IntUtils.printResult ("2 ^ 10", IntUtils.power (2, 10))
+val _ = print ("Add Commutative (3 + 5 = 5 + 3)? : " ^
+               Bool.toString (IntUtils.isAddCommutative (3, 5)) ^ "\n")
+val _ = print ("Mul Commutative (3 * 5 = 5 * 3)? : " ^
+               Bool.toString (IntUtils.isMulCommutative (3, 5)) ^ "\n\n")
+
+(* 行列の検証 *)
+structure Mat2Utils = RingUtils (Mat2)
+val _ = print "=== Mat2 Tests ===\n"
+
+val fib = ((1, 1), (1, 0))
+val _ = Mat2Utils.printResult ("Fibonacci Matrix ^ 10", Mat2Utils.power (fib, 10))
+
+val a = ((1, 1), (0, 1))
+val b = ((1, 0), (1, 1))
+val _ = print ("Add Commutative (A + B = B + A)? : " ^
+               Bool.toString (Mat2Utils.isAddCommutative (a, b)) ^ "\n")
+val _ = print ("Mul Commutative (A * B = B * A)? : " ^
+               Bool.toString (Mat2Utils.isMulCommutative (a, b)) ^ "\n")
+
+val c = ((2, 0), (0, 3))
+val _ = print ("Left Distributive (A*(B+C) = A*B + A*C)? : " ^
+               Bool.toString (Mat2Utils.isLeftDistributive (a, b, c)) ^ "\n")
+```
+
+こんな出力になるはず．
+
+```
+=== IntRing Tests ===
+-- 2 ^ 10 --
+1024
+
+Add Commutative (3 + 5 = 5 + 3)? : true
+Mul Commutative (3 * 5 = 5 * 3)? : true
+
+=== Mat2 Tests ===
+-- Fibonacci Matrix ^ 10 --
+[89, 55]
+[55, 34]
+
+Add Commutative (A + B = B + A)? : true
+Mul Commutative (A * B = B * A)? : false
+Left Distributive (A*(B+C) = A*B + A*C)? : true
+```
+
+行列の冪乗で Fibonacci 数を計算できて $\left[\begin{array}{cc}1 & 1 \\1 & 0\end{array}\right]^n=\left[\begin{array}{cc}F_{n+1} & F_n \\F_n & F_{n-1}\end{array}\right]$ となるので，`Mat2Utils.power (fib, 10)` の返している値は $\left[\begin{array}{cc}F_{11} & F_{10} \\F_{10} & F_{9}\end{array}\right]=\left[\begin{array}{cc}89 & 55 \\55 & 34\end{array}\right]$ です．整数の冪乗と同じ抽象コードなのに，行列に適用すると裏で Fibonacci 数を計算しているのおもろいと思います．行列の乗法が非可換なのを含め，ざっとチェックできていますね．
+
+## あくまでも縛っているのは演算の型だけ
+
+`RingUtils` の中で `isMulCommutative` みたいなテストをやっていましたが，これは structure の実装によっては (環を期待している癖に) `false` になりかねません．Standard ML のモジュールシステムで定義した signature も Haskell の型クラスも，固定しているのはあくまでも演算の型であって，`add` や `mul` が結合法則や交換法則や分配法則を満たしていることとか，`>>=` や `return` が Monad 則を満たしていることとか，そういうものは保証しません．インスタンスを定義するユーザの責任になります．
+
+そういうわけで，なんらかの方法を用いてチェックしたくなります．
+
+1. ユニットテストで特定の入力に対して検証する．あくまでも有限ケースを試しているだけで，妥当性を一般に示すことはできない．
+2. プロパティベーステストでランダムな入力に対して検証する．Haskell だと QuickCheck ライブラリとか．任意の入力に対して示したいモチベーションはあるが，当然ながらケースは高々有限になる．
+3. すごく強い型で一般にガチ証明する．
+
+実務上は 1 や 2 が現実的な手法になりますが，依存型 (値に依存する型) のような強い型を持つ言語 (Coq, Agda, Lean, Idris, ...) であれば，たとえば環を表現する構造が，交換法則や分配法則を型のフィールドとして持つことを強制できます．
+
+```lean
+class Ring (α : Type) where
+  add : α → α → α
+  mul : α → α → α
+  add_comm    : ∀ a b : α, add a b = add b a
+  mul_distrib : ∀ a b c : α, mul a (add b c) = add (mul a b) (mul a c)
+```
+
+とか書いて `add_comm` や `mul_distrib` の実装で型チェックが通らないとコンパイラが弾いてしまうような形ですね．
+
+## まとめ
+
+Standard ML のモジュールシステムで一階の型クラスを作って遊んでみました．signature を class に structure を instance に functor は instance を渡す汎用コードと読み替えれば，Haskell の型クラスのかなりの部分はモジュールで書けます．ただし Haskell と同様に縛れるのは演算の型までで，環の分配法則や Monad 則などは保証されないので，そこはテストで面倒を見るとか依存型を持つ言語でやっていくとか，そういう話になりますかね．
+
+可換な整数も非可換な行列も同じ `RING` として扱えて，冪乗が行列だと Fibonacci を計算しているのが，個人的に楽しいところかなと思います．この記事では一階の型クラス (Kind は `*`) を扱いましたが，発表では Monad (Kind は `* -> *`) についても触れたので，よければスライドもチラ見してください．
+
+せっかく大阪に来たので，明石焼き (それ兵庫では) を食べました．
+
+<Img src="@@/2026-06-14-01_sml-type-class/akashi.webp" alt="明石焼き (はじめてたべた)" width="50%" caption="明石焼き (はじめてたべた)" />
+
+うまかった．
+
+あとは，観光客として中之島あたりを探索しましたが，なかなか面白かったです．
