@@ -176,7 +176,7 @@ end
 ```sml
 functor RingUtils (R : RING) =
 struct
-  (* 素朴な累乗, 二乗法にしてもいい *)
+  (* 素朴な冪乗, 二乗法にしてもいい *)
   fun power (_, 0) = R.one
     | power (x, n) = R.mul (x, power (x, n - 1))
 
@@ -209,7 +209,7 @@ val _ = print ("Add Commutative (3 + 5 = 5 + 3)? : " ^
                Bool.toString (IntUtils.isAddCommutative (3, 5)) ^ "\n")
 val _ = print ("Mul Commutative (3 * 5 = 5 * 3)? : " ^
                Bool.toString (IntUtils.isMulCommutative (3, 5)) ^ "\n\n")
-val _ = print ("Left Distributive (3*(5+11) = 3*5 + 3*11)? : " ^
+val _ = print ("Left Distributive (3 * (5 + 11) = 3 * 5 + 3 * 11)? : " ^
                Bool.toString (IntUtils.isLeftDistributive (3, 5, 11)) ^ "\n")
 
 (* 行列の検証 *)
@@ -240,7 +240,7 @@ val _ = print ("Left Distributive (A*(B+C) = A*B + A*C)? : " ^
 
 Add Commutative (3 + 5 = 5 + 3)? : true
 Mul Commutative (3 * 5 = 5 * 3)? : true
-Left Distributive (3*(5+11) = 3*5 + 3*11)? : true
+Left Distributive (3 * (5 + 11) = 3 * 5 + 3 * 11)? : true
 
 === Mat2 Tests ===
 -- Fibonacci Matrix ^ 10 --
@@ -249,7 +249,7 @@ Left Distributive (3*(5+11) = 3*5 + 3*11)? : true
 
 Add Commutative (A + B = B + A)? : true
 Mul Commutative (A * B = B * A)? : false
-Left Distributive (A*(B+C) = A*B + A*C)? : true
+Left Distributive (A * (B + C) = A * B + A * C)? : true
 ```
 
 行列の冪乗で Fibonacci 数を計算できて $\left[\begin{array}{cc}1 & 1 \\1 & 0\end{array}\right]^n=\left[\begin{array}{cc}F_{n+1} & F_n \\F_n & F_{n-1}\end{array}\right]$ となるので，`Mat2Utils.power (fib, 10)` の返している値は $\left[\begin{array}{cc}F_{11} & F_{10} \\F_{10} & F_{9}\end{array}\right]=\left[\begin{array}{cc}89 & 55 \\55 & 34\end{array}\right]$ です．整数の冪乗と同じ抽象コードなのに，行列に適用すると裏で Fibonacci 数を計算しているのおもろいと思います．行列の乗法が非可換なのを含め，ざっとチェックできていますね．
@@ -274,7 +274,7 @@ class Ring (α : Type) where
   mul_distrib : ∀ a b c : α, mul a (add b c) = add (mul a b) (mul a c)
 ```
 
-とか書いて `add_comm` や `mul_distrib` の実装で型チェックが通らないとコンパイラが弾いてしまうような形ですね．
+とか書いて `add_comm` や `mul_distrib` の実装 (i.e. 証明) で型チェックが通らないとコンパイラが弾いてしまうような形ですね．
 
 ## まとめ
 
