@@ -56,23 +56,33 @@ export const aboutDataJa: AboutData = {
       category: 'Articles',
       items: [
         {
-          title: '地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
-          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
-          description:
-            '職場の Tech Blog です．Cloud Spanner のコアアーキテクチャについて，マルチリージョン構成を支える分散合意 (Paxos) や原子時計を用いた TrueTime の仕組みなど Google Cloud のブラックボックスを掘り下げています．',
-          date: '2025年12月',
-        },
-        {
           title: '順序の不確実性と決定性 〜 Cloud Dataflow における可換モノイド',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
             '職場の Tech Blog です．Cloud Dataflow のパイプラインの安定性に可換モノイドの構造が寄与しているという話題です．',
           date: '2026年4月',
         },
+        {
+          title: '地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
+          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
+          description:
+            '職場の Tech Blog です．Cloud Spanner のコアアーキテクチャについて，マルチリージョン構成を支える分散合意 (Paxos) や原子時計を用いた TrueTime の仕組みなど Google Cloud のブラックボックスを掘り下げています．',
+          date: '2025年12月',
+        },
       ],
     },
   ],
   talks: [
+    {
+      title: 'HKT のない言語で Monad をどう表現するか 〜 Standard ML の場合',
+      event: 'λ Kansai in Summer 2026',
+      eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',
+      date: '2026年6月13日',
+      slideUrl: 'https://doc.silasol.la/talks/2026-06-13_lambda-kansai/slides.pdf',
+      postSlug: '2026-06-14-01_sml-type-class',
+      description:
+        '大阪で開催された関数型プログラミングのイベントです．Standard ML で Haskell のような型クラスや Monad をやる試みです．',
+    },
     {
       title: '先達もすなる仕様駆動といふものを、オタクもしてみむとてするなり。',
       event: 'AI を紡ぐ者たち #1',

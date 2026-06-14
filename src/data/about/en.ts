@@ -57,23 +57,33 @@ export const aboutDataEn: AboutData = {
       category: 'Articles',
       items: [
         {
-          title: 'How Cloud Spanner Solved the Global "Time Lag"',
-          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
-          description:
-            "A post from my company's Tech Blog. Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. I examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
-          date: 'December 2025',
-        },
-        {
           title: 'Commutative Monoids in Cloud Dataflow',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
             "A post from my company's Tech Blog. It discusses how commutative monoid structures contribute to the stability of Cloud Dataflow pipelines.",
           date: 'April 2026',
         },
+        {
+          title: 'How Cloud Spanner Solved the Global "Time Lag"',
+          url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
+          description:
+            "A post from my company's Tech Blog. Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. I examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
+          date: 'December 2025',
+        },
       ],
     },
   ],
   talks: [
+    {
+      title: 'How to Represent Monads in a Language Without HKTs: The Case of Standard ML',
+      event: 'λ Kansai in Summer 2026',
+      eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',
+      date: 'June 13, 2026',
+      slideUrl: 'https://doc.silasol.la/talks/2026-06-13_lambda-kansai/slides.pdf',
+      postSlug: '2026-06-14-01_sml-type-class',
+      description:
+        'A functional programming event held in Osaka. Shared an attempt to implement Haskell-like type classes and Monads in Standard ML.',
+    },
     {
       title: 'Reflections on Practicing Spec-Driven Development',
       event: 'AI を紡ぐ者たち #1',
