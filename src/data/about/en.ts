@@ -57,6 +57,13 @@ export const aboutDataEn: AboutData = {
       category: 'Articles',
       items: [
         {
+          title: 'Sreake Use Case (Interview with TIIS)',
+          url: 'https://sreake.com/case/tiis/',
+          description:
+            'A case study from a client project at my company. It involves providing support for the modernization of application development.',
+          date: 'June 2026',
+        },
+        {
           title: 'Commutative Monoids in Cloud Dataflow',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:

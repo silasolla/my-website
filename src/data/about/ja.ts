@@ -56,6 +56,13 @@ export const aboutDataJa: AboutData = {
       category: 'Articles',
       items: [
         {
+          title: 'Sreake 活用事例の紹介 (TIIS さま, インタビュー記事)',
+          url: 'https://sreake.com/case/tiis/',
+          description:
+            '職場の顧客案件における事例紹介です．アプリケーション開発のモダナイゼーション支援をやっております．',
+          date: '2026年6月',
+        },
+        {
           title: '順序の不確実性と決定性 〜 Cloud Dataflow における可換モノイド',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
