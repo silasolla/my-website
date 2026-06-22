@@ -1,0 +1,37 @@
+---
+title: '職場の Tech Blog に記事を 3 本投稿し，顧客案件の事例も公開されました'
+date: 2026-06-22
+tags: ['news']
+description: '職場の Tech Blog に分散システムに関する記事を 3 本投稿し，事業部の顧客案件の活用事例インタビューも公開されました．'
+lang: 'ja'
+---
+
+株式会社スリーシェイク (職場) の Tech Blog に，分散システムにまつわる記事を 3 本投稿しました．いずれも具体的なプロダクトを入り口にしつつ，その背後にある本質的な仕組みを掘り下げる構成にしています．
+
+## 投稿した記事
+
+### Zanzibar モデルで考えるグラフの単調性と権限追記の安全性
+
+Zanzibar の権限モデルを有向グラフとして捉え，権限判定をパスの到達性に帰着させる流れや，否定 (差集合) を含むと単調性が崩れ，データの到着順によっては安全性を保証できなくなること (CALM 定理) を扱っています．
+
+https://sreake.com/blog/graphs-monotonicity-and-permission-safety-on-zanzibar-model/
+
+### TrueTime だけではない Spanner クエリエンジンの役割
+
+Spanner の解説記事です．整合性を支えるストレージ層ではなく，性能を稼ぐコンピュート層に着目し，Distributed Union や Batched Apply Join, Restart Token, Ressi といったクエリエンジンの工夫を追っています．
+
+https://sreake.com/blog/spanner-query-engine-functionability/
+
+### Firestore の競合解決とデータモデルの選択
+
+Firestore のオフライン競合解決 (last write wins や Field transform) を CRDT (G-Counter や RGA など) と並べ，競合解決の責任をどこに持たせるかという設計上の違いに踏み込んでいます．
+
+https://sreake.com/blog/firestore-conflict-resolution-and-data-model-selection/
+
+## 活用事例
+
+あわせて，所属する Sreake 事業部の顧客案件の事例として，TIIS さまのインタビュー記事も公開されました．こちらの案件で，私はアプリケーション開発のモダナイゼーション支援に携わっています．
+
+https://sreake.com/case/tiis/
+
+よければ，読んでいただけると嬉しいです．
