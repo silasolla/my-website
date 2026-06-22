@@ -56,6 +56,27 @@ export const aboutDataJa: AboutData = {
       category: 'Articles',
       items: [
         {
+          title: 'Zanzibar モデルで考えるグラフの単調性と権限追記の安全性',
+          url: 'https://sreake.com/blog/graphs-monotonicity-and-permission-safety-on-zanzibar-model/',
+          description:
+            '職場の Tech Blog です．Google Zanzibar の権限モデルを題材に，Relation Tuple を有向グラフとして捉え権限判定をパスの到達性に帰着させる流れや，否定 (差集合) が単調性を崩し分散環境で事故を招くこと (CALM 定理) を掘り下げています．',
+          date: '2026年6月',
+        },
+        {
+          title: 'TrueTime だけではない Spanner クエリエンジンの役割',
+          url: 'https://sreake.com/blog/spanner-query-engine-functionability/',
+          description:
+            '職場の Tech Blog です．Spanner の整合性を支えるストレージ層ではなく，性能を稼ぐコンピュート層に着目し，Distributed Union や Batched Apply Join，Restart Token，Ressi といったクエリエンジンの工夫を掘り下げています．',
+          date: '2026年6月',
+        },
+        {
+          title: 'Firestore の競合解決とデータモデルの選択',
+          url: 'https://sreake.com/blog/firestore-conflict-resolution-and-data-model-selection/',
+          description:
+            '職場の Tech Blog です．Firestore のオフライン競合解決 (last write wins や Field transform) を CRDT (G-Counter, RGA など) と並べ，競合解決の責任をどこに持たせるかという設計の違いを掘り下げています．',
+          date: '2026年6月',
+        },
+        {
           title: 'Sreake 活用事例の紹介 (TIIS さま, インタビュー記事)',
           url: 'https://sreake.com/case/tiis/',
           description:

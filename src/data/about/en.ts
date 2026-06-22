@@ -57,6 +57,27 @@ export const aboutDataEn: AboutData = {
       category: 'Articles',
       items: [
         {
+          title: 'Graph Monotonicity and the Safety of Permission Additions in the Zanzibar Model',
+          url: 'https://sreake.com/blog/graphs-monotonicity-and-permission-safety-on-zanzibar-model/',
+          description:
+            "A post from my company's Tech Blog. Using Google Zanzibar's authorization model, I treat relation tuples as a directed graph and reduce permission checks to reachability, then explore how negation (set difference) breaks monotonicity and can cause incidents in distributed systems (the CALM theorem).",
+          date: 'June 2026',
+        },
+        {
+          title: 'Beyond TrueTime: The Role of the Spanner Query Engine',
+          url: 'https://sreake.com/blog/spanner-query-engine-functionability/',
+          description:
+            "A post from my company's Tech Blog. Rather than the storage layer that guarantees consistency, I focus on the compute layer that earns performance, exploring query engine techniques such as Distributed Union, Batched Apply Join, Restart Token, and Ressi.",
+          date: 'June 2026',
+        },
+        {
+          title: 'Firestore Conflict Resolution and Choosing a Data Model',
+          url: 'https://sreake.com/blog/firestore-conflict-resolution-and-data-model-selection/',
+          description:
+            "A post from my company's Tech Blog. I compare Firestore's offline conflict resolution (last write wins and Field transform) with CRDTs (G-Counter, RGA, etc.), exploring the design difference of where the responsibility for conflict resolution should live.",
+          date: 'June 2026',
+        },
+        {
           title: 'Sreake Use Case (Interview with TIIS)',
           url: 'https://sreake.com/case/tiis/',
           description:
