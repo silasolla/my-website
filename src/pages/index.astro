@@ -24,12 +24,13 @@ const regularPosts = allPosts
     if (dateDiff !== 0) return dateDiff;
     return b.id.localeCompare(a.id); // 同じ日付の場合はidで降順ソート
   });
-const latestPosts = regularPosts.slice(0, 5);
+const latestPosts = regularPosts.slice(0, 6);
 
 const pageTitle = getTranslation(Astro.currentLocale, 'page.home');
 const siteName = getSiteName(Astro.currentLocale);
 const latestTitle = getTranslation(Astro.currentLocale, 'home.latest');
 const noPostsText = getTranslation(Astro.currentLocale, 'home.no-posts');
+const viewAllText = getTranslation(Astro.currentLocale, 'home.view-all');
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
 const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
@@ -104,6 +105,29 @@ const locale = Astro.currentLocale;
             </li>
           ))}
         </ul>
+      )
+    }
+
+    {
+      regularPosts.length > latestPosts.length && (
+        <div class="view-all-wrapper">
+          <a href="/posts/" class="view-all-link">
+            {viewAllText}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+        </div>
       )
     }
   </section>
@@ -228,6 +252,41 @@ const locale = Astro.currentLocale;
     color: var(--color-text-light);
     margin: 0;
     line-height: 1.6;
+  }
+
+  .view-all-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-alt);
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .view-all-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(90, 138, 94, 0.15);
+  }
+
+  .view-all-link svg {
+    transition: transform 0.2s ease;
+  }
+
+  .view-all-link:hover svg {
+    transform: translateX(3px);
   }
 
   @media (max-width: 768px) {

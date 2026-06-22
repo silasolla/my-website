@@ -22,6 +22,7 @@ export const translations = {
     'home.important': '重要',
     'home.latest': '最新の記事',
     'home.no-posts': 'まだ記事がありません．',
+    'home.view-all': 'すべての記事を見る',
 
     // 記事ページ
     'posts.title': '記事',
@@ -119,6 +120,7 @@ export const translations = {
     'home.important': 'Important',
     'home.latest': 'Latest Posts',
     'home.no-posts': 'No posts yet.',
+    'home.view-all': 'View all posts',
 
     // Posts page
     'posts.title': 'Posts',
