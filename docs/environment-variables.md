@@ -60,15 +60,26 @@
 
 ## 主要な環境変数
 
-このプロジェクトで使用される主な環境変数は以下の通りです。
+このプロジェクトで使用される主な環境変数は以下の通りです．
 
 | 変数名                 | 説明                                                                                                                                                                    | 必須   | 例                              |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
 | `SITE_URL`             | サイトの正規 URL です．サイトマップや OGP 画像の生成に使用されます．                                                                                                    | はい   | `https://your-domain.com`       |
 | `PUBLIC_DATA_BASE_URL` | [特別記事機能](./special-articles.md) で使用する，記事データを配信するサイトのベース URL です．`PUBLIC_` プレフィックスが付いているため，ブラウザからアクセス可能です． | いいえ | `https://data.your-domain.com`  |
 | `IMAGE_BASE_URL`       | 記事内の画像を指定された CDN から配信する場合のベース URL です．設定すると `@@/` で始まる画像パスがこの URL に置換されます．                                            | いいえ | `https://your-image-cdn.com`    |
-| `NGROK_HOST`           | `ngrok` を使用してローカル環境を外部公開する際に，HMR (ホットリロード) を正しく機能させるために使用します．                                                             | いいえ | `your-unique-id.ngrok-free.app` |
+| `USE_NGROK`            | `true` のときだけ ngrok 向け設定を有効にします．未設定時は `NGROK_HOST` は無視され，localhost 向けの通常 HMR になります．                                               | いいえ | `true`                          |
+| `NGROK_HOST`           | `USE_NGROK=true` のときの ngrok ホスト名です．`https://` は付けず，ホスト名のみ (例: `xxxx.ngrok-free.app`) を指定します．HMR は無効 (手動リロード) です．              | いいえ | `your-unique-id.ngrok-free.app` |
 | `R2_BUCKET_NAME`       | Cloudflare R2 のバケット名です．`make upload-images` で使用します．                                                                                                     | いいえ | `public`                        |
+
+### ngrok 経由で開くとき
+
+1. `npm run dev` を起動する (ポート 4321)
+2. 別ターミナルで `ngrok http 127.0.0.1:4321` を起動する
+3. `.env` に `USE_NGROK=true` と `NGROK_HOST=xxxx.ngrok-free.app` を設定する (`NGROK_HOST` は ngrok 起動時の表示に合わせる，`allowedHosts` は `.ngrok-free.app` で自動許可)
+4. `npm run dev` を再起動する
+5. ブラウザで ngrok の URL を開く
+
+ngrok の URL が変わったら `NGROK_HOST` を更新し，開発サーバーを再起動してください．通常の開発では `USE_NGROK` は未設定にしてください．
 
 ## ビルド時の自動ファイル生成
 

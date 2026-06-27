@@ -4,6 +4,8 @@
 
 記事の画像は Cloudflare R2 にホストし，カスタムドメイン (例：`https://image.example.com/posts/`) から配信します．
 
+ヘッダー背景やアバターなどサイト UI の固定画像は [サイト固定画像](./static-images.md) を参照してください．
+
 ## ディレクトリ構造
 
 ```

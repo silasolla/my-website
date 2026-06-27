@@ -93,8 +93,6 @@ coverImage: '@@/2025-10-26-01_my-article/ogp.jpg' # ← OGP 画像
 ---
 ```
 
-**ポイント：**
-
 - `coverImage` を指定すると Twitter Card や Facebook などの OGP 画像として使用されます
 - 省略した場合は，デフォルトのアバター画像が使われます
 - `@@/` 記法を使うことで，開発環境と本番環境で自動的に適切なURLに変換されます
@@ -142,13 +140,29 @@ import Tweet from '@/components/Tweet.astro';
 <Tweet id="1234567890123456789" user="username" />
 ```
 
-**ポイント：**
-
 - Tweet ID は投稿URLの数字部分です (例: `https://twitter.com/user/status/1234567890123456789`)
-- `user` パラメータは省略可能（省略時は `x` がデフォルト）
+- `user` パラメータは省略可能 (省略時は `x` がデフォルト)
 - ダークモードに自動対応します
 
-### 2.6 スライド (PDF) の埋め込み
+### 2.6 数式 (KaTeX)
+
+数式を使う記事では frontmatter に `math: true` を追加します．
+
+```markdown
+---
+title: 記事タイトル
+date: 2025-10-26
+tags: ['tech']
+math: true
+---
+
+$O(n \log n)$ の話をします．
+```
+
+- `math: true` の記事のみ KaTeX の CSS が読み込まれます (ビルド時に `/_astro/` へバンドル)
+- 数式を使わない記事では省略してください (デフォルトでは CSS を読み込まない)
+
+### 2.7 スライド (PDF) の埋め込み
 
 登壇スライドなどの PDF を，ページ送り・最大化・PDF リンク付きで埋め込めます．記事冒頭で `Slide` コンポーネントをインポートして使います：
 
@@ -170,14 +184,12 @@ import Slide from '@/components/Slide.astro';
 - `title` (オプション): スライドのタイトル．キャプションとして下部に表示されます．
 - `ratio` (オプション, デフォルト `16 / 9`): フレームのアスペクト比．例: `"4 / 3"`．
 
-**ポイント：**
-
 - 内部では PDF.js で `<canvas>` に描画します．総ページ数は PDF から自動取得します．
 - 全画面ボタンは Fullscreen API でフレーム全体を全画面表示し，再押下で縮小します．
 - PDF は CORS 越しに `fetch` するため，`src` のオリジンに `Access-Control-Allow-Origin` を設定してください．
 - ダーク／ライト両モードに自動対応します．
 
-### 2.7 画像を配置
+### 2.8 画像を配置
 
 ```bash
 # 画像ディレクトリに画像をコピー
@@ -194,7 +206,7 @@ public/posts/images/2025-10-26-01_my-article-title/
 
 **重要：この画像はGitにコミットしません** (`.gitignore`で除外済み)
 
-### 2.8 ローカルで確認
+### 2.9 ローカルで確認
 
 ```bash
 npm run dev
@@ -468,8 +480,6 @@ import Img from '@/components/Img.astro';
 <Img src="@@/2025-10-26-01_my-post/chart.webp" alt="チャート" caption="グラフ" width="50%" />
 ```
 
-**ポイント：**
-
 - 記事ファイルは MDX 形式なので，通常の Markdown 記法と Astro コンポーネントの両方が使えます
 - `width` はピクセル値 (`400`) またはパーセント (`"50%"`) で指定
 - `caption` を指定すると画像の下にキャプションが表示されます
@@ -492,8 +502,6 @@ import Img from '@/components/Img.astro';
    ↓
 7. 本番環境で公開🎉
 ```
-
-**ポイント：**
 
 - 画像はローカル → R2へ直接アップロード (**スラッグ指定必須**)
 - 記事ファイルはGit → Cloudflare Workers へ

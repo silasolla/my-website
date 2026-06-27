@@ -20,13 +20,14 @@ Markdown/MDX によって記事を管理します．
 ```
 /
 ├── public/                  # 静的アセット
-│   ├── avatar.png           # プロフィール画像
-│   ├── profile/             # ギャラリー画像
-│   ├── header-bg-*.jpg      # ヘッダー背景画像 (レスポンシブ)
+│   ├── avatar.png           # プロフィール画像 (OGP, ヘッダー, About 共通)
+│   ├── profile/             # About ギャラリー画像
 │   ├── favicon*.png         # ファビコン各種
 │   ├── icons/               # アイコン (Bluesky, Twitter, リンクなど)
 │   └── posts/images/        # 記事の画像 (gitignore, R2にホスト)
 ├── src/
+│   ├── assets/              # ヘッダー背景 (getImage で /_astro/ 出力)
+│   │   └── header/          # header-bg-*.webp
 │   ├── components/          # 再利用可能なコンポーネント
 │   │   ├── Header.astro
 │   │   ├── Navigation.astro
@@ -74,8 +75,8 @@ Markdown/MDX によって記事を管理します．
 │   └── utils/               # ユーティリティ
 ├── docs/                    # ドキュメント
 │   ├── about-data.md        # About データ管理ガイド
-│   ├── header-backgrounds.md
-│   ├── image-hosting.md
+│   ├── image-hosting.md     # 記事画像 (R2)
+│   ├── static-images.md     # サイト固定画像
 │   └── workflow.md          # 記事作成ワークフロー
 ├── scripts/                 # スクリプト
 │   ├── generate-static-files.js # ビルド時の _headers 等を生成
@@ -109,29 +110,21 @@ cp .env.example .env
 
 #### 環境変数
 
-- `SITE_URL`: サイトの URL (デフォルト: https://example.com)
-  - Astro の `site` 設定，サイトマップ，OGP に使用されます
-- `IMAGE_BASE_URL`: 画像ホスティングのベース URL (デフォルト: ローカル)
-  - 開発環境:
-    - **未設定の場合**: ローカル画像 (/posts/images) を使用
-    - **設定した場合**: R2 を参照し，404 の場合は自動的にローカルにフォールバック
-  - 本番環境: `https://image.example.com` (Cloudflare R2から読み込み，フォールバックなし)
-- `R2_BUCKET_NAME`: R2 のバケット名 (画像アップロード用)
-- `NGROK_HOST`: 開発時の ngrok ホスト (オプショナル)
+[環境変数ガイド](./docs/environment-variables.md) を参照してください．
 
 ### ドキュメント
 
-運用に関するドキュメントは `docs/` ディレクトリにまとめられています．
-
-- **[記事作成ワークフロー](./docs/workflow.md)**: 新しい記事の作成から公開までの手順を説明します
-- **[Cloudflare Workers 運用ガイド](./docs/cloudflare-workers.md)**: デプロイ, カスタムドメイン, Observability, `wrangler.jsonc` の設定
-- **[環境変数ガイド](./docs/environment-variables.md)**: プロジェクトで使用する環境変数について説明します
-- **[サイトマップガイド](./docs/sitemap-guide.md)**: サイトマップの自動生成と設定について説明します
-- **[特別記事機能ガイド](./docs/special-articles.md)**: 検索エンジンから除外される特別な記事を配信する機能について説明します
-- **[Aboutページデータ管理](./docs/about-data.md)**: 「私について」ページのコンテンツ (経歴や資格など) の編集方法を説明します
-- **[データ管理と国際化対応](./docs/data-i18n.md)**: プロファイルデータの一元管理と i18n の仕組みについて説明します
-- **[画像ホスティング](./docs/image-hosting.md)**: 画像のアップロードと配信の仕組みについて説明します
-- **[ヘッダー背景画像](./docs/header-backgrounds.md)**: ヘッダー背景画像の管理方法について説明します
+| ドキュメント                                                | 内容                                     |
+| ----------------------------------------------------------- | ---------------------------------------- |
+| [workflow.md](./docs/workflow.md)                           | 記事の作成から公開                       |
+| [environment-variables.md](./docs/environment-variables.md) | 環境変数                                 |
+| [image-hosting.md](./docs/image-hosting.md)                 | 記事画像 (R2)                            |
+| [static-images.md](./docs/static-images.md)                 | ヘッダー背景，アバター，About ギャラリー |
+| [cloudflare-workers.md](./docs/cloudflare-workers.md)       | デプロイ，Workers 設定                   |
+| [about-data.md](./docs/about-data.md)                       | About ページのデータ                     |
+| [data-i18n.md](./docs/data-i18n.md)                         | プロファイルデータ，i18n                 |
+| [sitemap-guide.md](./docs/sitemap-guide.md)                 | サイトマップ                             |
+| [special-articles.md](./docs/special-articles.md)           | 特別記事                                 |
 
 ### 記事の作成と公開
 
