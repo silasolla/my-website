@@ -40,7 +40,7 @@
     "wrangler": "^4.105.0"
   },
   "overrides": {
-    "lodash": "^4.17.21"
+    "yaml": "^2.8.3"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,
