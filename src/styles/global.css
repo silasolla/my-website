@@ -128,12 +128,12 @@ p {
 
 .tag-news {
   background: #e3f2fd;
-  color: #1976d2;
+  color: #0d47a1;
 }
 
 [data-theme='dark'] .tag-news {
   background: #1e3a5f;
-  color: #90caf9;
+  color: #bbdefb;
 }
 
 .tag-tech {
@@ -148,12 +148,12 @@ p {
 
 .tag-diary {
   background: #fff3e0;
-  color: #e65100;
+  color: #bf360c;
 }
 
 [data-theme='dark'] .tag-diary {
   background: #5f3a1e;
-  color: #ffb74d;
+  color: #ffcc80;
 }
 
 /* ===========================================

@@ -186,9 +186,14 @@ const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close')
   }
 
   .nav-list li a.active {
-    color: white;
-    background: var(--color-primary);
-    font-weight: 500;
+    color: #ffffff;
+    background: var(--color-primary-dark);
+    font-weight: 600;
+  }
+
+  :global([data-theme='dark']) .nav-list li a.active {
+    color: var(--color-bg);
+    background: var(--color-primary-dark);
   }
 
   @media (max-width: 640px) {
