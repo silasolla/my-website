@@ -93,7 +93,7 @@ Markdown/MDX によって記事を管理します．
 
 ### 必要な環境
 
-- Node.js 20.x 以上
+- Node.js 24.x (Active LTS, `.node-version` 参照)
 - npm
 
 ### セットアップ
