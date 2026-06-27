@@ -252,7 +252,19 @@ Mul Commutative (A * B = B * A)? : false
 Left Distributive (A * (B + C) = A * B + A * C)? : true
 ```
 
-行列の冪乗で Fibonacci 数を計算できて $\left[\begin{array}{cc}1 & 1 \\1 & 0\end{array}\right]^n=\left[\begin{array}{cc}F_{n+1} & F_n \\F_n & F_{n-1}\end{array}\right]$ となるので，`Mat2Utils.power (fib, 10)` の返している値は $\left[\begin{array}{cc}F_{11} & F_{10} \\F_{10} & F_{9}\end{array}\right]=\left[\begin{array}{cc}89 & 55 \\55 & 34\end{array}\right]$ です．整数の冪乗と同じ抽象コードなのに，行列に適用すると裏で Fibonacci 数を計算しているのおもろいと思います．行列の乗法が非可換なのを含め，ざっとチェックできていますね．
+行列の冪乗で Fibonacci 数を計算できて
+
+$$
+\left[\begin{array}{cc}1 & 1 \\1 & 0\end{array}\right]^n=\left[\begin{array}{cc}F_{n+1} & F_n \\F_n & F_{n-1}\end{array}\right]
+$$
+
+となるので，`Mat2Utils.power (fib, 10)` の返している値は
+
+$$
+\left[\begin{array}{cc}F_{11} & F_{10} \\F_{10} & F_{9}\end{array}\right]=\left[\begin{array}{cc}89 & 55 \\55 & 34\end{array}\right]
+$$
+
+です．整数の冪乗と同じ抽象コードなのに，行列に適用すると裏で Fibonacci 数を計算しているのおもろいと思います．行列の乗法が非可換なのを含め，ざっとチェックできていますね．
 
 ## あくまでも縛っているのは演算の型だけ
 
