@@ -4,20 +4,27 @@ import LanguageSwitch from './LanguageSwitch.astro';
 import { getTranslation } from '../i18n/translations';
 import { getSiteTitle } from '../i18n/utils';
 import { profileData } from '../data/profile';
-import mobileBgSrc from '../assets/header/header-bg-mobile.webp';
-import tabletBgSrc from '../assets/header/header-bg-tablet.webp';
-import desktopBgSrc from '../assets/header/header-bg-desktop.webp';
+import avatarSrc from '../assets/avatar.png';
+
+interface Props {
+  mobileBg: Awaited<ReturnType<typeof getImage>>;
+  tabletBg: Awaited<ReturnType<typeof getImage>>;
+  desktopBg: Awaited<ReturnType<typeof getImage>>;
+}
 
 const siteTitle = getSiteTitle(Astro.currentLocale);
 const tagline = getTranslation(Astro.currentLocale, 'site.tagline');
 const themeToggleLabel = getTranslation(Astro.currentLocale, 'theme.toggle');
 const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light');
 
-const [mobileBg, tabletBg, desktopBg] = await Promise.all([
-  getImage({ src: mobileBgSrc, width: 1200, height: 600, format: 'webp', quality: 82 }),
-  getImage({ src: tabletBgSrc, width: 1920, height: 480, format: 'webp', quality: 82 }),
-  getImage({ src: desktopBgSrc, width: 2400, height: 300, format: 'webp', quality: 82 }),
-]);
+const { mobileBg, tabletBg, desktopBg } = Astro.props;
+const avatar = await getImage({
+  src: avatarSrc,
+  width: 180,
+  height: 180,
+  format: 'webp',
+  quality: 85,
+});
 ---
 
 <header class="header" id="header">
@@ -25,10 +32,10 @@ const [mobileBg, tabletBg, desktopBg] = await Promise.all([
   <div class="header-content">
     <a href="/" class="site-title">
       <img
-        src={profileData.avatar}
+        src={avatar.src}
         alt={profileData.nameEn}
-        width="90"
-        height="90"
+        width={avatar.attributes.width}
+        height={avatar.attributes.height}
         loading="eager"
         fetchpriority="high"
         decoding="async"

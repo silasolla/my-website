@@ -6,6 +6,7 @@ import { getCurrentLocale, getTranslation } from '../i18n/translations';
 import { getSiteTitle, getSiteDescription } from '../i18n/utils';
 import { profileData, seoKeywords } from '../data/profile';
 import KaTeXStyles from '../components/KaTeXStyles.astro';
+import { getHeaderBackgrounds } from '../lib/headerBackgrounds';
 
 // Global styles
 import '../styles/global.css';
@@ -30,6 +31,8 @@ const {
   noIndex = false,
   math = false,
 } = Astro.props;
+
+const { mobileBg, tabletBg, desktopBg } = await getHeaderBackgrounds();
 
 // 開発環境でのフォールバック用
 const isDev = import.meta.env.DEV;
@@ -89,6 +92,28 @@ const structuredData = {
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
     {!isDev && <link rel="manifest" href="/site.webmanifest" />}
     <meta name="theme-color" content="#5a8a5e" />
+
+    <link
+      rel="preload"
+      as="image"
+      href={mobileBg.src}
+      media="(max-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={tabletBg.src}
+      media="(min-width: 769px) and (max-width: 1440px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={desktopBg.src}
+      media="(min-width: 1441px)"
+      fetchpriority="high"
+    />
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -222,7 +247,7 @@ const structuredData = {
     {math && <KaTeXStyles />}
   </head>
   <body {...isDev ? { 'data-dev': 'true', 'data-image-base': imageBaseUrl } : {}}>
-    <Header />
+    <Header mobileBg={mobileBg} tabletBg={tabletBg} desktopBg={desktopBg} />
     <main class="main-content">
       <div class="container">
         <Navigation />
