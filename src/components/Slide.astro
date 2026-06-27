@@ -1,4 +1,6 @@
 ---
+import { getSlidePdfFetchUrl } from '../plugins/vite-slide-pdf-proxy.mjs';
+
 export interface Props {
   src: string;
   title?: string;
@@ -8,9 +10,10 @@ export interface Props {
 const { src, title, ratio = '16 / 9' } = Astro.props;
 
 const aspectRatio = ratio.replace(':', ' / ');
+const fetchSrc = getSlidePdfFetchUrl(src, import.meta.env.DEV);
 ---
 
-<figure class="slide" data-src={src} style={`--slide-aspect: ${aspectRatio};`}>
+<figure class="slide" data-src={fetchSrc} style={`--slide-aspect: ${aspectRatio};`}>
   <div class="slide-frame">
     <div class="slide-stage">
       <canvas class="slide-canvas"></canvas>

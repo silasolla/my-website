@@ -13,6 +13,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkLinkCard from 'remark-link-card';
 import { rehypeLinkCardTarget } from './src/plugins/rehype-link-card-target.mjs';
 import { rehypeExternalLinks } from './src/plugins/rehype-external-links.mjs';
+import { slidePdfProxyPlugin } from './src/plugins/vite-slide-pdf-proxy.mjs';
 
 // .envファイルを読み込み
 dotenv.config();
@@ -28,13 +29,6 @@ const SITE_URL = process.env.SITE_URL || 'https://example.com';
 const USE_NGROK = process.env.USE_NGROK === 'true';
 const NGROK_HOST = USE_NGROK
   ? process.env.NGROK_HOST?.replace(/^https?:\/\//, '').replace(/\/$/, '')
-  : undefined;
-
-const ngrokServer = NGROK_HOST
-  ? {
-      origin: `https://${NGROK_HOST}`,
-      hmr: false,
-    }
   : undefined;
 
 const devAllowedHosts = [
@@ -104,17 +98,15 @@ export default defineConfig({
       'Access-Control-Allow-Origin': '*',
     },
     allowedHosts: devAllowedHosts,
-    ...(ngrokServer && { hmr: false }),
+    ...(USE_NGROK && NGROK_HOST && { hmr: false }),
   },
   vite: {
+    plugins: [slidePdfProxyPlugin()],
     server: {
       host: true,
       strictPort: false,
       allowedHosts: devAllowedHosts,
-      ...(ngrokServer && {
-        origin: ngrokServer.origin,
-        hmr: ngrokServer.hmr,
-      }),
+      ...(USE_NGROK && NGROK_HOST && { hmr: false }),
     },
   },
 });
