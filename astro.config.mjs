@@ -25,13 +25,33 @@ const smlGrammar = JSON.parse(
 
 // 環境変数の読み込み
 const SITE_URL = process.env.SITE_URL || 'https://example.com';
-const NGROK_HOST = process.env.NGROK_HOST;
+const USE_NGROK = process.env.USE_NGROK === 'true';
+const NGROK_HOST = USE_NGROK
+  ? process.env.NGROK_HOST?.replace(/^https?:\/\//, '').replace(/\/$/, '')
+  : undefined;
+
+const ngrokServer = NGROK_HOST
+  ? {
+      origin: `https://${NGROK_HOST}`,
+      hmr: false,
+    }
+  : undefined;
+
+const devAllowedHosts = [
+  '.ngrok-free.app',
+  'localhost',
+  '127.0.0.1',
+  ...(NGROK_HOST ? [NGROK_HOST] : []),
+];
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
   trailingSlash: 'always',
+  devToolbar: {
+    enabled: !USE_NGROK,
+  },
   integrations: [
     mdx(),
     sitemap({
@@ -83,17 +103,17 @@ export default defineConfig({
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    allowedHosts: devAllowedHosts,
+    ...(ngrokServer && { hmr: false }),
   },
   vite: {
     server: {
       host: true,
       strictPort: false,
-      ...(NGROK_HOST && {
-        hmr: {
-          clientPort: 443,
-          host: NGROK_HOST,
-        },
-        allowedHosts: [NGROK_HOST, 'localhost', '127.0.0.1'],
+      allowedHosts: devAllowedHosts,
+      ...(ngrokServer && {
+        origin: ngrokServer.origin,
+        hmr: ngrokServer.hmr,
       }),
     },
   },
