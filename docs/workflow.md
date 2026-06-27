@@ -287,14 +287,16 @@ git push
 
 - `public/posts/images/2025-10-26-01_my-article-title/` ← 画像はR2のみ
 
-### 4.3 GitHub Actionsが自動ビルド
+### 4.3 GitHub Actions が自動ビルド
 
-プッシュすると自動的に：
+`main` ブランチへのプッシュ時：
 
 1. CI 実行 (フォーマットチェック，型チェックなど)
 2. ビルド実行 (`IMAGE_BASE_URL=https://image.example.com`)
-3. `@@/`記法が`https://image.example.com/posts/...`に変換される
-4. Cloudflare Pagesにデプロイ
+3. `@@/` 記法が `https://image.example.com/posts/...` に変換される
+4. Cloudflare Workers へデプロイ (`wrangler deploy`)
+
+PR では 1〜3 のみ実行され，デプロイは行いません．
 
 **CI が失敗した場合，デプロイは実行されません．**
 
@@ -305,7 +307,7 @@ https://example.com で公開された記事を確認します．
 画像はR2から配信されます：
 
 ```
-記事HTML: Cloudflare Pages
+記事 HTML: Cloudflare Workers
 画像: Cloudflare R2 (CDN)
 ```
 
@@ -494,7 +496,7 @@ import Img from '@/components/Img.astro';
 **ポイント：**
 
 - 画像はローカル → R2へ直接アップロード (**スラッグ指定必須**)
-- 記事ファイルはGit → Cloudflare Pagesへ
+- 記事ファイルはGit → Cloudflare Workers へ
 - **画像はGitに含めない** (リポジトリサイズを抑える)
 - 画像なしの記事は手順4をスキップ
 

@@ -2,7 +2,7 @@
 
 /**
  * ビルド時に環境変数から静的ファイルを生成するスクリプト
- * public/_headers と public/robots.txt を動的に生成
+ * public/_headers, public/robots.txt, public/.assetsignore を動的に生成
  */
 
 import { writeFileSync } from 'fs';
@@ -28,7 +28,7 @@ console.log(`   SITE_URL: ${SITE_URL}`);
 console.log(`   DATA_BASE_URL: ${DATA_BASE_URL}`);
 
 // _headers ファイルを生成
-const headersContent = `# Cloudflare Pages用のセキュリティヘッダー設定
+const headersContent = `# Cloudflare Workers 用のセキュリティヘッダー設定
 # このファイルはビルド時に自動生成されます（scripts/generate-static-files.js）
 
 # 特別記事ページのセキュリティ設定
@@ -64,5 +64,15 @@ Sitemap: ${SITE_URL}/sitemap-index.xml
 const robotsPath = join(publicDir, 'robots.txt');
 writeFileSync(robotsPath, robotsContent, 'utf-8');
 console.log('✅ Generated: public/robots.txt');
+
+// .assetsignore ファイルを生成
+const assetsIgnoreContent = `**/.DS_Store
+**/node_modules
+**/.git
+`;
+
+const assetsIgnorePath = join(publicDir, '.assetsignore');
+writeFileSync(assetsIgnorePath, assetsIgnoreContent, 'utf-8');
+console.log('✅ Generated: public/.assetsignore');
 
 console.log('🎉 Static files generated successfully!');

@@ -21,6 +21,7 @@ pnpm-debug.log*
 # ビルド時に生成される静的ファイル
 public/_headers
 public/robots.txt
+public/.assetsignore
 
 # remark-link-card cache
 public/remark-link-card/

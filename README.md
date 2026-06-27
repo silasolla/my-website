@@ -12,7 +12,7 @@ Markdown/MDX によって記事を管理します．
 - **Astro**: 静的サイトジェネレータ (極力 JS を減らす)
 - **TypeScript**: 型安全な開発
 - **GitHub Actions**: CI/CD
-- **Cloudflare Pages**: サイトのホスティング
+- **Cloudflare Workers**: サイトのホスティング
 - **Cloudflare R2**: 画像のホスティング
 
 ## プロジェクト構成
@@ -78,8 +78,10 @@ Markdown/MDX によって記事を管理します．
 │   ├── image-hosting.md
 │   └── workflow.md          # 記事作成ワークフロー
 ├── scripts/                 # スクリプト
+│   ├── generate-static-files.js # ビルド時の _headers 等を生成
 │   ├── new-post.sh          # 新規記事作成
 │   └── upload-images.sh     # 画像アップロード
+├── wrangler.jsonc           # Cloudflare Workers デプロイ設定
 ├── .github/
 │   ├── workflows/
 │   │   └── deploy.yml       # GitHub Actions デプロイ設定
@@ -108,8 +110,7 @@ cp .env.example .env
 #### 環境変数
 
 - `SITE_URL`: サイトの URL (デフォルト: https://example.com)
-  - Astro の `site` 設定に使用されます
-  - GitHub Actions でのデプロイ時に，この URL からドメイン名を抽出して `CNAME` ファイルを生成します
+  - Astro の `site` 設定，サイトマップ，OGP に使用されます
 - `IMAGE_BASE_URL`: 画像ホスティングのベース URL (デフォルト: ローカル)
   - 開発環境:
     - **未設定の場合**: ローカル画像 (/posts/images) を使用
@@ -191,52 +192,28 @@ npm run preview
 
 ## デプロイ
 
-このサイトは GitHub Actions を使用して Cloudflare Pages に自動デプロイされます．
+`main` ブランチへのプッシュで，GitHub Actions がビルドし Cloudflare Workers にデプロイします．
+`dist/` は Static Assets として配信されます．
 
-`main` ブランチにプッシュまたは PR を作成すると，自動的に以下が実行されます：
+PR では CI (チェックとビルド) のみ実行され，デプロイは行いません．
 
 1. フォーマットチェック (`npm run format:check`)
 2. EditorConfig チェック (`npm run editorconfig:check`)
 3. 型チェック (`npm run typecheck`)
 4. ビルド (`npm run build`)
-5. Cloudflare Pages へのデプロイ (Wrangler)
+5. Cloudflare Workers へのデプロイ (`wrangler deploy`)
 
 **CI が失敗した場合，デプロイは実行されません．**
 
-### GitHub Actions の設定
-
-本番環境用の設定は，GitHub リポジトリで管理します：
-
-#### Secrets
-
-リポジトリの **Settings** → **Secrets and variables** → **Actions** → **Secrets** タブ：
-
-- `CLOUDFLARE_API_TOKEN`: Cloudflare API トークン (Cloudflare Pages Edit 権限)
-- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare アカウント ID
-
-#### Variables
-
-リポジトリの **Settings** → **Secrets and variables** → **Actions** → **Variables** タブ：
-
-- `SITE_URL`: サイトのURL (例: `https://example.com`)
-- `IMAGE_BASE_URL`: 画像ホスティングURL (例: `https://image.example.com`)
-- `CLOUDFLARE_PROJECT_NAME`: Cloudflare Pages プロジェクト名 (例: `my-site`)
+GitHub Actions の Secrets / Variables は **[環境変数ガイド](./docs/environment-variables.md#github-actions-本番環境)** を参照してください．
 
 ### カスタムドメインの設定
 
 初回デプロイ後，Cloudflare ダッシュボードで設定：
 
-1. https://dash.cloudflare.com/ → **Workers & Pages** → プロジェクト
-2. **Custom domains** → **Set up a custom domain**
-3. ドメイン名を入力してDNS設定
-
-### Preview 環境
-
-PR を作成すると，自動的に Preview 環境が作成されます：
-
-- URL: `https://<branch-name>.<project-name>.pages.dev`
-- GitHub の PR ページにリンクが表示されます
-- マージ前に確認可能
+1. https://dash.cloudflare.com/ → **Workers & Pages** → Worker
+2. **Settings** → **Domains & Routes** → **Add** → **Custom domain**
+3. ドメイン名を入力して DNS 設定
 
 **注意**: 開発環境では `.env` ファイル，本番環境では GitHub Actions の Secrets/Variables を使用します．
 
@@ -246,9 +223,9 @@ PR を作成すると，自動的に Preview 環境が作成されます：
 
 ## 注意事項
 
-### リポジトリサイズとCloudflare Pages
+### リポジトリサイズ
 
-Cloudflare Pages 自体にはリポジトリサイズの制約はありませんが，Git リポジトリは軽量に保つことを推奨します．
+Git リポジトリは軽量に保つことを推奨します．
 
 **現在の設計：**
 

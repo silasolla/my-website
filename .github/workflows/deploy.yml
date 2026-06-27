@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
@@ -45,10 +45,10 @@ jobs:
           PUBLIC_DATA_BASE_URL: ${{ vars.PUBLIC_DATA_BASE_URL || 'https://data.example.com' }}
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Workers
         if: github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME || 'silasolla' }}
+          command: deploy --name=${{ vars.CLOUDFLARE_WORKER_NAME || 'silasolla' }}

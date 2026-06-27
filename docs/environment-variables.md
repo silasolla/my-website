@@ -42,23 +42,41 @@
 
 これらの値は `.github/workflows/deploy.yml` 内で参照され，ビルド時に適用されます．
 
+#### Secrets
+
+| 変数名                  | 説明                                                |
+| ----------------------- | --------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | Cloudflare API トークン (Workers Scripts Edit 権限) |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare アカウント ID                            |
+
+#### Variables
+
+| 変数名                   | 説明                                           |
+| ------------------------ | ---------------------------------------------- |
+| `SITE_URL`               | サイトの正規 URL                               |
+| `IMAGE_BASE_URL`         | 画像 CDN のベース URL                          |
+| `PUBLIC_DATA_BASE_URL`   | 特別記事データ配信サイトの URL                 |
+| `CLOUDFLARE_WORKER_NAME` | デプロイ先 Worker 名 (デフォルト: `silasolla`) |
+
 ## 主要な環境変数
 
 このプロジェクトで使用される主な環境変数は以下の通りです。
 
-| 変数名                 | 説明                                                                                                                                                                  | 必須   | 例                              |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
-| `SITE_URL`             | サイトの正規 URL です．サイトマップや OGP 画像の生成に使用されます．                                                                                                  | はい   | `https://your-domain.com`       |
-| `PUBLIC_DATA_BASE_URL` | [特別記事機能](./special-articles.md) で使用する，記事データを配信するサイトのベースURLです．`PUBLIC_` プレフィックスが付いているため，ブラウザからアクセス可能です． | いいえ | `https://data.your-domain.com`  |
-| `IMAGE_BASE_URL`       | 記事内の画像を指定されたCDNから配信する場合のベース URL です．設定すると `@@/` で始まる画像パスがこの URL に置換されます．                                            | いいえ | `https://your-image-cdn.com`    |
-| `NGROK_HOST`           | `ngrok` を使用してローカル環境を外部公開する際に，HMR (ホットリロード) を正しく機能させるために使用します．                                                           | いいえ | `your-unique-id.ngrok-free.app` |
+| 変数名                 | 説明                                                                                                                                                                    | 必須   | 例                              |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
+| `SITE_URL`             | サイトの正規 URL です．サイトマップや OGP 画像の生成に使用されます．                                                                                                    | はい   | `https://your-domain.com`       |
+| `PUBLIC_DATA_BASE_URL` | [特別記事機能](./special-articles.md) で使用する，記事データを配信するサイトのベース URL です．`PUBLIC_` プレフィックスが付いているため，ブラウザからアクセス可能です． | いいえ | `https://data.your-domain.com`  |
+| `IMAGE_BASE_URL`       | 記事内の画像を指定された CDN から配信する場合のベース URL です．設定すると `@@/` で始まる画像パスがこの URL に置換されます．                                            | いいえ | `https://your-image-cdn.com`    |
+| `NGROK_HOST`           | `ngrok` を使用してローカル環境を外部公開する際に，HMR (ホットリロード) を正しく機能させるために使用します．                                                             | いいえ | `your-unique-id.ngrok-free.app` |
+| `R2_BUCKET_NAME`       | Cloudflare R2 のバケット名です．`make upload-images` で使用します．                                                                                                     | いいえ | `public`                        |
 
 ## ビルド時の自動ファイル生成
 
 `npm run build` を実行すると `scripts/generate-static-files.js` スクリプトが環境変数を読み取り，以下のファイルを自動で生成・更新します．
 
-- `public/_headers`: Cloudflare Pages 用の HTTP ヘッダー設定ファイルです．CSP (Content Security Policy) などに `PUBLIC_DATA_BASE_URL` の値が利用されます．
-- `public/robots.txt`: 検索エンジン向けのクロール設定ファイル．サイトマップのURLに `SITE_URL` の値が利用されます．
+- `public/_headers`: Cloudflare Workers 用の HTTP ヘッダー設定ファイルです．CSP (Content Security Policy) などに `PUBLIC_DATA_BASE_URL` の値が利用されます．
+- `public/robots.txt`: 検索エンジン向けのクロール設定ファイル．サイトマップの URL に `SITE_URL` の値が利用されます．
+- `public/.assetsignore`: Wrangler が Static Assets へアップロードしないファイルのパターンです．
 
 これにより，環境ごとに最適なヘッダーや `robots.txt` が適用されます．
 
