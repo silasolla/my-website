@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { getCurrentLocale, getTranslation } from '../i18n/translations';
 import { getSiteTitle, getSiteDescription } from '../i18n/utils';
 import { profileData, seoKeywords } from '../data/profile';
+import { themeColor } from '../data/theme.mjs';
 import DevImageFallbackScript from '../components/DevImageFallbackScript.astro';
 import { getHeaderBackgrounds } from '../lib/headerBackgrounds';
 
@@ -91,7 +92,7 @@ const structuredData = {
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
     {!isDev && <link rel="manifest" href="/site.webmanifest" />}
-    <meta name="theme-color" content="#5a8a5e" />
+    <meta name="theme-color" content={themeColor} />
 
     <link
       rel="preload"

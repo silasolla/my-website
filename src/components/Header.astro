@@ -99,14 +99,14 @@ const avatar = await getImage({
 <style>
   .header {
     position: relative;
-    background: linear-gradient(135deg, #5a8a5e 0%, #3d5f41 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: #ffffff;
+    color: var(--color-header-text);
     padding: 2rem 0;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px var(--color-header-shadow);
     transition: background 0.3s ease;
   }
 
@@ -134,17 +134,13 @@ const avatar = await getImage({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(58, 90, 62, 0.6);
+    background: var(--color-header-overlay);
     pointer-events: none;
     z-index: 0;
   }
 
   :global([data-theme='dark']) .header {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-  }
-
-  :global([data-theme='dark']) .header-bg-overlay {
-    background: rgba(29, 42, 30, 0.7);
+    box-shadow: 0 2px 12px var(--color-header-shadow);
   }
 
   .header-content {
@@ -173,23 +169,23 @@ const avatar = await getImage({
     height: 90px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--color-header-avatar-border);
+    box-shadow: 0 2px 8px var(--color-header-avatar-shadow);
   }
 
   .title-text h1 {
     margin: 0;
     font-size: 2rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--color-header-text);
   }
 
   .tagline {
     margin: 0.5rem 0 0 0;
     font-size: 1.1rem;
-    opacity: 0.95;
+    opacity: 0.88;
     font-style: italic;
-    color: #ffffff;
+    color: var(--color-header-text-muted);
   }
 
   .header-controls {
@@ -200,8 +196,8 @@ const avatar = await getImage({
   }
 
   .theme-toggle {
-    background: rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.6);
+    background: var(--color-header-control-bg);
+    border: 2px solid var(--color-header-control-border);
     border-radius: 50%;
     width: 48px;
     height: 48px;
@@ -214,15 +210,15 @@ const avatar = await getImage({
   }
 
   .theme-toggle:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.8);
+    background: var(--color-header-control-bg-hover);
+    border-color: var(--color-header-control-border-hover);
     transform: rotate(180deg);
   }
 
   .theme-toggle svg {
     width: 24px;
     height: 24px;
-    color: white;
+    color: var(--color-header-text);
   }
 
   .sun-icon {

@@ -137,7 +137,7 @@ const locale = Astro.currentLocale;
 
   .pinned-title {
     color: var(--color-primary-dark);
-    border-bottom: 2px solid #f59e0b;
+    border-bottom: 2px solid var(--color-accent-warn);
   }
 
   .pinned-posts .post-item {
@@ -145,14 +145,14 @@ const locale = Astro.currentLocale;
   }
 
   .important-post {
-    border-left-color: #ef4444 !important;
-    background: linear-gradient(to right, rgba(239, 68, 68, 0.05), var(--color-bg-alt));
+    border-left-color: var(--color-accent-danger) !important;
+    background: linear-gradient(to right, var(--color-accent-danger-bg), var(--color-bg-alt));
   }
 
   .important-badge {
     display: inline-block;
-    background: #ef4444;
-    color: white;
+    background: var(--color-accent-danger);
+    color: var(--color-on-accent);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -197,7 +197,7 @@ const locale = Astro.currentLocale;
   }
 
   .post-item:hover {
-    box-shadow: 0 4px 12px rgba(90, 138, 94, 0.15);
+    box-shadow: var(--shadow-primary-md);
     border-color: var(--color-primary);
     transform: translateY(-2px);
   }
@@ -274,7 +274,7 @@ const locale = Astro.currentLocale;
   .view-all-link:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
-    box-shadow: 0 2px 8px rgba(90, 138, 94, 0.15);
+    box-shadow: var(--shadow-primary-sm);
   }
 
   .view-all-link svg {

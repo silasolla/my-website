@@ -12,17 +12,17 @@
   background: var(--color-bg-alt);
   transition: all 0.3s ease;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .article-content a.rlc-container:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(90, 138, 94, 0.15);
+  box-shadow: var(--shadow-primary-md);
   transform: translateY(-2px);
 }
 
 [data-theme='dark'] .article-content a.rlc-container:hover {
-  box-shadow: 0 4px 12px rgba(127, 173, 130, 0.15);
+  box-shadow: var(--shadow-primary-md);
 }
 
 .article-content .rlc-container .rlc-info {

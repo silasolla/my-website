@@ -4,10 +4,8 @@ import { getCurrentLocale, getTranslation } from '../i18n/translations';
 const currentLocale = getCurrentLocale(Astro.currentLocale);
 const currentPath = Astro.url.pathname;
 
-// 現在のパスから言語プレフィックスを除去
 const pathWithoutLocale = currentPath.replace(/^\/en/, '') || '/';
 
-// 言語切り替え用のURL
 const jaUrl = pathWithoutLocale;
 const enUrl = `/en${pathWithoutLocale}`;
 
@@ -45,7 +43,7 @@ const enLabel = getTranslation('en', 'lang.switch.en');
   }
 
   .lang-link {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--color-header-text-subtle);
     text-decoration: none;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
@@ -53,18 +51,18 @@ const enLabel = getTranslation('en', 'lang.switch.en');
   }
 
   .lang-link:hover {
-    color: white;
-    background: rgba(0, 0, 0, 0.2);
+    color: var(--color-header-text);
+    background: var(--color-header-lang-bg);
   }
 
   .lang-link.active {
-    color: white;
-    background: rgba(0, 0, 0, 0.5);
+    color: var(--color-header-text);
+    background: var(--color-header-lang-bg-active);
     font-weight: 700;
   }
 
   .separator {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-header-text-faint);
   }
 
   @media (max-width: 640px) {

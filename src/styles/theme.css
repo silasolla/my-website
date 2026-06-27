@@ -1,0 +1,80 @@
+:root {
+  --color-primary: #647e68;
+  --color-primary-dark: #3f5243;
+  --color-primary-light: #eef2ee;
+  --color-primary-deep: #4a5f4e;
+  --color-primary-rgb: 100, 126, 104;
+
+  --color-text: #2f3a31;
+  --color-text-light: #5c6a5e;
+  --color-border: #d2dbd3;
+  --color-bg: #f7f9f7;
+  --color-bg-alt: #f0f3f0;
+
+  --color-header-text: #eef2ee;
+  --color-header-text-muted: #dde4dd;
+  --color-header-text-subtle: rgba(238, 242, 238, 0.88);
+  --color-header-text-faint: rgba(238, 242, 238, 0.65);
+  --color-header-overlay: rgba(42, 52, 44, 0.72);
+  --color-header-avatar-border: rgba(238, 242, 238, 0.85);
+  --color-header-control-bg: rgba(0, 0, 0, 0.3);
+  --color-header-control-border: rgba(255, 255, 255, 0.6);
+  --color-header-control-bg-hover: rgba(0, 0, 0, 0.5);
+  --color-header-control-border-hover: rgba(255, 255, 255, 0.8);
+  --color-header-lang-bg: rgba(0, 0, 0, 0.2);
+  --color-header-lang-bg-active: rgba(0, 0, 0, 0.45);
+  --color-header-shadow: rgba(0, 0, 0, 0.08);
+  --color-header-avatar-shadow: rgba(0, 0, 0, 0.15);
+
+  --color-accent-warn: #c4842a;
+  --color-accent-danger: #c45050;
+  --color-accent-danger-bg: rgba(196, 80, 80, 0.08);
+  --color-on-accent: #eef2ee;
+  --color-on-primary: #ffffff;
+
+  --color-tag-news-bg: #e8eef5;
+  --color-tag-news-text: #1e4a7a;
+  --color-tag-tech-bg: #f0ebf2;
+  --color-tag-tech-text: #6a4a78;
+  --color-tag-diary-bg: #f7f0e8;
+  --color-tag-diary-text: #8a4a28;
+
+  --color-success: #4caf50;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-primary-sm: 0 2px 8px rgba(var(--color-primary-rgb), 0.15);
+  --shadow-primary-md: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
+  --shadow-primary-lg: 0 4px 12px rgba(var(--color-primary-rgb), 0.2);
+  --shadow-primary-subtle: 0 4px 12px rgba(var(--color-primary-rgb), 0.1);
+}
+
+[data-theme='dark'] {
+  --color-primary: #7a9d7e;
+  --color-primary-dark: #8fa892;
+  --color-primary-light: #1e2d20;
+  --color-primary-deep: #4a5f4e;
+  --color-primary-rgb: 122, 157, 126;
+
+  --color-text: #c8d4ca;
+  --color-text-light: #93a594;
+  --color-border: #2d3e2f;
+  --color-bg: #15181a;
+  --color-bg-alt: #1d2122;
+
+  --color-header-overlay: rgba(24, 32, 26, 0.78);
+  --color-header-shadow: rgba(0, 0, 0, 0.4);
+
+  --color-tag-news-bg: #1e3a5f;
+  --color-tag-news-text: #b8cfe8;
+  --color-tag-tech-bg: #4a1f5f;
+  --color-tag-tech-text: #c9a8d8;
+  --color-tag-diary-bg: #5f3a1e;
+  --color-tag-diary-text: #e8c8a0;
+
+  --shadow-primary-sm: 0 2px 8px rgba(var(--color-primary-rgb), 0.15);
+  --shadow-primary-md: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
+  --shadow-primary-lg: 0 4px 12px rgba(var(--color-primary-rgb), 0.2);
+  --shadow-primary-subtle: 0 4px 12px rgba(var(--color-primary-rgb), 0.1);
+}
