@@ -19,7 +19,8 @@ const enLabel = getTranslation('en', 'lang.switch.en');
   <a
     href={jaUrl}
     class={`lang-link ${currentLocale === 'ja' ? 'active' : ''}`}
-    aria-label={jaLabel}
+    title={jaLabel}
+    hreflang="ja"
   >
     JA
   </a>
@@ -27,7 +28,8 @@ const enLabel = getTranslation('en', 'lang.switch.en');
   <a
     href={enUrl}
     class={`lang-link ${currentLocale === 'en' ? 'active' : ''}`}
-    aria-label={enLabel}
+    title={enLabel}
+    hreflang="en"
   >
     EN
   </a>

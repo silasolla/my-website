@@ -15,7 +15,7 @@ export const translations = {
     'nav.home': 'ホーム',
     'nav.about': '私について',
     'nav.posts': '記事',
-    'nav.links': 'リンク',
+    'nav.links': 'リンク集',
 
     // ホームページ
     'home.pinned': 'ピン留めされた記事',
@@ -113,7 +113,7 @@ export const translations = {
     'nav.home': 'Home',
     'nav.about': 'About',
     'nav.posts': 'Posts',
-    'nav.links': 'Links',
+    'nav.links': 'Link Collection',
 
     // Home page
     'home.pinned': 'Pinned Posts',
