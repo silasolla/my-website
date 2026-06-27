@@ -1,6 +1,16 @@
 {
   "name": "silasolla",
   "compatibility_date": "2026-06-27",
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false
+    }
+  },
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"
