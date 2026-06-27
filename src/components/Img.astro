@@ -26,11 +26,26 @@ const resolvedSrc = resolveImageUrl(src) || src;
 {
   caption ? (
     <figure class={className}>
-      <img src={resolvedSrc} alt={alt} width={width} height={height} />
+      <img
+        src={resolvedSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+      />
       <figcaption>{caption}</figcaption>
     </figure>
   ) : (
-    <img src={resolvedSrc} alt={alt} width={width} height={height} class={className} />
+    <img
+      src={resolvedSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      class={className}
+      loading="lazy"
+      decoding="async"
+    />
   )
 }
 

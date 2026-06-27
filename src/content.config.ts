@@ -12,6 +12,7 @@ const postsCollection = defineCollection({
     coverImage: z.string().optional(),
     pinned: z.boolean().optional(), // ピン留め
     important: z.boolean().optional(), // 重要なお知らせ
+    math: z.boolean().optional(),
     lang: z.enum(['ja', 'en']).optional(), // 言語 (未定義の場合は両言語版に表示)
   }),
 });

@@ -27,6 +27,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // coverImageの@@/記法を変換
 const coverImage = resolveImageUrl(entry.data.coverImage);
+const math = entry.data.math ?? false;
 
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
@@ -43,6 +44,7 @@ const siteName = getSiteName(Astro.currentLocale);
   title={`${entry.data.title} - ${siteName}`}
   description={entry.data.description}
   image={coverImage}
+  math={math}
 >
   <div class="post-layout">
     <header class="article-header">

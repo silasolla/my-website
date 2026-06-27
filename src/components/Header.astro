@@ -1,20 +1,39 @@
 ---
+import { getImage } from 'astro:assets';
 import LanguageSwitch from './LanguageSwitch.astro';
 import { getTranslation } from '../i18n/translations';
 import { getSiteTitle } from '../i18n/utils';
 import { profileData } from '../data/profile';
+import mobileBgSrc from '../assets/header/header-bg-mobile.webp';
+import tabletBgSrc from '../assets/header/header-bg-tablet.webp';
+import desktopBgSrc from '../assets/header/header-bg-desktop.webp';
 
 const siteTitle = getSiteTitle(Astro.currentLocale);
 const tagline = getTranslation(Astro.currentLocale, 'site.tagline');
 const themeToggleLabel = getTranslation(Astro.currentLocale, 'theme.toggle');
 const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light');
+
+const [mobileBg, tabletBg, desktopBg] = await Promise.all([
+  getImage({ src: mobileBgSrc, width: 1200, height: 600, format: 'webp', quality: 82 }),
+  getImage({ src: tabletBgSrc, width: 1920, height: 480, format: 'webp', quality: 82 }),
+  getImage({ src: desktopBgSrc, width: 2400, height: 300, format: 'webp', quality: 82 }),
+]);
 ---
 
 <header class="header" id="header">
   <div class="header-bg-overlay"></div>
   <div class="header-content">
     <a href="/" class="site-title">
-      <img src={profileData.avatar} alt={profileData.nameEn} class="avatar" />
+      <img
+        src={profileData.avatar}
+        alt={profileData.nameEn}
+        width="90"
+        height="90"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="avatar"
+      />
       <div class="title-text">
         <h1>{siteTitle}</h1>
         <p class="tagline">{tagline}</p>
@@ -67,7 +86,13 @@ const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light')
   </div>
 </header>
 
-<style>
+<style
+  define:vars={{
+    bgMobile: `url(${mobileBg.src})`,
+    bgTablet: `url(${tabletBg.src})`,
+    bgDesktop: `url(${desktopBg.src})`,
+  }}
+>
   .header {
     position: relative;
     background: linear-gradient(135deg, #5a8a5e 0%, #3d5f41 100%);
@@ -81,22 +106,21 @@ const themeToggleTitle = getTranslation(Astro.currentLocale, 'theme.dark-light')
     transition: background 0.3s ease;
   }
 
-  /* レスポンシブ背景画像 (画像を配置した場合に有効化) */
   @media (max-width: 768px) {
     .header {
-      background-image: url('/header-bg-mobile.jpg');
+      background-image: var(--bgMobile);
     }
   }
 
   @media (min-width: 769px) and (max-width: 1440px) {
     .header {
-      background-image: url('/header-bg-tablet.jpg');
+      background-image: var(--bgTablet);
     }
   }
 
   @media (min-width: 1441px) {
     .header {
-      background-image: url('/header-bg-desktop.jpg');
+      background-image: var(--bgDesktop);
     }
   }
 

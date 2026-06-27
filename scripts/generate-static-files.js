@@ -44,6 +44,20 @@ const headersContent = `# Cloudflare Workers 用のセキュリティヘッダ�
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+# ビルド済み画像・フォント (Astro が生成)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 静的画像
+/*.webp
+  Cache-Control: public, max-age=604800
+/*.jpg
+  Cache-Control: public, max-age=604800
+/*.png
+  Cache-Control: public, max-age=604800
+/profile/*
+  Cache-Control: public, max-age=604800
 `;
 
 const headersPath = join(publicDir, '_headers');

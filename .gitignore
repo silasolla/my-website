@@ -25,6 +25,7 @@ public/.assetsignore
 
 # remark-link-card cache
 public/remark-link-card/
+public/vendor/
 
 # macOS-specific files
 .DS_Store
