@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import dotenv from 'dotenv';
@@ -54,21 +55,23 @@ export default defineConfig({
     },
   },
   markdown: {
-    remarkPlugins: [
-      remarkImageUrl,
-      remarkMath,
-      [
-        remarkLinkCard,
-        {
-          cache: true,
-          shortenUrl: true,
-        },
+    processor: unified({
+      remarkPlugins: [
+        remarkImageUrl,
+        remarkMath,
+        [
+          remarkLinkCard,
+          {
+            cache: true,
+            shortenUrl: true,
+          },
+        ],
       ],
-    ],
-    rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeExternalLinks],
-    remarkRehype: {
-      footnoteLabel: '脚注',
-    },
+      rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeExternalLinks],
+      remarkRehype: {
+        footnoteLabel: '脚注',
+      },
+    }),
     shikiConfig: {
       theme: 'github-dark',
       langs: [smlGrammar],
