@@ -5,7 +5,7 @@
  * public/_headers, public/robots.txt, public/.assetsignore を動的に生成
  */
 
-import { writeFileSync } from 'fs';
+import { cpSync, mkdirSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dotenv from 'dotenv';
@@ -49,6 +49,10 @@ const headersContent = `# Cloudflare Workers 用のセキュリティヘッダ�
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# KaTeX (数式記事のみ link で読み込み)
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # 静的画像
 /*.webp
   Cache-Control: public, max-age=604800
@@ -63,6 +67,13 @@ const headersContent = `# Cloudflare Workers 用のセキュリティヘッダ�
 const headersPath = join(publicDir, '_headers');
 writeFileSync(headersPath, headersContent, 'utf-8');
 console.log('✅ Generated: public/_headers');
+
+const katexDistDir = join(__dirname, '..', 'node_modules', 'katex', 'dist');
+const vendorDir = join(publicDir, 'vendor');
+mkdirSync(vendorDir, { recursive: true });
+cpSync(join(katexDistDir, 'katex.min.css'), join(vendorDir, 'katex.min.css'));
+cpSync(join(katexDistDir, 'fonts'), join(vendorDir, 'fonts'), { recursive: true });
+console.log('✅ Generated: public/vendor/katex.min.css');
 
 // robots.txt ファイルを生成
 const robotsContent = `User-agent: *

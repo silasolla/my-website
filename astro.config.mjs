@@ -43,6 +43,9 @@ export default defineConfig({
   site: SITE_URL,
   output: 'static',
   trailingSlash: 'always',
+  build: {
+    inlineStylesheets: 'always',
+  },
   devToolbar: {
     enabled: !USE_NGROK,
   },

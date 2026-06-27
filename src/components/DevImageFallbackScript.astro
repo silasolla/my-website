@@ -1,0 +1,43 @@
+<script>
+  const imageBaseUrl = document.body.getAttribute('data-image-base') || '';
+
+  if (imageBaseUrl) {
+    function setupImageFallback() {
+      const images = document.querySelectorAll('.article-content img');
+
+      images.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        if (!imageElement.src.startsWith(imageBaseUrl)) {
+          return;
+        }
+
+        function attemptFallback() {
+          if (imageElement.dataset.fallbackAttempted) {
+            return;
+          }
+
+          imageElement.dataset.fallbackAttempted = 'true';
+
+          // R2 の URL からローカルパスに変換
+          const path = imageElement.src.replace(imageBaseUrl + '/posts/', '');
+          const localSrc = '/posts/images/' + path;
+
+          imageElement.src = localSrc;
+        }
+
+        // complete だが naturalWidth が 0 のときは load 失敗済み
+        if (imageElement.complete && imageElement.naturalWidth === 0) {
+          attemptFallback();
+        } else {
+          imageElement.addEventListener('error', attemptFallback, { once: true });
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupImageFallback);
+    } else {
+      setupImageFallback();
+    }
+  }
+</script>

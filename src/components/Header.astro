@@ -27,7 +27,11 @@ const avatar = await getImage({
 });
 ---
 
-<header class="header" id="header">
+<header
+  class="header"
+  id="header"
+  style={`--bgMobile: url(${mobileBg.src}); --bgTablet: url(${tabletBg.src}); --bgDesktop: url(${desktopBg.src});`}
+>
   <div class="header-bg-overlay"></div>
   <div class="header-content">
     <a href="/" class="site-title">
@@ -92,13 +96,7 @@ const avatar = await getImage({
   </div>
 </header>
 
-<style
-  define:vars={{
-    bgMobile: `url(${mobileBg.src})`,
-    bgTablet: `url(${tabletBg.src})`,
-    bgDesktop: `url(${desktopBg.src})`,
-  }}
->
+<style>
   .header {
     position: relative;
     background: linear-gradient(135deg, #5a8a5e 0%, #3d5f41 100%);

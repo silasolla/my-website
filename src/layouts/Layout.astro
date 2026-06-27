@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { getCurrentLocale, getTranslation } from '../i18n/translations';
 import { getSiteTitle, getSiteDescription } from '../i18n/utils';
 import { profileData, seoKeywords } from '../data/profile';
-import KaTeXStyles from '../components/KaTeXStyles.astro';
+import DevImageFallbackScript from '../components/DevImageFallbackScript.astro';
 import { getHeaderBackgrounds } from '../lib/headerBackgrounds';
 
 // Global styles
@@ -196,55 +196,9 @@ const structuredData = {
     </script>
 
     {/* 開発環境での画像フォールバック */}
-    <script>
-      // 開発環境での画像フォールバック（data属性から取得）
-      const isDev = document.body.getAttribute('data-dev') === 'true';
-      const imageBaseUrl = document.body.getAttribute('data-image-base') || '';
+    {isDev && <DevImageFallbackScript />}
 
-      if (isDev && imageBaseUrl) {
-        function setupImageFallback() {
-          const images = document.querySelectorAll('.article-content img');
-
-          images.forEach((img) => {
-            const imageElement = img as HTMLImageElement;
-            if (!imageElement.src.startsWith(imageBaseUrl)) {
-              return;
-            }
-
-            function attemptFallback() {
-              if (imageElement.dataset.fallbackAttempted) {
-                return;
-              }
-
-              imageElement.dataset.fallbackAttempted = 'true';
-
-              // R2 の URL からローカルパスに変換
-              const path = imageElement.src.replace(imageBaseUrl + '/posts/', '');
-              const localSrc = '/posts/images/' + path;
-
-              imageElement.src = localSrc;
-            }
-
-            // 既にロード失敗している場合 (complete だが naturalWidth が 0)
-            if (imageElement.complete && imageElement.naturalWidth === 0) {
-              attemptFallback();
-            } else {
-              // エラーイベントを監視
-              imageElement.addEventListener('error', attemptFallback, { once: true });
-            }
-          });
-        }
-
-        // DOM が既に読み込まれている場合は即実行
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setupImageFallback);
-        } else {
-          setupImageFallback();
-        }
-      }
-    </script>
-
-    {math && <KaTeXStyles />}
+    {math && <link rel="stylesheet" href="/vendor/katex.min.css" />}
   </head>
   <body {...isDev ? { 'data-dev': 'true', 'data-image-base': imageBaseUrl } : {}}>
     <Header mobileBg={mobileBg} tabletBg={tabletBg} desktopBg={desktopBg} />
