@@ -20,14 +20,15 @@ Markdown/MDX によって記事を管理します．
 ```
 /
 ├── public/                  # 静的アセット
-│   ├── avatar.png           # プロフィール画像 (OGP, ヘッダー, About 共通)
-│   ├── profile/             # About ギャラリー画像
+│   ├── avatar.png           # プロフィール写真
+│   ├── profile/             # About ギャラリー
 │   ├── favicon*.png         # ファビコン各種
 │   ├── icons/               # アイコン (Bluesky, Twitter, リンクなど)
 │   └── posts/images/        # 記事の画像 (gitignore, R2にホスト)
 ├── src/
-│   ├── assets/              # ヘッダー背景 (getImage で /_astro/ 出力)
-│   │   └── header/          # header-bg-*.webp
+│   ├── assets/
+│   │   ├── avatar.png       # ヘッダーの丸アイコン
+│   │   └── header/          # ヘッダー背景
 │   ├── components/          # 再利用可能なコンポーネント
 │   │   ├── Header.astro
 │   │   ├── Navigation.astro

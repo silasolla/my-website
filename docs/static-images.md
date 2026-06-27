@@ -8,13 +8,14 @@
 
 ## 一覧
 
-| 画像             | 配置                    | 公開 URL          | 備考                            |
-| ---------------- | ----------------------- | ----------------- | ------------------------------- |
-| ヘッダー背景     | `src/assets/header/`    | `/_astro/*.webp`  | `Header.astro` の `getImage()`  |
-| アバター         | `public/avatar.png`     | `/avatar.png`     | OGP，JSON-LD，ヘッダーで共通    |
-| About ギャラリー | `public/profile/*.webp` | `/profile/*.webp` | `about.astro` の `ImageGallery` |
+| 画像                 | 配置                    | 公開 URL          | 備考                          |
+| -------------------- | ----------------------- | ----------------- | ----------------------------- |
+| ヘッダー背景         | `src/assets/header/`    | `/_astro/*.webp`  | `Header.astro`                |
+| ヘッダーの丸アイコン | `src/assets/avatar.png` | `/_astro/*.webp`  | `Header.astro`                |
+| プロフィール写真     | `public/avatar.png`     | `/avatar.png`     | `profile.ts`, `about.astro`   |
+| About ギャラリー     | `public/profile/*.webp` | `/profile/*.webp` | `about.astro`, `ImageGallery` |
 
-`public/` のファイルはそのまま `dist/` へ出力されます．ヘッダー背景だけビルド時に `/_astro/` へ最適化されます．
+`public/` のファイルはそのまま `dist/` へ出力されます．`src/assets/` のヘッダー背景と丸アイコンは，ビルド時に `/_astro/` へ最適化されます．
 
 ## ヘッダー背景
 
@@ -45,7 +46,15 @@
 - 重要な被写体は中央 (`background-position: center`)
 - 3 枚は同じシーンの異なるトリミングが理想
 
-## アバター
+## ヘッダーの丸アイコン
+
+### 更新手順
+
+1. `src/assets/avatar.png` を差し替える
+2. `npm run build` で確認する
+3. 変更をコミットする
+
+## プロフィール写真
 
 ### 更新手順
 

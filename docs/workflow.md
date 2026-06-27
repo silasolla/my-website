@@ -178,16 +178,21 @@ import Slide from '@/components/Slide.astro';
 <Slide src="https://example.com/talks/hiyoko/slides.pdf" title="ひよこ駆動開発入門" />
 ```
 
-**Props：**
+**Props**
 
 - `src` (必須): PDF の URL．コントロール内の「PDF」リンクもこの URL を指します．
 - `title` (オプション): スライドのタイトル．キャプションとして下部に表示されます．
 - `ratio` (オプション, デフォルト `16 / 9`): フレームのアスペクト比．例: `"4 / 3"`．
 
-- 内部では PDF.js で `<canvas>` に描画します．総ページ数は PDF から自動取得します．
+**動作**
+
+- PDF.js で `<canvas>` に描画します．総ページ数は PDF から自動取得します．
 - 全画面ボタンは Fullscreen API でフレーム全体を全画面表示し，再押下で縮小します．
-- PDF は CORS 越しに `fetch` するため，`src` のオリジンに `Access-Control-Allow-Origin` を設定してください．
 - ダーク／ライト両モードに自動対応します．
+
+**CORS**
+
+PDF.js は `fetch` で PDF を取得します．本番では `src` のホスト側で `Access-Control-Allow-Origin` など CORS を許可してください．開発中は `Slide.astro` が外部 URL を `/__doc_proxy?url=...` に書き換え，`src/plugins/vite-slide-pdf-proxy.mjs` の dev サーバー経由で取得します．
 
 ### 2.8 画像を配置
 
