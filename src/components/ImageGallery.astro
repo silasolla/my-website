@@ -38,8 +38,6 @@ const leftSideCount = getLeftSideCount(images.length);
               alt={alt}
               class="side-img"
               data-side-index={i}
-              loading="lazy"
-              decoding="async"
             />
           ))}
         </div>
@@ -47,15 +45,7 @@ const leftSideCount = getLeftSideCount(images.length);
     }
 
     <div class="main-image-container">
-      <img
-        id="main-image"
-        src={images[0]}
-        alt={alt}
-        class="main-image"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
+      <img id="main-image" src={images[0]} alt={alt} class="main-image" />
     </div>
 
     {
@@ -68,8 +58,6 @@ const leftSideCount = getLeftSideCount(images.length);
               alt={alt}
               class="side-img"
               data-side-index={i}
-              loading="lazy"
-              decoding="async"
             />
           ))}
         </div>
