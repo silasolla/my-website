@@ -1,0 +1,54 @@
+<script>
+  document.querySelectorAll('.fetchable-text:not([data-ready])').forEach((container) => {
+    container.setAttribute('data-ready', '');
+
+    const textUrl = container.getAttribute('data-url') || '';
+    const copied = container.getAttribute('data-copied') || '';
+    const copyFailed = container.getAttribute('data-copy-failed') || '';
+    const errorPrefix = container.getAttribute('data-error-prefix') || '';
+
+    const textarea = container.querySelector('.fetchable-text-area');
+    const copyButton = container.querySelector('.fetchable-text-copy');
+    const copyMessage = container.querySelector('.fetchable-text-message');
+
+    if (!(textarea instanceof HTMLTextAreaElement) || !(copyButton instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    fetch(textUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch text');
+        }
+        return response.text();
+      })
+      .then((text) => {
+        textarea.value = text;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      })
+      .catch((err) => {
+        textarea.value = `${errorPrefix}: ${err.message}`;
+        copyButton.disabled = true;
+      });
+
+    copyButton.addEventListener('click', () => {
+      navigator.clipboard
+        .writeText(textarea.value)
+        .then(() => {
+          if (copyMessage) {
+            copyMessage.textContent = copied;
+            copyMessage.classList.add('show');
+            setTimeout(() => copyMessage.classList.remove('show'), 2000);
+          }
+        })
+        .catch(() => {
+          if (copyMessage) {
+            copyMessage.textContent = copyFailed;
+            copyMessage.classList.add('show', 'error');
+            setTimeout(() => copyMessage.classList.remove('show', 'error'), 2000);
+          }
+        });
+    });
+  });
+</script>
