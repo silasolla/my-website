@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import '../../styles/article-content.css';
 
 // 特別記事の一覧を取得してパスを生成
 export async function getStaticPaths() {
@@ -414,18 +415,6 @@ const dataBaseUrl = import.meta.env.PUBLIC_DATA_BASE_URL;
 
   .post-layout.single-column .article-content {
     grid-area: unset;
-    line-height: 1.8;
-    color: var(--color-text);
-  }
-
-  .post-layout.single-column .article-content ul,
-  .post-layout.single-column .article-content ol {
-    margin-bottom: 1.2rem;
-    padding-left: 2rem;
-  }
-
-  .post-layout.single-column .article-content li {
-    margin-bottom: 0.5rem;
   }
 
   .post-layout.single-column .article-nav {
