@@ -48,6 +48,8 @@ Markdown/MDX によって記事を管理します．
 │   │   └── posts/           # 記事 (Markdown/MDX)
 │   ├── data/                # 構造化データ
 │   │   ├── about.ts         # About ページのデータ
+│   │   ├── about/           # About セクション別データ
+│   │   ├── links/           # Links ページのデータ
 │   │   └── profile.ts       # プロファイルデータ (個人情報の一元管理)
 │   ├── grammars/            # シンタックスハイライト定義
 │   │   └── sml.tmLanguage.json
@@ -61,7 +63,9 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── PostsIndex.astro
 │   │   ├── IdentityIndex.astro
 │   │   ├── IdentityKeyPage.astro
-│   │   └── IdentitySignedPage.astro
+│   │   ├── IdentitySignedPage.astro
+│   │   ├── AboutPage.astro
+│   │   └── LinksPage.astro
 │   ├── pages/               # ページルート
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -87,6 +91,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── home-page.css
 │   │   ├── identity-page.css
 │   │   ├── special-article.css
+│   │   ├── about-page.css
+│   │   ├── links-page.css
 │   │   └── article-content.css
 │   └── utils/
 │       ├── posts.ts
