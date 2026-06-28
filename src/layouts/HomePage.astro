@@ -3,7 +3,8 @@ import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
 import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
-import { splitHomePosts, postsBasePath } from '../utils/posts';
+import { splitHomePosts } from '../utils/posts';
+import { postsBasePath } from '../utils/paths';
 import '../styles/home-page.css';
 
 interface Props {

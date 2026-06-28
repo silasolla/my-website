@@ -18,10 +18,6 @@ export function splitHomePosts(posts: CollectionEntry<'posts'>[]) {
   };
 }
 
-export function postsBasePath(locale: string | undefined): string {
-  return locale === 'en' ? '/en/posts' : '/posts';
-}
-
 export function formatPostListDate(date: Date, locale?: string): string {
   if (locale === 'en') {
     return date.toLocaleDateString('en-US', {
