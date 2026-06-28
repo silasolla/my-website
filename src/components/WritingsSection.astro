@@ -1,6 +1,7 @@
 ---
 import type { WritingCategory, WritingItem } from '../data/about';
 import { getTranslation } from '../i18n/translations';
+import { postsBasePath } from '../utils/paths';
 
 interface Props {
   items: WritingCategory[];
@@ -10,7 +11,7 @@ const { items } = Astro.props;
 const detailsText = getTranslation(Astro.currentLocale, 'component.details');
 const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
 
-const postsHref = Astro.currentLocale === 'en' ? '/en/posts/' : '/posts/';
+const postsHref = `${postsBasePath(Astro.currentLocale)}/`;
 const introPrefix = getTranslation(Astro.currentLocale, 'writings.intro.prefix');
 const introLinkText = getTranslation(Astro.currentLocale, 'writings.intro.link-text');
 const introSuffix = getTranslation(Astro.currentLocale, 'writings.intro.suffix');
