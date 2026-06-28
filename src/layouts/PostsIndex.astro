@@ -1,0 +1,167 @@
+---
+import Layout from './Layout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName, getTagLabel } from '../i18n/utils';
+import { formatPostListDate, postsBasePath } from '../utils/posts';
+import '../styles/posts-index.css';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+const locale = Astro.currentLocale;
+const postsPath = postsBasePath(locale);
+
+const postsTitle = getTranslation(locale, 'posts.title');
+const allPostsText = getTranslation(locale, 'posts.all');
+const filterByTagText = getTranslation(locale, 'posts.filter-by-tag');
+const showAllText = getTranslation(locale, 'posts.show-all');
+const noPostsText = getTranslation(locale, 'posts.no-posts');
+const rssText = getTranslation(locale, 'posts.rss');
+const rssAllText = getTranslation(locale, 'posts.rss-all');
+const rssNewsText = getTranslation(locale, 'posts.rss-news');
+const rssTechText = getTranslation(locale, 'posts.rss-tech');
+const rssDiaryText = getTranslation(locale, 'posts.rss-diary');
+const filterToggleLabel = getTranslation(locale, 'posts.filter-toggle');
+const filterToggleOpen = getTranslation(locale, 'filter.toggle.open');
+const filterToggleClose = getTranslation(locale, 'filter.toggle.close');
+const siteName = getSiteName(locale);
+---
+
+<Layout
+  title={`${postsTitle} - ${siteName}`}
+  description={getTranslation(locale, 'posts.description')}
+>
+  <article class="posts-page">
+    <div class="page-header">
+      <h2 class="page-title">{allPostsText}</h2>
+
+      <button
+        id="filter-toggle"
+        class="filter-toggle"
+        aria-label={filterToggleOpen}
+        data-open-label={filterToggleOpen}
+        data-close-label={filterToggleClose}
+      >
+        <span>{filterToggleLabel}</span>
+        <svg
+          class="toggle-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+
+      <div class="filters-container" id="filters-container">
+        <div class="rss-section">
+          <span class="section-label">{rssText}:</span>
+          <div class="rss-links">
+            <a href="/rss.xml" class="rss-link" title={rssAllText}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"
+                ></path>
+              </svg>
+              {showAllText}
+            </a>
+          </div>
+          <div class="rss-categories">
+            <a href="/rss/news.xml" class="rss-link" title={rssNewsText}
+              >{getTagLabel(locale, 'news')}</a
+            >
+            <a href="/rss/tech.xml" class="rss-link" title={rssTechText}
+              >{getTagLabel(locale, 'tech')}</a
+            >
+            <a href="/rss/diary.xml" class="rss-link" title={rssDiaryText}
+              >{getTagLabel(locale, 'diary')}</a
+            >
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <span class="section-label">{filterByTagText}:</span>
+          <div class="tag-filter-row">
+            <button class="tag-button active" data-tag="all">{showAllText}</button>
+          </div>
+          <div class="tag-filter-row">
+            <button class="tag-button" data-tag="news">{getTagLabel(locale, 'news')}</button>
+            <button class="tag-button" data-tag="tech">{getTagLabel(locale, 'tech')}</button>
+            <button class="tag-button" data-tag="diary">{getTagLabel(locale, 'diary')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {
+      posts.length === 0 ? (
+        <p class="no-posts">{noPostsText}</p>
+      ) : (
+        <div class="posts-list">
+          {posts.map((post) => (
+            <article class="post-item" data-tags={post.data.tags.join(',')}>
+              <a href={`${postsPath}/${post.id}/`} class="post-link">
+                <div class="post-meta">
+                  <time datetime={post.data.date.toISOString()} class="post-date">
+                    {formatPostListDate(post.data.date, locale)}
+                  </time>
+                  <div class="post-tags">
+                    {post.data.tags.map((tag) => (
+                      <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+                    ))}
+                  </div>
+                </div>
+                <h3 class="post-title">{post.data.title}</h3>
+                {post.data.description && <p class="post-description">{post.data.description}</p>}
+              </a>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </article>
+</Layout>
+
+<script>
+  const filterToggle = document.getElementById('filter-toggle');
+  const filtersContainer = document.getElementById('filters-container');
+
+  if (filterToggle && filtersContainer) {
+    const openLabel = filterToggle.getAttribute('data-open-label') || 'Open filters';
+    const closeLabel = filterToggle.getAttribute('data-close-label') || 'Close filters';
+
+    filterToggle.addEventListener('click', () => {
+      const isOpen = filtersContainer.classList.toggle('open');
+      filterToggle.classList.toggle('open', isOpen);
+      filterToggle.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
+    });
+  }
+
+  const tagButtons = document.querySelectorAll('.tag-button');
+  const postItems = document.querySelectorAll('.post-item');
+
+  tagButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selectedTag = button.getAttribute('data-tag');
+
+      tagButtons.forEach((btn) => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      postItems.forEach((item) => {
+        const itemTags = item.getAttribute('data-tags')?.split(',') || [];
+        const htmlItem = item as HTMLElement;
+        if (selectedTag === 'all' || (selectedTag && itemTags.includes(selectedTag))) {
+          htmlItem.style.display = 'block';
+        } else {
+          htmlItem.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

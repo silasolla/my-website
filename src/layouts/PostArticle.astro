@@ -6,6 +6,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
 import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
+import { postsBasePath } from '../utils/posts';
 import '../styles/post-article.css';
 import '../styles/article-content.css';
 
@@ -22,7 +23,7 @@ const locale = Astro.currentLocale;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const tocTitle = getTranslation(locale, 'posts.toc');
 const backToList = getTranslation(locale, 'posts.back-to-list');
-const postsListHref = locale === 'en' ? '/en/posts' : '/posts';
+const postsListHref = postsBasePath(locale);
 const siteName = getSiteName(locale);
 ---
 

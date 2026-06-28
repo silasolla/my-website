@@ -39,6 +39,7 @@ export const translations = {
     'posts.toc': '目次',
     'posts.share': 'シェア',
     'posts.back-to-list': '← 記事一覧に戻る',
+    'posts.filter-toggle': '絞り込み・RSS',
 
     // RSS フィードタイトル (接尾辞)
     'rss.feed-title-suffix': 'すべての記事',
@@ -141,6 +142,7 @@ export const translations = {
     'posts.toc': 'Table of Contents',
     'posts.share': 'Share',
     'posts.back-to-list': '← Back to Posts',
+    'posts.filter-toggle': 'Filter & RSS',
 
     // RSS feed titles (suffixes)
     'rss.feed-title-suffix': 'All Posts',

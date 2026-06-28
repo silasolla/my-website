@@ -139,20 +139,23 @@ export const translations = {
 
 ## 記事ページの UI
 
-レイアウト本体は `src/layouts/PostArticle.astro`．`src/pages/**/posts/[slug].astro` はルーティングと前処理のみ．
+レイアウト本体は `src/layouts/PostArticle.astro` (個別記事) と `src/layouts/PostsIndex.astro` (一覧)．`src/pages/**/posts/` 配下はルーティングと前処理のみ．
+
+`src/utils/posts.ts` — 一覧の並び順 (`sortPosts`)，日付表示 (`formatPostListDate`)，パス (`postsBasePath`)．
 
 ### UI ラベルを変更する
 
 `src/i18n/translations.ts` の `ja` / `en` を両方更新する．
 
-| キー                                             | 表示箇所                     |
-| ------------------------------------------------ | ---------------------------- |
-| `posts.toc`                                      | 目次見出し                   |
-| `posts.share`                                    | シェア見出し                 |
-| `posts.back-to-list`                             | 記事一覧へのリンク           |
-| `share.twitter` / `share.bluesky` / `share.copy` | シェアボタンの `title`       |
-| `share.link-alt`                                 | リンクコピーアイコンの `alt` |
-| `tag.*`                                          | タグ名 (`getTagLabel` 経由)  |
+| キー                                             | 表示箇所                      |
+| ------------------------------------------------ | ----------------------------- |
+| `posts.toc`                                      | 目次見出し                    |
+| `posts.share`                                    | シェア見出し                  |
+| `posts.back-to-list`                             | 記事一覧へのリンク            |
+| `posts.filter-toggle`                            | 一覧のフィルタ開閉ボタン (SP) |
+| `share.twitter` / `share.bluesky` / `share.copy` | シェアボタンの `title`        |
+| `share.link-alt`                                 | リンクコピーアイコンの `alt`  |
+| `tag.*`                                          | タグ名 (`getTagLabel` 経由)   |
 
 ### タグ種別を追加する
 
@@ -160,7 +163,7 @@ export const translations = {
 2. `src/i18n/translations.ts` の `tag.<名前>` (`ja` / `en`)
 3. `src/i18n/utils.ts` の `PostTag` 型
 4. `src/styles/global.css` の `.tag-<名前>`
-5. `src/pages/posts/index.astro` と `src/pages/en/posts/index.astro` のフィルタボタン
+5. `src/layouts/PostsIndex.astro` のフィルタボタン
 
 ---
 

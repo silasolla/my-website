@@ -56,7 +56,8 @@ Markdown/MDX によって記事を管理します．
 │   │   └── utils.ts         # i18n ユーティリティ関数
 │   ├── layouts/
 │   │   ├── Layout.astro
-│   │   └── PostArticle.astro
+│   │   ├── PostArticle.astro
+│   │   └── PostsIndex.astro
 │   ├── pages/               # ページルート
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -77,7 +78,11 @@ Markdown/MDX によって記事を管理します．
 │   ├── plugins/             # カスタムプラグイン
 │   │   └── remark-image-url.mjs
 │   ├── styles/
+│   │   ├── post-article.css
+│   │   ├── posts-index.css
+│   │   └── article-content.css
 │   └── utils/
+│       └── posts.ts
 ├── docs/                    # ドキュメント
 │   ├── workflow.md          # 記事作成ワークフロー
 │   ├── data-i18n.md         # データ管理，i18n
