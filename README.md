@@ -65,7 +65,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── IdentityKeyPage.astro
 │   │   ├── IdentitySignedPage.astro
 │   │   ├── AboutPage.astro
-│   │   └── LinksPage.astro
+│   │   ├── LinksPage.astro
+│   │   └── NotFoundPage.astro
 │   ├── pages/               # ページルート
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -93,6 +94,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── special-article.css
 │   │   ├── about-page.css
 │   │   ├── links-page.css
+│   │   ├── link-cards.css
+│   │   ├── not-found.css
 │   │   └── article-content.css
 │   └── utils/
 │       ├── posts.ts

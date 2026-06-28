@@ -144,7 +144,7 @@ export const translations = {
 | ファイル             | 用途                                                                                           |
 | -------------------- | ---------------------------------------------------------------------------------------------- |
 | `src/utils/posts.ts` | 並び順 (`sortPosts`)，ホームのピン留め分割 (`splitHomePosts`)，一覧日付 (`formatPostListDate`) |
-| `src/utils/paths.ts` | ロケール付きパス (`postsBasePath`, `identityBasePath`)                                         |
+| `src/utils/paths.ts` | ロケール付きパス (`localeBasePath`, `homePath`, `postsBasePath`, `identityBasePath`)           |
 
 ### UI ラベルを変更する
 
