@@ -96,6 +96,29 @@ export const translations = {
     'talks.slides': 'スライド',
     'talks.post': '記事',
 
+    // アカウント証明
+    'identity.title': 'アカウント証明',
+    'identity.meta-description': 'のアカウント証明と PGP 公開鍵',
+    'identity.meta-description-prefix': '',
+    'identity.intro':
+      'のアカウントを証明するための情報です．アカウントが本人のものであることを PGP 署名で証明しています．',
+    'identity.intro-prefix': '',
+    'identity.intro-suffix': '',
+    'identity.pgp-section': 'PGP 公開鍵',
+    'identity.pgp-card-title': 'PGP 公開鍵',
+    'identity.pgp-card-desc': '公開鍵の確認とダウンロード',
+    'identity.accounts-section': 'アカウント証明',
+    'identity.accounts-intro':
+      '以下のアカウントについて，PGP 署名による所有の証明を提供しています．',
+    'identity.verification-title': '署名の検証方法',
+    'identity.verify-step1-prefix': '',
+    'identity.verify-step1-link': 'PGP 公開鍵ページ',
+    'identity.verify-step1-after': 'から公開鍵を取得し，インポート',
+    'identity.verify-step2-before': '各アカウントの ',
+    'identity.verify-step2-after': ' をダウンロード',
+    'identity.verify-step3-before': '',
+    'identity.verify-step3-after': ' で署名を検証',
+
     // 404ページ
     'notfound.title': 'ページが見つかりません',
     'notfound.heading': 'ページが見つかりません',
@@ -198,6 +221,29 @@ export const translations = {
     'talks.event': 'Event details',
     'talks.slides': 'Slides',
     'talks.post': 'Post',
+
+    // Identity verification
+    'identity.title': 'Identity Verification',
+    'identity.meta-description-prefix': 'Identity verification and PGP public key for ',
+    'identity.meta-description': '',
+    'identity.intro-prefix': 'Identity verification information for ',
+    'identity.intro-suffix':
+      '. Ownership of each social media account is verified with PGP signatures.',
+    'identity.intro': '',
+    'identity.pgp-section': 'PGP Public Key',
+    'identity.pgp-card-title': 'PGP Public Key',
+    'identity.pgp-card-desc': 'View and download the public key',
+    'identity.accounts-section': 'Account Verification',
+    'identity.accounts-intro':
+      'PGP signature-based ownership verification is provided for the following accounts.',
+    'identity.verification-title': 'How to Verify Signatures',
+    'identity.verify-step1-prefix': 'Get the public key from the ',
+    'identity.verify-step1-link': 'PGP Public Key page',
+    'identity.verify-step1-after': ' and import it',
+    'identity.verify-step2-before': 'Download ',
+    'identity.verify-step2-after': ' for each account',
+    'identity.verify-step3-before': 'Verify the signature with ',
+    'identity.verify-step3-after': '',
 
     // 404 page
     'notfound.title': 'Page Not Found',

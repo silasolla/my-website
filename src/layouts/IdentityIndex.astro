@@ -1,0 +1,106 @@
+---
+import Layout from './Layout.astro';
+import { profileData } from '../data/profile';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { formatPlatformName } from '../utils/platform';
+import { identityBasePath } from '../utils/paths';
+import '../styles/identity-index.css';
+
+const locale = Astro.currentLocale;
+const identityPath = identityBasePath(locale);
+const siteName = getSiteName(locale);
+const title = `${getTranslation(locale, 'identity.title')} - ${siteName}`;
+
+const description =
+  locale === 'en'
+    ? `${getTranslation(locale, 'identity.meta-description-prefix')}${profileData.nameEn} (${profileData.username})`
+    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.meta-description')}`;
+
+const intro =
+  locale === 'en'
+    ? `${getTranslation(locale, 'identity.intro-prefix')}${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.intro-suffix')}`
+    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.intro')}`;
+
+const proofs = profileData.identityProofs || [];
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section intro-section">
+      <div class="section-content">
+        <p>{intro}</p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">{getTranslation(locale, 'identity.pgp-section')}</h3>
+      <div class="links-grid">
+        <a href={`${identityPath}/key/`} class="link-card">
+          <h4 class="link-name">{getTranslation(locale, 'identity.pgp-card-title')}</h4>
+          <p class="link-description">{getTranslation(locale, 'identity.pgp-card-desc')}</p>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">{getTranslation(locale, 'identity.accounts-section')}</h3>
+      <div class="section-content">
+        <p>{getTranslation(locale, 'identity.accounts-intro')}</p>
+      </div>
+      <div class="links-grid">
+        {
+          proofs.map((proof) => (
+            <a
+              href={`${identityPath}/${proof.platform}/${proof.account}/signed/`}
+              class="link-card"
+            >
+              <h4 class="link-name">{formatPlatformName(proof.platform)}</h4>
+              <p class="link-description">@{proof.account}</p>
+              <span class="link-arrow">→</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="verification-note">
+        <h4>{getTranslation(locale, 'identity.verification-title')}</h4>
+        <ol>
+          <li>
+            {
+              locale === 'en' ? (
+                <>
+                  {getTranslation(locale, 'identity.verify-step1-prefix')}
+                  <a href={`${identityPath}/key/`}>
+                    {getTranslation(locale, 'identity.verify-step1-link')}
+                  </a>
+                  {getTranslation(locale, 'identity.verify-step1-after')}
+                </>
+              ) : (
+                <>
+                  <a href={`${identityPath}/key/`}>
+                    {getTranslation(locale, 'identity.verify-step1-link')}
+                  </a>
+                  {getTranslation(locale, 'identity.verify-step1-after')}
+                </>
+              )
+            }
+          </li>
+          <li>
+            {getTranslation(locale, 'identity.verify-step2-before')}
+            <code>signed.txt</code>
+            {getTranslation(locale, 'identity.verify-step2-after')}
+          </li>
+          <li>
+            {getTranslation(locale, 'identity.verify-step3-before')}
+            <code>gpg --verify signed.txt</code>
+            {getTranslation(locale, 'identity.verify-step3-after')}
+          </li>
+        </ol>
+      </div>
+    </section>
+  </article>
+</Layout>
