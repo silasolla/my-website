@@ -1,0 +1,146 @@
+.image-gallery {
+  width: 100%;
+}
+
+.gallery-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.side-images {
+  display: none;
+}
+
+.main-image-container {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (min-width: 768px) {
+  .side-images {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 1), 120px);
+    grid-template-rows: repeat(2, 120px);
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    grid-auto-flow: column;
+  }
+
+  .side-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    opacity: 0.6;
+    overflow: hidden;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .side-img:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  [data-theme='dark'] .side-img {
+    opacity: 0.5;
+  }
+
+  [data-theme='dark'] .side-img:hover {
+    opacity: 0.8;
+  }
+
+  .main-image-container {
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    min-width: 300px;
+  }
+}
+
+.dots-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  max-width: 100%;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dots-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.image-gallery .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.image-gallery .dot:hover {
+  background: var(--color-primary);
+  opacity: 0.7;
+}
+
+.image-gallery .dot.active {
+  background: var(--color-primary);
+  transform: scale(1.4);
+}
+
+@media (max-width: 640px) {
+  .main-image-container {
+    border-radius: 12px;
+  }
+
+  .dots-nav {
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .image-gallery .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .image-gallery .dot.active {
+    transform: scale(1.3);
+  }
+}
