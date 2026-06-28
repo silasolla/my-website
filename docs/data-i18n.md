@@ -7,8 +7,9 @@
 1.  [プロファイルデータ管理](#プロファイルデータ管理)
 2.  [国際化 (i18n)](#国際化-i18n)
 3.  [ユーティリティ関数](#ユーティリティ関数)
-4.  [記事ページの UI](#記事ページの-ui)
-5.  [ベストプラクティス](#ベストプラクティス)
+4.  [ページ構成と UI](#ページ構成と-ui)
+5.  [スタイル (CSS)](#スタイル-css)
+6.  [ベストプラクティス](#ベストプラクティス)
 
 ---
 
@@ -137,9 +138,9 @@ export const translations = {
 
 ---
 
-## 記事ページの UI
+## ページ構成と UI
 
-レイアウト本体は `HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)，`IdentityIndex.astro` / `IdentityKeyPage.astro` / `IdentitySignedPage.astro` (アカウント証明)．各 `pages/` 配下はルーティングと前処理のみ．
+レイアウト本体は `HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)，`AboutPage.astro` (About)，`LinksPage.astro` (Links)，`NotFoundPage.astro` (404)，`IdentityIndex.astro` / `IdentityKeyPage.astro` / `IdentitySignedPage.astro` (アカウント証明)．各 `pages/` 配下はルーティングとデータ取得のみ．
 
 | ファイル             | 用途                                                                                           |
 | -------------------- | ---------------------------------------------------------------------------------------------- |
@@ -169,6 +170,27 @@ export const translations = {
 5. `src/layouts/PostsIndex.astro` のフィルタボタン
 
 アカウント証明の UI ラベルは `identity.*` キー．フィルタボタン追加手順と同様，`translations.ts` の `ja` / `en` を両方更新する．
+
+### Links ページのデータ
+
+Links のリンク一覧は `src/data/links/ja.ts` と `en.ts` で管理し，`LinksPage.astro` が表示します．スタイルは `links-page.css` と `link-cards.css` です．
+
+---
+
+## スタイル (CSS)
+
+スタイルは原則 `src/styles/*.css` に置き，レイアウトまたはコンポーネントから import します．
+
+| 読み込み元           | CSS                                                                         | 用途                   |
+| -------------------- | --------------------------------------------------------------------------- | ---------------------- |
+| `Layout.astro`       | `global.css`, `header.css`, `navigation.css`, `footer.css`, `link-card.css` | 全ページ共通           |
+| 各 `layouts/*.astro` | `home-page.css`, `post-article.css`, `about-page.css` 等                    | ページ種別             |
+| `PostArticle.astro`  | `article-content.css`                                                       | 記事本文 typography    |
+| MDX コンポーネント   | `tweet.css`, `slide.css` 等                                                 | 記事内 embed           |
+| `AboutPage.astro`    | `about-sections.css`                                                        | About 各セクション     |
+| `ImageGallery.astro` | `image-gallery.css`                                                         | プロフィールギャラリー |
+
+About のプロフィール画像を円形にするなど，ギャラリーへの上書きが必要な場合は `AboutPage.astro` の `<style>` を編集します．
 
 ---
 
@@ -250,21 +272,26 @@ export const profileData: ProfileData = {
 
 ### 5. 翻訳キーの命名規則
 
-| プレフィックス | 用途                 |
-| -------------- | -------------------- |
-| `site.*`       | サイト名，タグライン |
-| `nav.*`        | ナビゲーション       |
-| `component.*`  | 共通コンポーネント   |
-| `posts.*`      | 記事 UI              |
-| `tag.*`        | タグ表示名           |
-| `share.*`      | シェア UI            |
-| `rss.*`        | RSS タイトル         |
-| `about.*`      | About ページ         |
+| プレフィックス | 用途                   |
+| -------------- | ---------------------- |
+| `site.*`       | サイト名，タグライン   |
+| `nav.*`        | ナビゲーション         |
+| `component.*`  | 共通コンポーネント     |
+| `posts.*`      | 記事 UI                |
+| `tag.*`        | タグ表示名             |
+| `share.*`      | シェア UI              |
+| `identity.*`   | アカウント証明 UI      |
+| `about.*`      | About ページ           |
+| `writings.*`   | About の Writings 導線 |
+| `lang.*`       | 言語切替               |
+| `theme.*`      | ダークモード切替       |
+| `gallery.*`    | 画像ギャラリー         |
+| `rss.*`        | RSS タイトル           |
 
 ---
 
 ## 関連ドキュメント
 
-- [About ページのデータ管理](./about-data.md) - `src/data/about.ts` の詳細
+- [About ページのデータ管理](./about-data.md) - `src/data/about/` の詳細
 - [ワークフロー](./workflow.md) - 記事作成やデプロイのワークフロー
 - [画像ホスティング](./image-hosting.md) - 画像の管理方法

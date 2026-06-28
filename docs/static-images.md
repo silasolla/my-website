@@ -8,12 +8,12 @@
 
 ## 一覧
 
-| 画像                 | 配置                    | 公開 URL          | 備考                          |
-| -------------------- | ----------------------- | ----------------- | ----------------------------- |
-| ヘッダー背景         | `src/assets/header/`    | `/_astro/*.webp`  | `Header.astro`                |
-| ヘッダーの丸アイコン | `src/assets/avatar.png` | `/_astro/*.webp`  | `Header.astro`                |
-| プロフィール写真     | `public/avatar.png`     | `/avatar.png`     | `profile.ts`, `about.astro`   |
-| About ギャラリー     | `public/profile/*.webp` | `/profile/*.webp` | `about.astro`, `ImageGallery` |
+| 画像                 | 配置                    | 公開 URL          | 備考                                                   |
+| -------------------- | ----------------------- | ----------------- | ------------------------------------------------------ |
+| ヘッダー背景         | `src/assets/header/`    | `/_astro/*.webp`  | `Header.astro`, `header.css`                           |
+| ヘッダーの丸アイコン | `src/assets/avatar.png` | `/_astro/*.webp`  | `Header.astro`, `header.css`                           |
+| プロフィール写真     | `public/avatar.png`     | `/avatar.png`     | `profile.ts`, OGP                                      |
+| About ギャラリー     | `public/profile/*.webp` | `/profile/*.webp` | `AboutPage.astro`, `ImageGallery`, `image-gallery.css` |
 
 `public/` のファイルはそのまま `dist/` へ出力されます．`src/assets/` のヘッダー背景と丸アイコンは，ビルド時に `/_astro/` へ最適化されます．
 
@@ -67,7 +67,7 @@
 ### 更新手順
 
 1. `public/profile/` に WebP を追加または差し替える
-2. 必要に応じて `src/pages/about.astro` と `src/pages/en/about.astro` の `profileImages` を更新する
+2. 必要に応じて `src/layouts/AboutPage.astro` の `profileImages` を更新する
 3. `npm run build` で確認する
 4. 変更をコミットする
 

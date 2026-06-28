@@ -242,14 +242,21 @@ hobbies: [
 
 ## 使用されているコンポーネント
 
-データは以下のコンポーネントで表示されます：
+- `ExperienceSection.astro`: 経歴
+- `EducationSection.astro`: 学歴
+- `WritingsSection.astro`: 著作 (カード)
+- `TalksSection.astro`: 登壇 (カード)
+- `CertificationSection.astro`: 資格 (カード)
+- `MiscSection.astro`: その他 (カード)
+- `HobbySection.astro`: 趣味 (タグ)
+- `ImageGallery.astro`: プロフィール画像ギャラリー
 
-- `ExperienceSection.astro`: 経歴の表示
-- `EducationSection.astro`: 学歴の表示
-- `WritingsSection.astro`: 著作の表示 (カードタイプ)
-- `TalksSection.astro`: 登壇の表示 (カードタイプ)
-- `CertificationSection.astro`: 資格の表示 (カードタイプ)
-- `MiscSection.astro`: その他の表示 (カードタイプ)
-- `HobbySection.astro`: 趣味の表示 (タグ形式)
+## 編集するファイル
 
-これらのコンポーネントを変更することで，表示スタイルをカスタマイズできます．
+| 変更したい内容                  | ファイル                                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| テキスト (経歴，学歴，資格など) | `src/data/about/ja.ts`, `en.ts`                                                                         |
+| セクションの見た目              | `src/styles/about-sections.css`                                                                         |
+| About ページ全体のレイアウト    | `src/styles/about-page.css`                                                                             |
+| プロフィールギャラリー          | `src/styles/image-gallery.css`                                                                          |
+| ギャラリー画像の追加・差し替え  | `public/profile/` と `AboutPage.astro` の `profileImages` ([手順](./static-images.md#about-ギャラリー)) |

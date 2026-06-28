@@ -35,27 +35,35 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── Footer.astro
 │   │   ├── LanguageSwitch.astro
 │   │   ├── PostToc.astro
+│   │   ├── PostTocList.astro
 │   │   ├── ShareButtons.astro
 │   │   ├── ImageGallery.astro
 │   │   ├── ExperienceSection.astro
 │   │   ├── EducationSection.astro
 │   │   ├── WritingsSection.astro
+│   │   ├── TalksSection.astro
 │   │   ├── CertificationSection.astro
+│   │   ├── MiscSection.astro
 │   │   ├── HobbySection.astro
-│   │   └── MiscSection.astro
-│   ├── content/             # コンテンツコレクション
-│   │   ├── config.ts        # コンテンツ設定
+│   │   ├── Img.astro
+│   │   ├── Slide.astro
+│   │   ├── Tweet.astro
+│   │   └── SignedTextViewer.astro
+│   ├── content.config.ts    # コンテンツコレクション設定
+│   ├── content/
 │   │   └── posts/           # 記事 (Markdown/MDX)
-│   ├── data/                # 構造化データ
-│   │   ├── about.ts         # About ページのデータ
-│   │   ├── about/           # About セクション別データ
+│   ├── data/
+│   │   ├── about/           # About ページのデータ
 │   │   ├── links/           # Links ページのデータ
-│   │   └── profile.ts       # プロファイルデータ (個人情報の一元管理)
-│   ├── grammars/            # シンタックスハイライト定義
+│   │   ├── profile.ts       # プロファイルデータ
+│   │   └── theme.mjs
+│   ├── grammars/
 │   │   └── sml.tmLanguage.json
-│   ├── i18n/                # 国際化
-│   │   ├── translations.ts  # UI テキスト翻訳
-│   │   └── utils.ts         # i18n ユーティリティ関数
+│   ├── i18n/
+│   │   ├── translations.ts
+│   │   └── utils.ts
+│   ├── lib/
+│   │   └── headerBackgrounds.ts
 │   ├── layouts/
 │   │   ├── Layout.astro
 │   │   ├── HomePage.astro
@@ -67,55 +75,64 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── AboutPage.astro
 │   │   ├── LinksPage.astro
 │   │   └── NotFoundPage.astro
-│   ├── pages/               # ページルート
+│   ├── pages/               # ページルート (日本語 / en)
 │   │   ├── index.astro
 │   │   ├── about.astro
 │   │   ├── links.astro
+│   │   ├── 404.astro
+│   │   ├── identity/
 │   │   ├── posts/
 │   │   │   ├── [slug].astro
 │   │   │   └── index.astro
+│   │   ├── special/
+│   │   │   └── [slug].astro
 │   │   ├── rss/
 │   │   │   ├── diary.xml.ts
 │   │   │   ├── news.xml.ts
 │   │   │   └── tech.xml.ts
 │   │   ├── rss.xml.ts
-│   │   └── en/
-│   │       ├── index.astro
-│   │       ├── about.astro
-│   │       ├── links.astro
-│   │       └── posts/
-│   ├── plugins/             # カスタムプラグイン
-│   │   └── remark-image-url.mjs
+│   │   └── en/              # 英語版 (上記と同構成)
+│   ├── plugins/
+│   │   ├── remark-image-url.mjs
+│   │   ├── rehype-external-links.mjs
+│   │   ├── rehype-link-card-target.mjs
+│   │   └── vite-slide-pdf-proxy.mjs
 │   ├── styles/
+│   │   ├── global.css
+│   │   ├── theme.css
+│   │   ├── header.css
+│   │   ├── navigation.css
+│   │   ├── footer.css
+│   │   ├── home-page.css
 │   │   ├── post-article.css
 │   │   ├── posts-index.css
-│   │   ├── home-page.css
-│   │   ├── identity-page.css
-│   │   ├── special-article.css
+│   │   ├── article-content.css
 │   │   ├── about-page.css
+│   │   ├── about-sections.css
 │   │   ├── links-page.css
 │   │   ├── link-cards.css
-│   │   ├── not-found.css
+│   │   ├── identity-page.css
 │   │   ├── fetchable-text.css
-│   │   └── article-content.css
+│   │   ├── not-found.css
+│   │   ├── special-article.css
+│   │   ├── image-gallery.css
+│   │   ├── slide.css
+│   │   ├── tweet.css
+│   │   └── link-card.css
 │   └── utils/
+│       ├── paths.ts
 │       ├── posts.ts
-│       └── paths.ts
-├── docs/                    # ドキュメント
-│   ├── workflow.md          # 記事作成ワークフロー
-│   ├── data-i18n.md         # データ管理，i18n
-│   ├── image-hosting.md     # 記事画像 (R2)
-│   └── ...
-├── scripts/                 # スクリプト
-│   ├── generate-static-files.js # ビルド時の _headers 等を生成
-│   ├── new-post.sh          # 新規記事作成
-│   └── upload-images.sh     # 画像アップロード
-├── wrangler.jsonc           # Cloudflare Workers デプロイ設定
+│       ├── math.ts
+│       ├── image.ts
+│       └── platform.ts
+├── docs/
+├── scripts/
+│   ├── generate-static-files.js
+│   ├── new-post.sh
+│   └── upload-images.sh
+├── wrangler.jsonc
 ├── .github/
-│   ├── workflows/
-│   │   └── deploy.yml       # GitHub Actions デプロイ設定
-│   └── dependabot.yml       # Dependabot
-└── Makefile                 # タスク管理
+└── Makefile
 ```
 
 ## 開発
@@ -173,7 +190,7 @@ npm run dev
 make upload-images SLUG=YYYY-MM-DD-NN_my-post-title
 
 # 5. 記事をコミットしてプッシュ
-git add src/content/posts/YYYY-MM-DD-NN_my-post-title.md
+git add src/content/posts/YYYY-MM-DD-NN_my-post-title.mdx
 git commit -m "Add: 新しい記事"
 git push
 ```
@@ -237,7 +254,7 @@ GitHub Actions の Secrets / Variables は **[環境変数ガイド](./docs/envi
 
 ## 記事の追加と管理
 
-記事の作成，多言語対応，プロフィール情報の更新など，コンテンツ管理に関する詳細は `## 開発` セクション内の **[ドキュメント](#ドキュメント)** を参照してください．
+記事の作成，多言語対応，プロフィール情報の更新など，コンテンツ管理に関する詳細は **[ドキュメント](#ドキュメント)** を参照してください．
 
 ## 注意事項
 
@@ -262,7 +279,7 @@ R2 には実質的な制限はありませんが，以下の点に注意：
 
 2. **ヘッダー背景画像**
    - レスポンシブ対応のため最大3ファイル (モバイル/タブレット/デスクトップ)
-   - 推奨サイズは `public/backgrounds/README.md` を参照
+   - 推奨サイズは [static-images.md](./docs/static-images.md#ヘッダー背景) を参照
    - 合計ファイルサイズを 5 MB 以下に抑えることを推奨
 
 ### 開発環境での画像フォールバック
@@ -275,17 +292,12 @@ R2 には実質的な制限はありませんが，以下の点に注意：
 2. R2 に画像が存在しない場合 (404 エラー)，自動的にローカル (`/posts/images`) にフォールバック
 3. フォールバックは一度だけ実行され，無限ループを防止
 
-**実装の仕組み：**
-
-- `src/layouts/Layout.astro` で JavaScript を使用
-- 画像要素の状態を検出 (`img.complete && img.naturalWidth === 0`)
-- 既にロード失敗している場合と，これからロードする場合の両方に対応
-- 本番環境 (`npm run build`) では静的な HTML のみ生成され，フォールバック処理は含まれない
-
 **用途：**
 
 - R2 にアップロード前の記事をプレビュー
 - R2 アップロード忘れの際の確認
+
+本番ビルド (`npm run build`) ではこのフォールバックは含まれません．
 
 ### データ管理と国際化 (i18n)
 

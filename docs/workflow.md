@@ -146,7 +146,7 @@ import Tweet from '@/components/Tweet.astro';
 
 ### 2.6 数式 (KaTeX)
 
-インラインは `$...$`，ブロックは `$$...$$`．frontmatter の設定は不要で，数式を含む記事のみ CSS が読み込まれます：
+インラインは `$...$`，ブロックは `$$...$$`．frontmatter の設定は不要で，本文に数式がある記事だけ KaTeX の CSS が読み込まれます．
 
 ```markdown
 ---
