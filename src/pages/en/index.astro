@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { getTranslation } from '../../i18n/translations';
-import { getSiteName, formatDate } from '../../i18n/utils';
+import { getSiteName, formatDate, getTagLabel } from '../../i18n/utils';
 
 const allPosts = await getCollection('posts', (post) => {
   // 英語版：lang が 'en' または未定義の記事
@@ -33,9 +33,6 @@ const importantBadge = getTranslation(Astro.currentLocale, 'home.important');
 const latestTitle = getTranslation(Astro.currentLocale, 'home.latest');
 const noPostsText = getTranslation(Astro.currentLocale, 'home.no-posts');
 const viewAllText = getTranslation(Astro.currentLocale, 'home.view-all');
-const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
-const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
-const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
 const locale = Astro.currentLocale;
 ---
 
@@ -56,9 +53,7 @@ const locale = Astro.currentLocale;
                   </time>
                   <div class="post-tags">
                     {post.data.tags.map((tag) => (
-                      <span class={`tag tag-${tag}`}>
-                        {tag === 'news' ? newsTag : tag === 'tech' ? techTag : diaryTag}
-                      </span>
+                      <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
                     ))}
                   </div>
                 </div>
@@ -89,9 +84,7 @@ const locale = Astro.currentLocale;
                   </time>
                   <div class="post-tags">
                     {post.data.tags.map((tag) => (
-                      <span class={`tag tag-${tag}`}>
-                        {tag === 'news' ? newsTag : tag === 'tech' ? techTag : diaryTag}
-                      </span>
+                      <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
                     ))}
                   </div>
                 </div>

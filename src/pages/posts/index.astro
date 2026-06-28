@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { getTranslation } from '../../i18n/translations';
-import { getSiteName } from '../../i18n/utils';
+import { getSiteName, getTagLabel } from '../../i18n/utils';
 
 const allPosts = await getCollection('posts', (post) => {
   // 日本語版：lang が 'ja' または未定義の記事のみ
@@ -25,14 +25,11 @@ const rssNewsText = getTranslation(Astro.currentLocale, 'posts.rss-news');
 const rssTechText = getTranslation(Astro.currentLocale, 'posts.rss-tech');
 const rssDiaryText = getTranslation(Astro.currentLocale, 'posts.rss-diary');
 
-const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
-const techTag = getTranslation(Astro.currentLocale, 'tag.tech');
-const diaryTag = getTranslation(Astro.currentLocale, 'tag.diary');
-
 const filterToggleOpen = getTranslation(Astro.currentLocale, 'filter.toggle.open');
 const filterToggleClose = getTranslation(Astro.currentLocale, 'filter.toggle.close');
 
-const siteName = getSiteName(Astro.currentLocale);
+const locale = Astro.currentLocale;
+const siteName = getSiteName(locale);
 ---
 
 <Layout
@@ -78,9 +75,15 @@ const siteName = getSiteName(Astro.currentLocale);
             </a>
           </div>
           <div class="rss-categories">
-            <a href="/rss/news.xml" class="rss-link" title={rssNewsText}>{newsTag}</a>
-            <a href="/rss/tech.xml" class="rss-link" title={rssTechText}>{techTag}</a>
-            <a href="/rss/diary.xml" class="rss-link" title={rssDiaryText}>{diaryTag}</a>
+            <a href="/rss/news.xml" class="rss-link" title={rssNewsText}
+              >{getTagLabel(locale, 'news')}</a
+            >
+            <a href="/rss/tech.xml" class="rss-link" title={rssTechText}
+              >{getTagLabel(locale, 'tech')}</a
+            >
+            <a href="/rss/diary.xml" class="rss-link" title={rssDiaryText}
+              >{getTagLabel(locale, 'diary')}</a
+            >
           </div>
         </div>
 
@@ -90,9 +93,9 @@ const siteName = getSiteName(Astro.currentLocale);
             <button class="tag-button active" data-tag="all">{showAllText}</button>
           </div>
           <div class="tag-filter-row">
-            <button class="tag-button" data-tag="news">{newsTag}</button>
-            <button class="tag-button" data-tag="tech">{techTag}</button>
-            <button class="tag-button" data-tag="diary">{diaryTag}</button>
+            <button class="tag-button" data-tag="news">{getTagLabel(locale, 'news')}</button>
+            <button class="tag-button" data-tag="tech">{getTagLabel(locale, 'tech')}</button>
+            <button class="tag-button" data-tag="diary">{getTagLabel(locale, 'diary')}</button>
           </div>
         </div>
       </div>
@@ -116,9 +119,7 @@ const siteName = getSiteName(Astro.currentLocale);
                   </time>
                   <div class="post-tags">
                     {post.data.tags.map((tag) => (
-                      <span class={`tag tag-${tag}`}>
-                        {tag === 'news' ? newsTag : tag === 'tech' ? techTag : diaryTag}
-                      </span>
+                      <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
                     ))}
                   </div>
                 </div>
