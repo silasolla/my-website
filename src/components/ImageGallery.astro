@@ -1,6 +1,5 @@
 ---
 import { getTranslation } from '../i18n/translations';
-import ImageGalleryScript from './ImageGalleryScript.astro';
 import '../styles/image-gallery.css';
 
 interface Props {
@@ -73,4 +72,179 @@ const leftSideCount = getLeftSideCount(images.length);
   }
 </div>
 
-<ImageGalleryScript />
+<script>
+  document.querySelectorAll('.image-gallery:not([data-ready])').forEach((galleryElement) => {
+    galleryElement.setAttribute('data-ready', '');
+
+    const imagesData = galleryElement.getAttribute('data-images');
+    const images: string[] = imagesData ? JSON.parse(imagesData) : [];
+    if (images.length === 0) return;
+
+    let currentIndex = 0;
+    const mainImage = galleryElement.querySelector('.main-image');
+    const leftSideImages = galleryElement.querySelectorAll('.left-side .side-img');
+    const rightSideImages = galleryElement.querySelectorAll('.right-side .side-img');
+    const dots = galleryElement.querySelectorAll('.dot');
+
+    function updateImage(index: number): void {
+      currentIndex = index;
+      if (mainImage instanceof HTMLImageElement) {
+        mainImage.src = images[index];
+      }
+
+      rightSideImages.forEach((img, i) => {
+        if (img instanceof HTMLImageElement) {
+          const targetIndex = (index + 1 + i) % images.length;
+          img.src = images[targetIndex];
+        }
+      });
+
+      leftSideImages.forEach((img, i) => {
+        if (img instanceof HTMLImageElement) {
+          const targetIndex = (index + 1 + rightSideImages.length + i) % images.length;
+          img.src = images[targetIndex];
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+
+      const activeDot = dots[index];
+      if (activeDot instanceof HTMLElement) {
+        requestAnimationFrame(() => {
+          activeDot.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        });
+      }
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index') || '0', 10);
+        updateImage(index);
+      });
+    });
+
+    rightSideImages.forEach((img, i) => {
+      img.addEventListener('click', () => {
+        const newIndex = (currentIndex + 1 + i) % images.length;
+        updateImage(newIndex);
+      });
+    });
+
+    leftSideImages.forEach((img, i) => {
+      img.addEventListener('click', () => {
+        const newIndex = (currentIndex + 1 + rightSideImages.length + i) % images.length;
+        updateImage(newIndex);
+      });
+    });
+
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    let hasMoved = false;
+    const swipeThreshold = 60;
+    const minMoveDistance = 5;
+
+    if (!(mainImage instanceof HTMLImageElement)) return;
+
+    function handleSwipeEnd(diff: number): void {
+      mainImage.style.transition = 'opacity 0.2s ease';
+      mainImage.style.opacity = '1';
+
+      if (Math.abs(diff) > swipeThreshold && hasMoved) {
+        if (diff < 0) {
+          const newIndex = (currentIndex + 1) % images.length;
+          setTimeout(() => updateImage(newIndex), 150);
+        } else {
+          const newIndex = (currentIndex - 1 + images.length) % images.length;
+          setTimeout(() => updateImage(newIndex), 150);
+        }
+      }
+    }
+
+    mainImage.addEventListener(
+      'touchstart',
+      (e) => {
+        startX = e.changedTouches[0].clientX;
+        currentX = startX;
+        hasMoved = false;
+      },
+      { passive: true }
+    );
+
+    mainImage.addEventListener(
+      'touchmove',
+      (e) => {
+        if (!startX) return;
+        currentX = e.changedTouches[0].clientX;
+        const diff = currentX - startX;
+
+        if (Math.abs(diff) > minMoveDistance) {
+          hasMoved = true;
+        }
+
+        if (hasMoved) {
+          const opacity = Math.max(0.7, 1 - Math.abs(diff) / 300);
+          mainImage.style.opacity = opacity.toString();
+          mainImage.style.transition = 'none';
+        }
+      },
+      { passive: true }
+    );
+
+    mainImage.addEventListener(
+      'touchend',
+      () => {
+        const diff = currentX - startX;
+        handleSwipeEnd(diff);
+        startX = 0;
+        currentX = 0;
+        hasMoved = false;
+      },
+      { passive: true }
+    );
+
+    mainImage.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      currentX = startX;
+      hasMoved = false;
+      mainImage.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX;
+      const diff = currentX - startX;
+
+      if (Math.abs(diff) > minMoveDistance) {
+        hasMoved = true;
+      }
+
+      if (hasMoved) {
+        const opacity = Math.max(0.7, 1 - Math.abs(diff) / 300);
+        mainImage.style.opacity = opacity.toString();
+        mainImage.style.transition = 'none';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = currentX - startX;
+      handleSwipeEnd(diff);
+      mainImage.style.cursor = 'grab';
+      startX = 0;
+      currentX = 0;
+      hasMoved = false;
+    });
+
+    mainImage.style.cursor = 'grab';
+  });
+</script>

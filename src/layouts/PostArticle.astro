@@ -2,7 +2,6 @@
 import Layout from './Layout.astro';
 import PostToc from '../components/PostToc.astro';
 import ShareButtons from '../components/ShareButtons.astro';
-import ShareButtonsScript from '../components/ShareButtonsScript.astro';
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
@@ -74,6 +73,4 @@ const siteName = getSiteName(locale);
       <a href={postsListHref} class="back-link">{backToList}</a>
     </nav>
   </div>
-
-  <ShareButtonsScript />
 </Layout>
