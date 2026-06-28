@@ -2,6 +2,7 @@
 import Layout from './Layout.astro';
 import PostToc from '../components/PostToc.astro';
 import ShareButtons from '../components/ShareButtons.astro';
+import ShareButtonsScript from '../components/ShareButtonsScript.astro';
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
@@ -74,40 +75,5 @@ const siteName = getSiteName(locale);
     </nav>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const shareButtons = document.querySelectorAll('.share-button');
-      const currentUrl = window.location.href;
-      const title = document.querySelector('.article-title')?.textContent || '';
-
-      shareButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const shareType = button.getAttribute('data-share');
-
-          switch (shareType) {
-            case 'twitter':
-              window.open(
-                `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}`,
-                '_blank',
-                'width=550,height=420'
-              );
-              break;
-            case 'bluesky':
-              window.open(
-                `https://bsky.app/intent/compose?text=${encodeURIComponent(title + ' ' + currentUrl)}`,
-                '_blank',
-                'width=550,height=600'
-              );
-              break;
-            case 'copy':
-              navigator.clipboard.writeText(currentUrl).then(() => {
-                button.classList.add('copied');
-                setTimeout(() => button.classList.remove('copied'), 2000);
-              });
-              break;
-          }
-        });
-      });
-    });
-  </script>
+  <ShareButtonsScript />
 </Layout>
