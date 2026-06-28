@@ -1,0 +1,25 @@
+---
+import Layout from './Layout.astro';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { homePath } from '../utils/paths';
+import '../styles/not-found.css';
+
+const locale = Astro.currentLocale;
+const pageTitle = getTranslation(locale, 'notfound.title');
+const siteName = getSiteName(locale);
+const heading = getTranslation(locale, 'notfound.heading');
+const message = getTranslation(locale, 'notfound.message');
+const homeLink = getTranslation(locale, 'notfound.home');
+---
+
+<Layout title={`${pageTitle} - ${siteName}`}>
+  <div class="notfound-container">
+    <div class="notfound-content">
+      <h1 class="notfound-code">404</h1>
+      <h2 class="notfound-heading">{heading}</h2>
+      <p class="notfound-message">{message}</p>
+      <a href={homePath(locale)} class="home-link">{homeLink}</a>
+    </div>
+  </div>
+</Layout>
