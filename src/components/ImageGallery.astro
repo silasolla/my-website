@@ -81,16 +81,16 @@ const leftSideCount = getLeftSideCount(images.length);
     if (images.length === 0) return;
 
     let currentIndex = 0;
-    const mainImage = galleryElement.querySelector('.main-image');
+    const mainImageOrNull = galleryElement.querySelector<HTMLImageElement>('.main-image');
+    if (!mainImageOrNull) return;
+    const mainImage: HTMLImageElement = mainImageOrNull;
     const leftSideImages = galleryElement.querySelectorAll('.left-side .side-img');
     const rightSideImages = galleryElement.querySelectorAll('.right-side .side-img');
     const dots = galleryElement.querySelectorAll('.dot');
 
     function updateImage(index: number): void {
       currentIndex = index;
-      if (mainImage instanceof HTMLImageElement) {
-        mainImage.src = images[index];
-      }
+      mainImage.src = images[index];
 
       rightSideImages.forEach((img, i) => {
         if (img instanceof HTMLImageElement) {
@@ -149,8 +149,6 @@ const leftSideCount = getLeftSideCount(images.length);
     let hasMoved = false;
     const swipeThreshold = 60;
     const minMoveDistance = 5;
-
-    if (!(mainImage instanceof HTMLImageElement)) return;
 
     function handleSwipeEnd(diff: number): void {
       mainImage.style.transition = 'opacity 0.2s ease';
