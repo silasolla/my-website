@@ -6,7 +6,6 @@ import { getCurrentLocale, getTranslation } from '../i18n/translations';
 import { getSiteTitle, getSiteDescription } from '../i18n/utils';
 import { profileData, seoKeywords } from '../data/profile';
 import { themeColor } from '../data/theme.mjs';
-import DevImageFallbackScript from '../components/DevImageFallbackScript.astro';
 import { getHeaderBackgrounds } from '../lib/headerBackgrounds';
 
 // Global styles
@@ -41,6 +40,44 @@ const { mobileBg, tabletBg, desktopBg } = await getHeaderBackgrounds();
 // 開発環境でのフォールバック用
 const isDev = import.meta.env.DEV;
 const imageBaseUrl = import.meta.env.IMAGE_BASE_URL || '';
+
+const devImageFallbackScript = `
+  const imageBaseUrl = document.body.getAttribute('data-image-base') || '';
+
+  if (imageBaseUrl) {
+    function setupImageFallback() {
+      const images = document.querySelectorAll('.article-content img');
+
+      images.forEach((img) => {
+        const imageElement = img;
+        if (!imageElement.src.startsWith(imageBaseUrl)) {
+          return;
+        }
+
+        function attemptFallback() {
+          if (imageElement.dataset.fallbackAttempted) {
+            return;
+          }
+
+          imageElement.dataset.fallbackAttempted = 'true';
+
+          const path = imageElement.src.replace(imageBaseUrl + '/posts/', '');
+          const localSrc = '/posts/images/' + path;
+
+          imageElement.src = localSrc;
+        }
+
+        if (imageElement.complete && imageElement.naturalWidth === 0) {
+          attemptFallback();
+        } else {
+          imageElement.addEventListener('error', attemptFallback, { once: true });
+        }
+      });
+    }
+
+    setupImageFallback();
+  }
+`.trim();
 
 // OGP用の絶対URL
 const siteUrl = import.meta.env.SITE_URL || Astro.site?.toString() || 'http://localhost:4321';
@@ -198,9 +235,6 @@ const structuredData = {
         }
       });
     </script>
-
-    {/* 開発環境での画像フォールバック */}
-    {isDev && <DevImageFallbackScript />}
   </head>
   <body {...isDev ? { 'data-dev': 'true', 'data-image-base': imageBaseUrl } : {}}>
     {
@@ -219,5 +253,7 @@ const structuredData = {
       </div>
     </main>
     <Footer />
+    {/* 開発環境での画像フォールバック */}
+    {isDev && <script is:inline set:html={devImageFallbackScript} />}
   </body>
 </html>
