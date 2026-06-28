@@ -1,0 +1,39 @@
+---
+import Layout from './Layout.astro';
+import SignedTextViewer from '../components/SignedTextViewer.astro';
+import { profileData } from '../data/profile';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import '../styles/identity-page.css';
+
+const locale = Astro.currentLocale;
+const siteName = getSiteName(locale);
+const title = `${getTranslation(locale, 'identity.key.title')} - ${siteName}`;
+
+const description =
+  locale === 'en'
+    ? `${getTranslation(locale, 'identity.key.meta-description-prefix')}${profileData.nameEn} (${profileData.username})`
+    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.meta-description')}`;
+
+const intro =
+  locale === 'en'
+    ? `${getTranslation(locale, 'identity.key.intro-prefix')}${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.intro-suffix')}`
+    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.intro')}`;
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section">
+      <h3 class="section-title">{getTranslation(locale, 'identity.key.title')}</h3>
+      <div class="section-content">
+        <p>{intro}</p>
+      </div>
+
+      {
+        profileData.pgpKeyUrl && (
+          <SignedTextViewer textUrl={profileData.pgpKeyUrl} textareaClass="pgp-key" />
+        )
+      }
+    </section>
+  </article>
+</Layout>

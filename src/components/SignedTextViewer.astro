@@ -5,9 +5,10 @@ export interface Props {
   textUrl: string;
   platform?: string;
   account?: string;
+  textareaClass?: string;
 }
 
-const { textUrl } = Astro.props;
+const { textUrl, textareaClass = '' } = Astro.props;
 
 const loading = getTranslation(Astro.currentLocale, 'component.signed-text.loading');
 const copy = getTranslation(Astro.currentLocale, 'component.signed-text.copy');
@@ -17,11 +18,16 @@ const copyFailed = getTranslation(Astro.currentLocale, 'component.signed-text.co
 const errorPrefix = getTranslation(Astro.currentLocale, 'component.signed-text.error');
 ---
 
-<div class="signed-text-container">
+<div class={`signed-text-container ${textareaClass}`}>
   <textarea id="signedText" readonly>{loading}</textarea>
   <div class="button-group">
     <button id="copyButton" class="copy-button">{copy}</button>
-    <a href={textUrl} target="_blank" class="copy-button secondary-button">
+    <a
+      href={textUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="copy-button secondary-button"
+    >
       {openFile}
     </a>
   </div>
@@ -106,6 +112,10 @@ const errorPrefix = getTranslation(Astro.currentLocale, 'component.signed-text.e
     outline-offset: 2px;
   }
 
+  .signed-text-container.pgp-key #signedText {
+    min-height: 400px;
+  }
+
   .copy-button {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
@@ -168,6 +178,10 @@ const errorPrefix = getTranslation(Astro.currentLocale, 'component.signed-text.e
     #signedText {
       min-height: 250px;
       font-size: 0.75rem;
+    }
+
+    .signed-text-container.pgp-key #signedText {
+      min-height: 300px;
     }
 
     .button-group {

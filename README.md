@@ -59,7 +59,9 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── HomePage.astro
 │   │   ├── PostArticle.astro
 │   │   ├── PostsIndex.astro
-│   │   └── IdentityIndex.astro
+│   │   ├── IdentityIndex.astro
+│   │   ├── IdentityKeyPage.astro
+│   │   └── IdentitySignedPage.astro
 │   ├── pages/               # ページルート
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -83,7 +85,7 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── post-article.css
 │   │   ├── posts-index.css
 │   │   ├── home-page.css
-│   │   ├── identity-index.css
+│   │   ├── identity-page.css
 │   │   ├── special-article.css
 │   │   └── article-content.css
 │   └── utils/

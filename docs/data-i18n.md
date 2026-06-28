@@ -139,7 +139,7 @@ export const translations = {
 
 ## 記事ページの UI
 
-レイアウト本体は `HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)，`IdentityIndex.astro` (アカウント証明)．各 `pages/` 配下はルーティングと前処理のみ．
+レイアウト本体は `HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)，`IdentityIndex.astro` / `IdentityKeyPage.astro` / `IdentitySignedPage.astro` (アカウント証明)．各 `pages/` 配下はルーティングと前処理のみ．
 
 | ファイル             | 用途                                                                                           |
 | -------------------- | ---------------------------------------------------------------------------------------------- |

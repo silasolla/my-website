@@ -1,0 +1,101 @@
+---
+import Layout from './Layout.astro';
+import SignedTextViewer from '../components/SignedTextViewer.astro';
+import { profileData } from '../data/profile';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { formatPlatformName } from '../utils/platform';
+import { identityBasePath } from '../utils/paths';
+import '../styles/identity-page.css';
+
+interface Props {
+  platform: string;
+  account: string;
+}
+
+const { platform, account } = Astro.props;
+const locale = Astro.currentLocale;
+const identityPath = identityBasePath(locale);
+const platformDisplay = formatPlatformName(platform);
+const siteName = getSiteName(locale);
+
+const title = `${platformDisplay}/${account}${getTranslation(locale, 'identity.signed.title-suffix')} - ${siteName}`;
+
+const description =
+  locale === 'en'
+    ? `Proof that ${profileData.nameEn} (${profileData.username}) owns the ${platformDisplay} account ${account}`
+    : `${profileData.nameEn} (${profileData.username}) が ${platformDisplay} の ${account} アカウントを所有していることの証明`;
+
+const textUrl = `/identity/${platform}/${account}/signed.txt`;
+---
+
+<Layout title={title} description={description}>
+  <article class="about-page">
+    <section class="about-section">
+      <h3 class="section-title">
+        {platformDisplay}/{account}{getTranslation(locale, 'identity.signed.title-suffix')}
+      </h3>
+      <div class="section-content">
+        <p>
+          {
+            locale === 'en' ? (
+              <>
+                {getTranslation(locale, 'identity.signed.intro-prefix-en')}
+                {profileData.nameEn} ({profileData.username})
+                {getTranslation(locale, 'identity.signed.intro-mid-en')}
+                <strong>{platformDisplay}</strong>
+                {getTranslation(locale, 'identity.signed.intro-end-en')}
+                <strong>{account}</strong>.
+              </>
+            ) : (
+              <>
+                {profileData.nameEn} ({profileData.username})
+                {getTranslation(locale, 'identity.signed.intro-mid')}
+                <strong>{platformDisplay}</strong>
+                {getTranslation(locale, 'identity.signed.intro-after')}
+                <strong>{account}</strong>
+                {getTranslation(locale, 'identity.signed.intro-end')}
+              </>
+            )
+          }
+        </p>
+      </div>
+
+      <SignedTextViewer textUrl={textUrl} platform={platform} account={account} />
+    </section>
+
+    <section class="about-section">
+      <div class="verification-note">
+        <h4>{getTranslation(locale, 'identity.signed.verification-title')}</h4>
+        <p><strong>{getTranslation(locale, 'identity.signed.keybase-heading')}</strong></p>
+        <ol>
+          <li>
+            {getTranslation(locale, 'identity.signed.keybase-step1-prefix')}
+            <a href="https://keybase.io/verify" target="_blank" rel="noopener noreferrer">
+              {getTranslation(locale, 'identity.signed.keybase-step1-link')}
+            </a>
+            {getTranslation(locale, 'identity.signed.keybase-step1-after')}
+          </li>
+          <li>{getTranslation(locale, 'identity.signed.keybase-step2')}</li>
+          <li>{getTranslation(locale, 'identity.signed.keybase-step3')}</li>
+        </ol>
+        <p><strong>{getTranslation(locale, 'identity.signed.gpg-heading')}</strong></p>
+        <ol>
+          <li>
+            {getTranslation(locale, 'identity.signed.gpg-step1-prefix')}
+            <a href={`${identityPath}/key/`}>
+              {getTranslation(locale, 'identity.signed.gpg-step1-link')}
+            </a>
+            {getTranslation(locale, 'identity.signed.gpg-step1-after')}
+          </li>
+          <li>{getTranslation(locale, 'identity.signed.gpg-step2')}</li>
+          <li>
+            {getTranslation(locale, 'identity.signed.gpg-step3-before')}
+            <code>gpg --verify signed.txt</code>
+            {getTranslation(locale, 'identity.signed.gpg-step3-after')}
+          </li>
+        </ol>
+      </div>
+    </section>
+  </article>
+</Layout>

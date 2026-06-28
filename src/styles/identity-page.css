@@ -28,6 +28,20 @@
   margin-bottom: 1rem;
 }
 
+.section-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.section-content a:hover {
+  color: var(--color-primary-dark);
+}
+
+.section-content strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 .links-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -92,6 +106,12 @@
   color: var(--color-primary-dark);
   margin-top: 0;
   margin-bottom: 1rem;
+}
+
+.verification-note p {
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  line-height: 1.8;
 }
 
 .verification-note ol {
