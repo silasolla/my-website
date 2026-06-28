@@ -34,6 +34,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── Navigation.astro
 │   │   ├── Footer.astro
 │   │   ├── LanguageSwitch.astro
+│   │   ├── PostToc.astro
+│   │   ├── ShareButtons.astro
 │   │   ├── ImageGallery.astro
 │   │   ├── ExperienceSection.astro
 │   │   ├── EducationSection.astro
@@ -53,32 +55,34 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── translations.ts  # UI テキスト翻訳
 │   │   └── utils.ts         # i18n ユーティリティ関数
 │   ├── layouts/
-│   │   └── Layout.astro     # 共通レイアウト
+│   │   ├── Layout.astro
+│   │   └── PostArticle.astro
 │   ├── pages/               # ページルート
-│   │   ├── index.astro      # ホームページ (日本語)
-│   │   ├── about.astro      # 私について (日本語)
-│   │   ├── links.astro      # リンク集 (日本語)
+│   │   ├── index.astro
+│   │   ├── about.astro
+│   │   ├── links.astro
 │   │   ├── posts/
-│   │   │   ├── [slug].astro # 個別記事
-│   │   │   └── index.astro  # 記事一覧
-│   │   ├── rss/             # カテゴリ別 RSS
+│   │   │   ├── [slug].astro
+│   │   │   └── index.astro
+│   │   ├── rss/
 │   │   │   ├── diary.xml.ts
 │   │   │   ├── news.xml.ts
 │   │   │   └── tech.xml.ts
-│   │   ├── rss.xml.ts       # 全体 RSS
-│   │   └── en/              # 英語版ページ
+│   │   ├── rss.xml.ts
+│   │   └── en/
 │   │       ├── index.astro
 │   │       ├── about.astro
 │   │       ├── links.astro
 │   │       └── posts/
 │   ├── plugins/             # カスタムプラグイン
 │   │   └── remark-image-url.mjs
-│   └── utils/               # ユーティリティ
+│   ├── styles/
+│   └── utils/
 ├── docs/                    # ドキュメント
-│   ├── about-data.md        # About データ管理ガイド
+│   ├── workflow.md          # 記事作成ワークフロー
+│   ├── data-i18n.md         # データ管理，i18n
 │   ├── image-hosting.md     # 記事画像 (R2)
-│   ├── static-images.md     # サイト固定画像
-│   └── workflow.md          # 記事作成ワークフロー
+│   └── ...
 ├── scripts/                 # スクリプト
 │   ├── generate-static-files.js # ビルド時の _headers 等を生成
 │   ├── new-post.sh          # 新規記事作成
@@ -260,25 +264,9 @@ R2 には実質的な制限はありませんが，以下の点に注意：
 - R2 にアップロード前の記事をプレビュー
 - R2 アップロード忘れの際の確認
 
-### データ管理と国際化（i18n）
+### データ管理と国際化 (i18n)
 
-このサイトでは，個人情報とコンテンツを一元管理し，日本語・英語の2言語に対応しています．
-
-**主要な仕組み：**
-
-- **プロファイルデータ**: `src/data/profile.ts` で個人情報を一元管理
-- **翻訳**: `src/i18n/translations.ts` で UI テキストを管理
-- **ユーティリティ**: `src/i18n/utils.ts` でプロファイルと翻訳を組み合わせて動的なテキストを生成
-- **ロケール判定**: `Astro.currentLocale` で現在のロケールを自動判定
-
-**設計方針：**
-
-- `src/data/profile.ts`: 名前，SNSリンク，SEOキーワードなど個人情報
-- `src/i18n/translations.ts`: ナビゲーション，ボタン，エラーメッセージなど **UI ラベルのみ**
-- `src/data/about.ts`: 経歴，資格，趣味など構造化されたコンテンツ
-- `src/content/posts/`: 記事本文
-
-詳細な使用方法とベストプラクティスについては，**[データ管理と国際化対応](./docs/data-i18n.md)** を参照してください．
+[data-i18n.md](./docs/data-i18n.md) を参照．
 
 ## ライセンス
 

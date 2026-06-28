@@ -7,7 +7,7 @@
 1.  [プロファイルデータ管理](#プロファイルデータ管理)
 2.  [国際化 (i18n)](#国際化-i18n)
 3.  [ユーティリティ関数](#ユーティリティ関数)
-4.  [使用例](#使用例)
+4.  [記事ページの UI](#記事ページの-ui)
 5.  [ベストプラクティス](#ベストプラクティス)
 
 ---
@@ -43,40 +43,9 @@ export interface ProfileData {
 
 実際のプロファイルデータを格納するオブジェクトです．
 
-**使用例:**
-
-```typescript
-import { profileData } from '../data/profile';
-
-// 名前を取得
-const name = profileData.name; // "山田 太郎"
-const nameEn = profileData.nameEn; // "Taro Yamada"
-const username = profileData.username; // "your_username"
-
-// SNSリンクを取得
-const githubUrl = profileData.social.github; // "https://github.com/..."
-```
-
 #### `seoKeywords`
 
-SEO用のキーワードリストです．`meta name="keywords"` タグで使用されます．
-
-```typescript
-export const seoKeywords = [
-  '山田太郎',
-  'Taro Yamada',
-  'your_username',
-  'ニックネーム',
-  'ソフトウェアエンジニア',
-  // ...
-];
-```
-
-**使用例:**
-
-```astro
-<meta name="keywords" content={seoKeywords.join(',')} />
-```
+SEO 用キーワード．`Layout.astro` の `meta name="keywords"` で使用します．
 
 ---
 
@@ -155,144 +124,43 @@ export const translations = {
 
 ### `src/i18n/utils.ts`
 
-プロファイルデータと翻訳を組み合わせて，動的なテキストを生成するユーティリティ関数を提供します．
+`profile.ts` と `translations.ts` を組み合わせた文字列を生成する．UI からは `Astro.currentLocale` を渡す．
 
-#### このファイルの目的
-
-以前は，サイト名などの情報を各ファイルに直接記述 (ハードコーディング) していました．
-
-```astro
-<!-- 悪い例: ハードコーディング -->
-<title>Taro Yamada / 山田 太郎の個人サイト</title>
-<meta name="description" content="Taro Yamada / 山田 太郎 (@your_username) のテックブログです．" />
-```
-
-この方法には以下の問題がありました．
-
-- 情報が各ファイルに散らばってしまう．
-- 名前などを変更する場合，すべてのファイルを修正する必要がある．
-- 汎用的なテンプレートとして再利用しにくい．
-
-`utils.ts` を使うことで，データと表示ロジックを分離し，DRY (Don't Repeat Yourself) の原則に従うことができます．
-
-#### 提供される関数
-
-##### `getSiteTitle(locale: Locale): string`
-
-サイトのタイトルを生成します．
-
-```typescript
-getSiteTitle('ja'); // "Taro Yamada / 山田 太郎の個人サイト"
-getSiteTitle('en'); // "Taro Yamada / 山田 太郎's Personal Site"
-```
-
-##### `getSiteName(locale: Locale): string`
-
-サイト名を生成します (`getSiteTitle` と同じ実装です)．
-
-##### `getSiteDescription(locale: Locale): string`
-
-サイトの説明文を生成します．
-
-```typescript
-getSiteDescription('ja'); // "Taro Yamada / 山田 太郎 (@your_username) のテックブログです．"
-getSiteDescription('en'); // "Taro Yamada / 山田 太郎 (@your_username)'s tech blog."
-```
-
-##### `getRssFeedTitle(locale: Locale, category: RssCategory): string`
-
-RSSフィードのタイトルを生成します．
-
-```typescript
-getRssFeedTitle('ja', 'all'); // "Taro Yamada / 山田 太郎 - のブログ"
-getRssFeedTitle('ja', 'tech'); // "Taro Yamada / 山田 太郎 - 技術記事"
-getRssFeedTitle('en', 'tech'); // "Taro Yamada / 山田 太郎 - Tech Articles"
-```
-
-##### `formatDate(date: Date, locale?: string): string`
-
-日付をロケールに応じたフォーマットで表示します．
-
-```typescript
-formatDate(new Date('2025-01-15'), 'ja'); // "2025年1月15日"
-formatDate(new Date('2025-01-15'), 'en'); // "January 15, 2025"
-```
+| 関数                 | 用途                                 |
+| -------------------- | ------------------------------------ |
+| `getSiteTitle`       | サイトタイトル                       |
+| `getSiteName`        | サイト名 (接尾辞付き)                |
+| `getSiteDescription` | meta description                     |
+| `getRssFeedTitle`    | RSS タイトル (`type` でカテゴリ指定) |
+| `getTagLabel`        | 記事タグの表示名                     |
+| `formatDate`         | 日付のロケール表示                   |
 
 ---
 
-## 使用例
+## 記事ページの UI
 
-### レイアウトでの使用
+レイアウト本体は `src/layouts/PostArticle.astro`．`src/pages/**/posts/[slug].astro` はルーティングと前処理のみ．
 
-```astro
----
-// src/layouts/Layout.astro
-import { profileData, seoKeywords } from '../data/profile';
-import { getSiteTitle, getSiteDescription } from '../i18n/utils';
+### UI ラベルを変更する
 
-const title = getSiteTitle(Astro.currentLocale);
-const description = getSiteDescription(Astro.currentLocale);
----
+`src/i18n/translations.ts` の `ja` / `en` を両方更新する．
 
-<html>
-  <head>
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="author" content={`${profileData.nameEn} (@${profileData.username})`} />
-    <meta name="keywords" content={seoKeywords.join(',')} />
-  </head>
-</html>
-```
+| キー                                             | 表示箇所                     |
+| ------------------------------------------------ | ---------------------------- |
+| `posts.toc`                                      | 目次見出し                   |
+| `posts.share`                                    | シェア見出し                 |
+| `posts.back-to-list`                             | 記事一覧へのリンク           |
+| `share.twitter` / `share.bluesky` / `share.copy` | シェアボタンの `title`       |
+| `share.link-alt`                                 | リンクコピーアイコンの `alt` |
+| `tag.*`                                          | タグ名 (`getTagLabel` 経由)  |
 
-### コンポーネントでの使用
+### タグ種別を追加する
 
-```astro
----
-// src/components/SomeComponent.astro
-import { profileData } from '../data/profile';
-import { getTranslation } from '../i18n/translations';
-
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
----
-
-<div>
-  <img src={profileData.avatar} alt={profileData.nameEn} />
-  <a href={profileData.social.github}>GitHub</a>
-  <button>{detailsText}</button>
-</div>
-```
-
-### ページでの使用
-
-```astro
----
-// src/pages/about.astro
-import { profileData } from '../data/profile';
-import { getSiteName } from '../i18n/utils';
-
-const siteName = getSiteName('ja');
----
-
-<Layout title={`About - ${siteName}`}>
-  <h1>{profileData.name} / {profileData.nameEn}</h1>
-  <p>{profileData.description}</p>
-</Layout>
-```
-
-### RSSフィードでの使用
-
-```typescript
-// src/pages/rss.xml.ts
-import { getRssFeedTitle, getSiteDescription } from '../i18n/utils';
-
-export async function GET(context) {
-  return rss({
-    title: getRssFeedTitle('ja', 'all'),
-    description: getSiteDescription('ja'),
-    // ...
-  });
-}
-```
+1. `src/content.config.ts` の `tags` enum
+2. `src/i18n/translations.ts` の `tag.<名前>` (`ja` / `en`)
+3. `src/i18n/utils.ts` の `PostTag` 型
+4. `src/styles/global.css` の `.tag-<名前>`
+5. `src/pages/posts/index.astro` と `src/pages/en/posts/index.astro` のフィルタボタン
 
 ---
 
@@ -372,16 +240,18 @@ export const profileData: ProfileData = {
 };
 ```
 
-### 5. 新しい翻訳カテゴリを追加する場合
+### 5. 翻訳キーの命名規則
 
-翻訳キーは階層的に管理します．新しいカテゴリを追加する際は，既存の命名規則に従ってください．
-
-- `site.*` - サイト全体に関する翻訳
-- `nav.*` - ナビゲーションメニュー
-- `component.*` - 共通コンポーネント
-- `posts.*` - 記事ページ
-- `rss.*` - RSS フィード
-- `about.*` - About ページ (必要に応じて)
+| プレフィックス | 用途                 |
+| -------------- | -------------------- |
+| `site.*`       | サイト名，タグライン |
+| `nav.*`        | ナビゲーション       |
+| `component.*`  | 共通コンポーネント   |
+| `posts.*`      | 記事 UI              |
+| `tag.*`        | タグ表示名           |
+| `share.*`      | シェア UI            |
+| `rss.*`        | RSS タイトル         |
+| `about.*`      | About ページ         |
 
 ---
 
