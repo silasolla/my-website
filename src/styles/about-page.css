@@ -1,0 +1,129 @@
+.about-page {
+  padding: 2rem 0;
+}
+
+.about-section {
+  margin-bottom: 3rem;
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-image-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.pgp-key-badge {
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.pgp-key-badge:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pgp-key-badge svg {
+  width: 28px;
+  height: 28px;
+}
+
+.profile-info h2 {
+  font-size: 2rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.username {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.section-content {
+  color: var(--color-text);
+  line-height: 1.8;
+}
+
+.section-content p {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .profile-image-container {
+    max-width: 600px;
+  }
+
+  .pgp-key-badge {
+    bottom: 4rem;
+    right: 10rem;
+    width: 64px;
+    height: 64px;
+  }
+
+  .pgp-key-badge svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-image-container {
+    max-width: 220px;
+  }
+
+  .pgp-key-badge {
+    bottom: 3.5rem;
+    right: 0.5rem;
+    width: 42px;
+    height: 42px;
+  }
+
+  .pgp-key-badge svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.6rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+}

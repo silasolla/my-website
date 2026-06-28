@@ -65,6 +65,7 @@ export interface MiscCategory {
 }
 
 export interface AboutData {
+  bio: string[];
   experiences: ExperienceItem[];
   educations: EducationItem[];
   writings: WritingCategory[];

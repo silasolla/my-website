@@ -1,6 +1,11 @@
 import type { AboutData } from './types';
 
 export const aboutDataEn: AboutData = {
+  bio: [
+    "As a software engineer, I specialize in application development and supporting organizations in bringing their development processes in-house. My work spans the full spectrum—from application coding to public cloud infrastructure. Recently, I've been focused on putting DevOps practices into action.",
+    'I have a strong interest in the theoretical side of computing—fields like theoretical computer science, mathematical logic, and functional programming—which help uncover the "black box" mechanisms behind the tools we use. My favorite programming language is Standard ML (that\'s Meta Language, not Machine Learning!).',
+    'I deeply respect programming languages and tools that are kind to people (both developers and users) and the communities that have nurtured them. Supported by the open-source ecosystem, my goal is to give back to the community as much as I have gained.',
+  ],
   experiences: [
     {
       period: 'June 2025 - Present',

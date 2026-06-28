@@ -1,0 +1,175 @@
+---
+import Layout from './Layout.astro';
+import ImageGallery from '../components/ImageGallery.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
+import EducationSection from '../components/EducationSection.astro';
+import WritingsSection from '../components/WritingsSection.astro';
+import TalksSection from '../components/TalksSection.astro';
+import CertificationSection from '../components/CertificationSection.astro';
+import MiscSection from '../components/MiscSection.astro';
+import HobbySection from '../components/HobbySection.astro';
+import type { AboutData } from '../data/about';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { profileData } from '../data/profile';
+import { identityBasePath } from '../utils/paths';
+import '../styles/about-page.css';
+
+interface Props {
+  data: AboutData;
+}
+
+const { data } = Astro.props;
+const locale = Astro.currentLocale;
+const pageTitle = getTranslation(locale, 'page.about');
+const siteName = getSiteName(locale);
+const identityPath = identityBasePath(locale);
+
+const name =
+  locale === 'en'
+    ? `${profileData.nameEn} / ${profileData.name}`
+    : `${profileData.name} / ${profileData.nameEn}`;
+const username =
+  locale === 'en'
+    ? `@${profileData.username} / ${profileData.usernameJa}`
+    : `@${profileData.username} / ${profileData.usernameJa}`;
+
+const description =
+  locale === 'en'
+    ? `${getTranslation(locale, 'about.meta-description-prefix')}${profileData.nameEn} (@${profileData.username})`
+    : `${profileData.name} (${profileData.nameEn} / @${profileData.username})${getTranslation(locale, 'about.meta-description')}`;
+
+const profileImages = [
+  '/avatar.png',
+  '/profile/beer.webp',
+  '/profile/cosmos.webp',
+  '/profile/curry.webp',
+  '/profile/mliko.webp',
+  '/profile/misokin.webp',
+  '/profile/idabashi.webp',
+  '/profile/maple.webp',
+  '/profile/lake.webp',
+  '/profile/sunset.webp',
+  '/profile/station.webp',
+  '/profile/kamiike.webp',
+  '/profile/tunnel.webp',
+];
+---
+
+<Layout title={`${pageTitle} - ${siteName}`} description={description}>
+  <article class="about-page">
+    <section class="about-section intro-section">
+      <div class="profile-header">
+        <div class="profile-image-container">
+          <ImageGallery images={profileImages} alt={profileData.nameEn} />
+          <a
+            href={`${identityPath}/key/`}
+            class="pgp-key-badge"
+            title={getTranslation(locale, 'about.pgp-key-badge')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+              ></path>
+            </svg>
+          </a>
+        </div>
+        <div class="profile-info">
+          <h2>{name}</h2>
+          <p class="username">{username}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">About Me</h3>
+      <div class="section-content">
+        {data.bio.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">Experience</h3>
+      <div class="section-content">
+        <ExperienceSection items={data.experiences} />
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">Education</h3>
+      <div class="section-content">
+        <EducationSection items={data.educations} />
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h3 class="section-title">Writings</h3>
+      <div class="section-content">
+        <WritingsSection items={data.writings} />
+      </div>
+    </section>
+
+    {
+      data.talks && data.talks.length > 0 && (
+        <section class="about-section">
+          <h3 class="section-title">Talks</h3>
+          <div class="section-content">
+            <TalksSection items={data.talks} />
+          </div>
+        </section>
+      )
+    }
+
+    <section class="about-section">
+      <h3 class="section-title">Certifications</h3>
+      <div class="section-content">
+        <CertificationSection categories={data.certifications} />
+      </div>
+    </section>
+
+    {
+      data.misc && data.misc.length > 0 && (
+        <section class="about-section">
+          <h3 class="section-title">Misc</h3>
+          <div class="section-content">
+            <MiscSection categories={data.misc} />
+          </div>
+        </section>
+      )
+    }
+
+    {
+      data.hobbies && data.hobbies.length > 0 && (
+        <section class="about-section">
+          <h3 class="section-title">Hobby</h3>
+          <div class="section-content">
+            <HobbySection items={data.hobbies} />
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .profile-image-container :global(.main-image-container) {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .profile-image-container :global(.main-image) {
+    border-radius: 50%;
+    border: 4px solid var(--color-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+</style>
