@@ -96,6 +96,7 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── links-page.css
 │   │   ├── link-cards.css
 │   │   ├── not-found.css
+│   │   ├── fetchable-text.css
 │   │   └── article-content.css
 │   └── utils/
 │       ├── posts.ts
