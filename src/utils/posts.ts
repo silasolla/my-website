@@ -8,6 +8,16 @@ export function sortPosts(posts: CollectionEntry<'posts'>[]): CollectionEntry<'p
   });
 }
 
+export function splitHomePosts(posts: CollectionEntry<'posts'>[]) {
+  const pinnedPosts = sortPosts(posts.filter((post) => post.data.pinned));
+  const regularPosts = sortPosts(posts.filter((post) => !post.data.pinned));
+  return {
+    pinnedPosts,
+    regularPosts,
+    latestPosts: regularPosts.slice(0, 6),
+  };
+}
+
 export function postsBasePath(locale: string | undefined): string {
   return locale === 'en' ? '/en/posts' : '/posts';
 }

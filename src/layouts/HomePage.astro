@@ -1,0 +1,113 @@
+---
+import Layout from './Layout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
+import { splitHomePosts, postsBasePath } from '../utils/posts';
+import '../styles/home-page.css';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+const locale = Astro.currentLocale;
+const postsPath = postsBasePath(locale);
+const { pinnedPosts, regularPosts, latestPosts } = splitHomePosts(posts);
+
+const pageTitle = getTranslation(locale, 'page.home');
+const siteName = getSiteName(locale);
+const pinnedTitle = getTranslation(locale, 'home.pinned');
+const importantBadge = getTranslation(locale, 'home.important');
+const latestTitle = getTranslation(locale, 'home.latest');
+const noPostsText = getTranslation(locale, 'home.no-posts');
+const viewAllText = getTranslation(locale, 'home.view-all');
+---
+
+<Layout title={`${pageTitle} - ${siteName}`}>
+  <div class="home-page">
+    {
+      pinnedPosts.length > 0 && (
+        <section class="pinned-section">
+          <h2 class="section-title pinned-title">📌 {pinnedTitle}</h2>
+
+          <ul class="posts-list pinned-posts">
+            {pinnedPosts.map((post) => (
+              <li class={`post-item ${post.data.important ? 'important-post' : ''}`}>
+                <a href={`${postsPath}/${post.id}/`} class="post-link">
+                  {post.data.important && <span class="important-badge">{importantBadge}</span>}
+                  <div class="post-meta">
+                    <time class="post-date" datetime={post.data.date.toISOString()}>
+                      {formatDate(post.data.date, locale)}
+                    </time>
+                    <div class="post-tags">
+                      {post.data.tags.map((tag) => (
+                        <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <h3 class="post-title">{post.data.title}</h3>
+                  {post.data.description && <p class="post-description">{post.data.description}</p>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="home-section">
+      <h2 class="section-title">{latestTitle}</h2>
+
+      {
+        latestPosts.length === 0 ? (
+          <p class="no-posts">{noPostsText}</p>
+        ) : (
+          <ul class="posts-list">
+            {latestPosts.map((post) => (
+              <li class="post-item">
+                <a href={`${postsPath}/${post.id}/`} class="post-link">
+                  <div class="post-meta">
+                    <time class="post-date" datetime={post.data.date.toISOString()}>
+                      {formatDate(post.data.date, locale)}
+                    </time>
+                    <div class="post-tags">
+                      {post.data.tags.map((tag) => (
+                        <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <h3 class="post-title">{post.data.title}</h3>
+                  {post.data.description && <p class="post-description">{post.data.description}</p>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        regularPosts.length > latestPosts.length && (
+          <div class="view-all-wrapper">
+            <a href={`${postsPath}/`} class="view-all-link">
+              {viewAllText}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+          </div>
+        )
+      }
+    </section>
+  </div>
+</Layout>
