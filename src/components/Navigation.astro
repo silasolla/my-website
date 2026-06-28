@@ -1,10 +1,11 @@
 ---
 import { getCurrentLocale, getTranslation } from '../i18n/translations';
+import { localeBasePath } from '../utils/paths';
 
 const currentPath = Astro.url.pathname;
 const locale = getCurrentLocale(Astro.currentLocale);
 
-const baseUrl = locale === 'en' ? '/en' : '';
+const baseUrl = localeBasePath(locale);
 const menuTitle = getTranslation(Astro.currentLocale, 'nav.menu');
 const homeText = getTranslation(Astro.currentLocale, 'nav.home');
 const aboutText = getTranslation(Astro.currentLocale, 'nav.about');
