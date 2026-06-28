@@ -1,0 +1,33 @@
+---
+import PostTocList from './PostTocList.astro';
+
+interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: TocHeading[];
+  title: string;
+  variant: 'sidebar' | 'mobile';
+}
+
+const { headings, title, variant } = Astro.props;
+---
+
+{
+  variant === 'sidebar' ? (
+    <div class="toc-section">
+      <h3 class="sidebar-title">{title}</h3>
+      <PostTocList headings={headings} />
+    </div>
+  ) : (
+    <aside class="toc-mobile">
+      <details class="toc-details">
+        <summary class="toc-summary">{title}</summary>
+        <PostTocList headings={headings} />
+      </details>
+    </aside>
+  )
+}

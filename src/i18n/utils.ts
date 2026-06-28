@@ -2,7 +2,7 @@ import { profileData } from '../data/profile';
 import { getTranslation } from './translations';
 
 /**
- * サイト名を取得（プロフィール + i18n接尾辞）
+ * サイト名を取得 (プロフィール + i18n 接尾辞)
  */
 export function getSiteName(locale: string | undefined): string {
   const suffix = getTranslation(locale, 'site.name-suffix');
@@ -13,7 +13,7 @@ export function getSiteName(locale: string | undefined): string {
 }
 
 /**
- * サイトタイトルを取得（名前の組み合わせ）
+ * サイトタイトルを取得 (名前の組み合わせ)
  */
 export function getSiteTitle(locale: string | undefined): string {
   if (locale === 'en') {
@@ -23,7 +23,7 @@ export function getSiteTitle(locale: string | undefined): string {
 }
 
 /**
- * サイト説明を取得（プロフィール + tagline）
+ * サイト説明を取得 (プロフィール + tagline)
  */
 export function getSiteDescription(locale: string | undefined): string {
   const tagline = getTranslation(locale, 'site.tagline');
@@ -50,6 +50,12 @@ export function getRssFeedTitle(
   }
 
   return `${title} - ${suffix}`;
+}
+
+export type PostTag = 'news' | 'tech' | 'diary';
+
+export function getTagLabel(locale: string | undefined, tag: PostTag): string {
+  return getTranslation(locale, `tag.${tag}`);
 }
 
 /**

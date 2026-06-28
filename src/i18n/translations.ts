@@ -24,7 +24,7 @@ export const translations = {
     'home.no-posts': 'まだ記事がありません．',
     'home.view-all': 'すべての記事を見る',
 
-    // 記事ページ
+    // 記事一覧・個別記事 UI
     'posts.title': '記事',
     'posts.description': '技術記事，お知らせ，日記などの記事一覧です．',
     'posts.all': 'すべての記事',
@@ -36,8 +36,11 @@ export const translations = {
     'posts.rss-news': 'お知らせ',
     'posts.rss-tech': '技術記事',
     'posts.rss-diary': '日記',
+    'posts.toc': '目次',
+    'posts.share': 'シェア',
+    'posts.back-to-list': '← 記事一覧に戻る',
 
-    // RSS フィードタイトル（接尾辞）
+    // RSS フィードタイトル (接尾辞)
     'rss.feed-title-suffix': 'すべての記事',
     'rss.feed-title-news-suffix': 'お知らせ',
     'rss.feed-title-tech-suffix': '技術記事',
@@ -66,6 +69,7 @@ export const translations = {
     'share.twitter': 'X (Twitter) でシェア',
     'share.bluesky': 'Bluesky でシェア',
     'share.copy': 'URL をコピー',
+    'share.link-alt': 'リンク',
 
     // 画像ギャラリー
     'gallery.image': '画像',
@@ -122,7 +126,7 @@ export const translations = {
     'home.no-posts': 'No posts yet.',
     'home.view-all': 'View all posts',
 
-    // Posts page
+    // Posts list and article UI
     'posts.title': 'Posts',
     'posts.description': 'A collection of tech articles, news, and diary entries.',
     'posts.all': 'All Posts',
@@ -134,6 +138,9 @@ export const translations = {
     'posts.rss-news': 'News',
     'posts.rss-tech': 'Tech',
     'posts.rss-diary': 'Diary',
+    'posts.toc': 'Table of Contents',
+    'posts.share': 'Share',
+    'posts.back-to-list': '← Back to Posts',
 
     // RSS feed titles (suffixes)
     'rss.feed-title-suffix': 'All Posts',
@@ -164,6 +171,7 @@ export const translations = {
     'share.twitter': 'Share on X (Twitter)',
     'share.bluesky': 'Share on Bluesky',
     'share.copy': 'Copy URL',
+    'share.link-alt': 'Link',
 
     // Image gallery
     'gallery.image': 'Image',

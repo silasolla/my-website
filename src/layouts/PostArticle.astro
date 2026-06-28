@@ -1,0 +1,111 @@
+---
+import Layout from './Layout.astro';
+import PostToc from '../components/PostToc.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
+import '../styles/post-article.css';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+  coverImage?: string;
+  math?: boolean;
+}
+
+const { entry, coverImage, math = false } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const locale = Astro.currentLocale;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const tocTitle = getTranslation(locale, 'posts.toc');
+const backToList = getTranslation(locale, 'posts.back-to-list');
+const postsListHref = locale === 'en' ? '/en/posts' : '/posts';
+const siteName = getSiteName(locale);
+---
+
+<Layout
+  title={`${entry.data.title} - ${siteName}`}
+  description={entry.data.description}
+  image={coverImage}
+  math={math}
+>
+  <div class="post-layout">
+    <header class="article-header">
+      <div class="article-tags">
+        {
+          entry.data.tags.map((tag) => (
+            <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+          ))
+        }
+      </div>
+      <h2 class="article-title">{entry.data.title}</h2>
+      <time class="article-date" datetime={entry.data.date.toISOString()}>
+        {formatDate(entry.data.date, locale)}
+      </time>
+    </header>
+
+    <aside class="sidebar-pc">
+      {
+        tocHeadings.length > 0 && (
+          <PostToc headings={tocHeadings} title={tocTitle} variant="sidebar" />
+        )
+      }
+      <div class="share-section">
+        <ShareButtons />
+      </div>
+    </aside>
+
+    {tocHeadings.length > 0 && <PostToc headings={tocHeadings} title={tocTitle} variant="mobile" />}
+
+    <div class="article-content">
+      <Content />
+    </div>
+
+    <aside class="share-mobile">
+      <ShareButtons />
+    </aside>
+
+    <nav class="article-nav">
+      <a href={postsListHref} class="back-link">{backToList}</a>
+    </nav>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const shareButtons = document.querySelectorAll('.share-button');
+      const currentUrl = window.location.href;
+      const title = document.querySelector('.article-title')?.textContent || '';
+
+      shareButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const shareType = button.getAttribute('data-share');
+
+          switch (shareType) {
+            case 'twitter':
+              window.open(
+                `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}`,
+                '_blank',
+                'width=550,height=420'
+              );
+              break;
+            case 'bluesky':
+              window.open(
+                `https://bsky.app/intent/compose?text=${encodeURIComponent(title + ' ' + currentUrl)}`,
+                '_blank',
+                'width=550,height=600'
+              );
+              break;
+            case 'copy':
+              navigator.clipboard.writeText(currentUrl).then(() => {
+                button.classList.add('copied');
+                setTimeout(() => button.classList.remove('copied'), 2000);
+              });
+              break;
+          }
+        });
+      });
+    });
+  </script>
+</Layout>

@@ -1,0 +1,29 @@
+---
+import { getTranslation } from '../i18n/translations';
+
+interface Props {
+  showTitle?: boolean;
+}
+
+const { showTitle = true } = Astro.props;
+const locale = Astro.currentLocale;
+
+const shareTitle = getTranslation(locale, 'posts.share');
+const shareTwitter = getTranslation(locale, 'share.twitter');
+const shareBluesky = getTranslation(locale, 'share.bluesky');
+const shareCopy = getTranslation(locale, 'share.copy');
+const linkAlt = getTranslation(locale, 'share.link-alt');
+---
+
+{showTitle && <h3 class="sidebar-title">{shareTitle}</h3>}
+<div class="share-buttons">
+  <button class="share-button share-twitter" data-share="twitter" title={shareTwitter}>
+    <img src="/icons/twitter.svg" alt="X" width="20" height="20" />
+  </button>
+  <button class="share-button share-bluesky" data-share="bluesky" title={shareBluesky}>
+    <img src="/icons/bluesky.svg" alt="Bluesky" width="20" height="20" />
+  </button>
+  <button class="share-button share-copy" data-share="copy" title={shareCopy}>
+    <img src="/icons/link.svg" alt={linkAlt} width="20" height="20" />
+  </button>
+</div>
