@@ -5,6 +5,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../../../i18n/translations';
 import { getSiteName, formatDate } from '../../../i18n/utils';
 import { resolveImageUrl } from '../../../utils/image';
+import { hasMathContent } from '../../../utils/math';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('posts');
@@ -27,7 +28,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // Convert @@/ notation in coverImage
 const coverImage = resolveImageUrl(entry.data.coverImage);
-const math = entry.data.math ?? false;
+const math = hasMathContent(entry.body ?? '');
 
 const newsTag = getTranslation(Astro.currentLocale, 'tag.news');
 const techTag = getTranslation(Astro.currentLocale, 'tag.tech');

@@ -1,0 +1,5 @@
+.katex-display,
+.katex,
+.katex * {
+  box-sizing: content-box;
+}

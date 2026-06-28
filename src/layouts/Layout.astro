@@ -198,10 +198,16 @@ const structuredData = {
 
     {/* 開発環境での画像フォールバック */}
     {isDev && <DevImageFallbackScript />}
-
-    {math && <link rel="stylesheet" href="/vendor/katex.min.css" />}
   </head>
   <body {...isDev ? { 'data-dev': 'true', 'data-image-base': imageBaseUrl } : {}}>
+    {
+      math && (
+        <>
+          <link rel="stylesheet" href="/vendor/katex-compat.css" />
+          <link rel="stylesheet" href="/vendor/katex.min.css" />
+        </>
+      )
+    }
     <Header mobileBg={mobileBg} tabletBg={tabletBg} desktopBg={desktopBg} />
     <main class="main-content">
       <div class="container">

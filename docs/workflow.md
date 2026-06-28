@@ -146,21 +146,20 @@ import Tweet from '@/components/Tweet.astro';
 
 ### 2.6 数式 (KaTeX)
 
-数式を使う記事では frontmatter に `math: true` を追加します．
+インラインは `$...$`，ブロックは `$$...$$` で書きます：
 
 ```markdown
 ---
 title: 記事タイトル
 date: 2025-10-26
 tags: ['tech']
-math: true
 ---
 
 $O(n \log n)$ の話をします．
 ```
 
-- `math: true` の記事のみ KaTeX の CSS が読み込まれます (ビルド時に `/_astro/` へバンドル)
-- 数式を使わない記事では省略してください (デフォルトでは CSS を読み込まない)
+- 数式を含む記事のみ CSS が読み込まれます (frontmatter への追加指定は不要)
+- 数式を使わない記事では，CSS は読み込まれません
 
 ### 2.7 スライド (PDF) の埋め込み
 

@@ -5,7 +5,7 @@
  * public/_headers, public/robots.txt, public/site.webmanifest, public/.assetsignore を動的に生成
  */
 
-import { cpSync, mkdirSync, writeFileSync } from 'fs';
+import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dotenv from 'dotenv';
@@ -69,11 +69,14 @@ writeFileSync(headersPath, headersContent, 'utf-8');
 console.log('✅ Generated: public/_headers');
 
 const katexDistDir = join(__dirname, '..', 'node_modules', 'katex', 'dist');
+const katexCompatSrc = join(__dirname, '..', 'src', 'styles', 'katex-compat.css');
 const vendorDir = join(publicDir, 'vendor');
 mkdirSync(vendorDir, { recursive: true });
 cpSync(join(katexDistDir, 'katex.min.css'), join(vendorDir, 'katex.min.css'));
 cpSync(join(katexDistDir, 'fonts'), join(vendorDir, 'fonts'), { recursive: true });
+writeFileSync(join(vendorDir, 'katex-compat.css'), readFileSync(katexCompatSrc, 'utf-8'), 'utf-8');
 console.log('✅ Generated: public/vendor/katex.min.css');
+console.log('✅ Generated: public/vendor/katex-compat.css');
 
 // robots.txt ファイルを生成
 const robotsContent = `User-agent: *
