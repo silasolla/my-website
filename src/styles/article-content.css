@@ -69,6 +69,18 @@
   max-width: 100%;
 }
 
+.article-content figure {
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+.article-content figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
 .article-content code:not(pre code) {
   background: var(--color-bg-alt);
   padding: 0.2rem 0.5rem;

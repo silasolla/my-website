@@ -1,0 +1,11 @@
+.tweet-container {
+  margin: 1.5rem auto;
+  max-width: 550px;
+  background: var(--color-bg);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.tweet-container .twitter-tweet {
+  margin: 0;
+}
