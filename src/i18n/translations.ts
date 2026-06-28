@@ -10,6 +10,12 @@ export const translations = {
     'page.posts': '記事',
     'page.links': 'リンク',
 
+    'about.pgp-key-badge': 'PGP 公開鍵を見る',
+    'about.meta-description': 'の経歴や資格について',
+    'about.meta-description-prefix': '',
+    'links.meta-description': 'の各種アカウントリンク',
+    'links.meta-description-prefix': '',
+
     // ナビゲーション
     'nav.menu': 'お品書き',
     'nav.home': 'ホーム',
@@ -164,6 +170,12 @@ export const translations = {
     'page.about': 'About Me',
     'page.posts': 'Posts',
     'page.links': 'Links',
+
+    'about.pgp-key-badge': 'View PGP Public Key',
+    'about.meta-description-prefix': 'Background and qualifications of ',
+    'about.meta-description': '',
+    'links.meta-description': '',
+    'links.meta-description-prefix': 'Links to various accounts of ',
 
     // Navigation
     'nav.menu': 'Menu',

@@ -1,0 +1,47 @@
+---
+import Layout from './Layout.astro';
+import type { LinksData } from '../data/links';
+import { getTranslation } from '../i18n/translations';
+import { getSiteName } from '../i18n/utils';
+import { profileData } from '../data/profile';
+import '../styles/links-page.css';
+
+interface Props {
+  data: LinksData;
+}
+
+const { data } = Astro.props;
+const locale = Astro.currentLocale;
+const pageTitle = getTranslation(locale, 'page.links');
+const siteName = getSiteName(locale);
+
+const description =
+  locale === 'en'
+    ? `${getTranslation(locale, 'links.meta-description-prefix')}${profileData.nameEn} (@${profileData.username})`
+    : `${profileData.name} (${profileData.nameEn} / @${profileData.username})${getTranslation(locale, 'links.meta-description')}`;
+---
+
+<Layout title={`${pageTitle} - ${siteName}`} description={description}>
+  <article class="links-page">
+    {
+      data.sections.map((section) => (
+        <section class="links-section">
+          <h2 class="section-title">{section.title}</h2>
+          <div class="links-grid">
+            {section.items.map((link) => (
+              <a href={link.url} class="link-card" target="_blank" rel="noopener noreferrer">
+                <h3 class="link-name">{link.name}</h3>
+                {link.description && <p class="link-description">{link.description}</p>}
+                <span class="link-arrow">→</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="links-note">
+      {data.notes.map((note) => <p>{note}</p>)}
+    </section>
+  </article>
+</Layout>
