@@ -139,9 +139,12 @@ export const translations = {
 
 ## 記事ページの UI
 
-レイアウト本体は `src/layouts/HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)．`src/pages/**/posts/` 配下はルーティングと前処理のみ．
+レイアウト本体は `HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)，`IdentityIndex.astro` (アカウント証明)．各 `pages/` 配下はルーティングと前処理のみ．
 
-`src/utils/posts.ts` — 一覧の並び順 (`sortPosts`)，ホームのピン留め分割 (`splitHomePosts`)，日付表示 (`formatPostListDate`)，パス (`postsBasePath`)．
+| ファイル             | 用途                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| `src/utils/posts.ts` | 並び順 (`sortPosts`)，ホームのピン留め分割 (`splitHomePosts`)，一覧日付 (`formatPostListDate`) |
+| `src/utils/paths.ts` | ロケール付きパス (`postsBasePath`, `identityBasePath`)                                         |
 
 ### UI ラベルを変更する
 
@@ -164,6 +167,8 @@ export const translations = {
 3. `src/i18n/utils.ts` の `PostTag` 型
 4. `src/styles/global.css` の `.tag-<名前>`
 5. `src/layouts/PostsIndex.astro` のフィルタボタン
+
+アカウント証明の UI ラベルは `identity.*` キー．フィルタボタン追加手順と同様，`translations.ts` の `ja` / `en` を両方更新する．
 
 ---
 

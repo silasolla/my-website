@@ -58,7 +58,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── Layout.astro
 │   │   ├── HomePage.astro
 │   │   ├── PostArticle.astro
-│   │   └── PostsIndex.astro
+│   │   ├── PostsIndex.astro
+│   │   └── IdentityIndex.astro
 │   ├── pages/               # ページルート
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -82,9 +83,12 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── post-article.css
 │   │   ├── posts-index.css
 │   │   ├── home-page.css
+│   │   ├── identity-index.css
+│   │   ├── special-article.css
 │   │   └── article-content.css
 │   └── utils/
-│       └── posts.ts
+│       ├── posts.ts
+│       └── paths.ts
 ├── docs/                    # ドキュメント
 │   ├── workflow.md          # 記事作成ワークフロー
 │   ├── data-i18n.md         # データ管理，i18n
