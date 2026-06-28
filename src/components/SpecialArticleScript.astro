@@ -1,0 +1,186 @@
+<script>
+  const DATA_BASE_URL =
+    document.getElementById('special-article-root')?.getAttribute('data-api-base') || '';
+
+  interface ArticleData {
+    slug: string;
+    title: string;
+    content: string;
+    category: string;
+    categoryColor: string;
+    date: string;
+    meta?: {
+      publishedAt: string;
+      updatedAt: string;
+    };
+  }
+
+  interface TwitterWidgets {
+    load: () => void;
+  }
+
+  interface TwitterWindow extends Window {
+    twttr?: {
+      widgets: TwitterWidgets;
+    };
+  }
+
+  declare const window: TwitterWindow;
+
+  function getSlugFromUrl(): string {
+    const pathname = window.location.pathname;
+    const match = pathname.match(/\/special\/([^/]+)\/?$/);
+    return match ? match[1] : '';
+  }
+
+  async function loadSpecialArticle() {
+    const slug = getSlugFromUrl();
+
+    if (slug === '_placeholder' || !slug) {
+      showError('記事が見つかりません', '記事のURLを確認してください。');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${DATA_BASE_URL}/articles/${slug}.json`, {
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('記事が見つかりませんでした');
+        } else if (response.status === 403 || response.status === 401) {
+          throw new Error('この記事にアクセスする権限がありません');
+        } else {
+          throw new Error(`エラーが発生しました (${response.status})`);
+        }
+      }
+
+      const data: ArticleData = await response.json();
+      document.title = `${data.title}`;
+      renderArticle(data);
+    } catch (error) {
+      console.error('Error loading article:', error);
+      const message = error instanceof Error ? error.message : '記事の読み込みに失敗しました';
+      showError(message, 'ネットワーク接続を確認してください。');
+    }
+  }
+
+  function renderArticle(data: ArticleData) {
+    const root = document.getElementById('special-article-root');
+    if (!root) return;
+
+    root.className = '';
+    root.innerHTML = `
+      <div class="post-layout single-column">
+        <header class="article-header">
+          <div class="article-tags">
+            <span class="tag" style="background-color: ${escapeHtml(data.categoryColor)}; color: white;">
+              ${escapeHtml(data.category)}
+            </span>
+          </div>
+          <h2 class="article-title">${escapeHtml(data.title)}</h2>
+          <time class="article-date" datetime="${data.date}">
+            ${formatDate(data.date)}
+          </time>
+        </header>
+
+        <div class="article-content">
+          ${data.content}
+        </div>
+
+        <nav class="article-nav">
+          <a href="/" class="back-link">← トップに戻る</a>
+        </nav>
+      </div>
+    `;
+
+    setupLazyImages();
+    setupExternalLinks();
+    loadTwitterEmbeds();
+  }
+
+  function showError(message: string, detail?: string) {
+    const root = document.getElementById('special-article-root');
+    if (!root) return;
+
+    root.className = 'error-state';
+    root.innerHTML = `
+      <div class="error-container">
+        <div class="error-icon">⚠️</div>
+        <h2 class="error-title">${escapeHtml(message)}</h2>
+        ${detail ? `<p class="error-detail">${escapeHtml(detail)}</p>` : ''}
+        <div class="error-nav">
+          <button class="retry-button" onclick="location.reload()">再読み込み</button>
+          <a href="/" class="back-link">トップに戻る</a>
+        </div>
+      </div>
+    `;
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatDate(dateString: string): string {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch (e) {
+      return dateString;
+    }
+  }
+
+  function setupLazyImages() {
+    const images = document.querySelectorAll('.article-content img');
+
+    if ('loading' in HTMLImageElement.prototype) {
+      images.forEach((img) => {
+        (img as HTMLImageElement).loading = 'lazy';
+      });
+    }
+  }
+
+  function setupExternalLinks() {
+    const links = document.querySelectorAll('.article-content a[href^="http"]');
+
+    links.forEach((link) => {
+      const anchor = link as HTMLAnchorElement;
+      const url = new URL(anchor.href);
+
+      if (url.hostname !== window.location.hostname) {
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+      }
+    });
+  }
+
+  function loadTwitterEmbeds() {
+    const tweets = document.querySelectorAll('.twitter-tweet');
+
+    if (tweets.length === 0) return;
+
+    if (window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    script.setAttribute('charset', 'utf-8');
+    document.body.appendChild(script);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSpecialArticle);
+  } else {
+    loadSpecialArticle();
+  }
+</script>
