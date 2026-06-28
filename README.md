@@ -56,6 +56,7 @@ Markdown/MDX によって記事を管理します．
 │   │   └── utils.ts         # i18n ユーティリティ関数
 │   ├── layouts/
 │   │   ├── Layout.astro
+│   │   ├── HomePage.astro
 │   │   ├── PostArticle.astro
 │   │   └── PostsIndex.astro
 │   ├── pages/               # ページルート
@@ -80,6 +81,7 @@ Markdown/MDX によって記事を管理します．
 │   ├── styles/
 │   │   ├── post-article.css
 │   │   ├── posts-index.css
+│   │   ├── home-page.css
 │   │   └── article-content.css
 │   └── utils/
 │       └── posts.ts

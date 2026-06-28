@@ -139,9 +139,9 @@ export const translations = {
 
 ## 記事ページの UI
 
-レイアウト本体は `src/layouts/PostArticle.astro` (個別記事) と `src/layouts/PostsIndex.astro` (一覧)．`src/pages/**/posts/` 配下はルーティングと前処理のみ．
+レイアウト本体は `src/layouts/HomePage.astro` (トップ)，`PostArticle.astro` (個別記事)，`PostsIndex.astro` (一覧)．`src/pages/**/posts/` 配下はルーティングと前処理のみ．
 
-`src/utils/posts.ts` — 一覧の並び順 (`sortPosts`)，日付表示 (`formatPostListDate`)，パス (`postsBasePath`)．
+`src/utils/posts.ts` — 一覧の並び順 (`sortPosts`)，ホームのピン留め分割 (`splitHomePosts`)，日付表示 (`formatPostListDate`)，パス (`postsBasePath`)．
 
 ### UI ラベルを変更する
 
