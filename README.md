@@ -122,12 +122,14 @@ Markdown/MDX によって記事を管理します．
 │   └── utils/
 │       ├── paths.ts
 │       ├── posts.ts
+│       ├── rss.ts
 │       ├── math.ts
 │       ├── image.ts
 │       └── platform.ts
 ├── docs/
 ├── scripts/
 │   ├── generate-static-files.js
+│   ├── copy-en-404.js
 │   ├── new-post.sh
 │   └── upload-images.sh
 ├── wrangler.jsonc

@@ -2,5 +2,5 @@ import type { APIContext } from 'astro';
 import { buildRssFeed } from '../../utils/rss';
 
 export async function GET(context: APIContext) {
-  return buildRssFeed(context, 'ja', { tag: 'tech', description: '技術記事のRSSフィード' });
+  return buildRssFeed(context, 'en');
 }

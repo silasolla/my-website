@@ -547,10 +547,10 @@ title: 'このサイトを新しくしました'
    ---
    ```
 
-2. **英語版を作成**:
+2. **英語版を作成** (ファイル名は日本語版のスラッグ + `_en`):
 
    ```yaml
-   # src/content/posts/2025-10-26-01_welcome.en.mdx
+   # src/content/posts/2025-10-26-01_welcome_en.mdx
    ---
    title: 'Site Renewed'
    lang: 'en'
@@ -569,6 +569,6 @@ lang: 'en'
 
 ### 注意事項
 
-- **スラッグ名**：同じでも異なっていてもOK (例：`welcome.mdx` と `welcome.en.mdx`)
+- **スラッグ名**：対訳は `<スラッグ>` (日本語) と `<スラッグ>_en` (英語) の命名で対応付けます (例：`welcome.mdx` と `welcome_en.mdx`)．言語スイッチャーや Talks からの記事リンクはこの規則で対訳ページを解決し，対訳がない記事では記事一覧などへフォールバックします
 - **画像の共有**：両言語版で同じ画像パスを使用可能 (`@@/2025-10-26-01_welcome/image.webp`)
-- **RSS**：日本語版RSSには `lang: 'ja'` または未定義の記事のみ含まれます
+- **RSS**：日本語版RSS (`/rss.xml`, `/rss/*.xml`) には `lang: 'ja'` または未定義の記事のみ，英語版RSS (`/en/rss.xml`) には `lang: 'en'` または未定義の記事のみ含まれます

@@ -3,7 +3,8 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const postsCollection = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/posts' }),
+  // 素の .md では rehype プラグインが raw HTML に効かないため .mdx のみ対象
+  loader: glob({ pattern: '**/[^_]*.mdx', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
     date: z.date(),

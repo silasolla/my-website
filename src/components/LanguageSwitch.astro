@@ -1,13 +1,33 @@
 ---
+import { getCollection } from 'astro:content';
 import { getCurrentLocale, getTranslation } from '../i18n/translations';
+import { findCounterpartPost } from '../utils/posts';
+import { postsBasePath } from '../utils/paths';
 
 const currentLocale = getCurrentLocale(Astro.currentLocale);
 const currentPath = Astro.url.pathname;
 
-const pathWithoutLocale = currentPath.replace(/^\/en/, '') || '/';
+const pathWithoutLocale = currentPath.replace(/^\/en(\/|$)/, '/');
 
-const jaUrl = pathWithoutLocale;
-const enUrl = `/en${pathWithoutLocale}`;
+let jaUrl = pathWithoutLocale;
+let enUrl = `/en${pathWithoutLocale}`;
+
+// 記事詳細ページは言語ごとに存在する記事が異なるため，
+// 対訳記事があればそこへ，なければ記事一覧へ切り替える
+const postMatch = pathWithoutLocale.match(/^\/posts\/([^/]+)\/$/);
+if (postMatch) {
+  const posts = await getCollection('posts');
+  const targetLang = currentLocale === 'en' ? 'ja' : 'en';
+  const counterpart = findCounterpartPost(posts, postMatch[1], targetLang);
+  const targetUrl = counterpart
+    ? `${postsBasePath(targetLang)}/${counterpart.id}/`
+    : `${postsBasePath(targetLang)}/`;
+  if (targetLang === 'en') {
+    enUrl = targetUrl;
+  } else {
+    jaUrl = targetUrl;
+  }
+}
 
 const jaLabel = getTranslation('ja', 'lang.switch.ja');
 const enLabel = getTranslation('en', 'lang.switch.en');

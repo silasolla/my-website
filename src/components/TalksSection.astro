@@ -1,6 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import type { TalkItem } from '../data/about';
 import { getTranslation } from '../i18n/translations';
+import { findCounterpartPost } from '../utils/posts';
 import { postsBasePath } from '../utils/paths';
 
 interface Props {
@@ -12,7 +14,14 @@ const detailsText = getTranslation(Astro.currentLocale, 'component.details');
 const eventLabel = getTranslation(Astro.currentLocale, 'talks.event');
 const slidesLabel = getTranslation(Astro.currentLocale, 'talks.slides');
 const postLabel = getTranslation(Astro.currentLocale, 'talks.post');
-const postsBase = `${postsBasePath(Astro.currentLocale)}/`;
+
+// 対訳がないロケールでは記事が存在する言語 (ja) のページへリンクする
+const posts = await getCollection('posts');
+const targetLang = Astro.currentLocale === 'en' ? 'en' : 'ja';
+function postHref(slug: string): string {
+  const target = findCounterpartPost(posts, slug, targetLang);
+  return target ? `${postsBasePath(targetLang)}/${target.id}/` : `/posts/${slug}/`;
+}
 ---
 
 <div class="talk-grid">
@@ -34,7 +43,7 @@ const postsBase = `${postsBasePath(Astro.currentLocale)}/`;
 
         <div class="talk-links">
           {item.postSlug && (
-            <a href={`${postsBase}${item.postSlug}/`} class="talk-link">
+            <a href={postHref(item.postSlug)} class="talk-link">
               <svg
                 width="16"
                 height="16"

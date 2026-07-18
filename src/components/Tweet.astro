@@ -16,64 +16,18 @@ const { id, user } = Astro.props;
 </div>
 
 <script>
-  interface TwitterWidgets {
-    load: () => void;
-  }
+  // widgets.js はレンダリング済みの埋め込みを再テーマできないため，
+  // テーマの反映は widgets.js 読み込み前の一度きり
+  const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.querySelectorAll('.twitter-tweet').forEach((tweet) => {
+    tweet.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  });
 
-  interface TwitterWindow extends Window {
-    twttr?: {
-      widgets: TwitterWidgets;
-    };
-  }
-
-  declare const window: TwitterWindow;
-
-  function applyThemeToTweets() {
-    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-    const tweets = document.querySelectorAll('.twitter-tweet');
-
-    tweets.forEach((tweet) => {
-      tweet.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    });
-
-    if (window.twttr?.widgets) {
-      window.twttr.widgets.load();
-    }
-  }
-
-  function loadTwitterWidget() {
-    if (!window.twttr) {
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
-      script.async = true;
-      document.body.appendChild(script);
-
-      script.onload = () => {
-        applyThemeToTweets();
-      };
-    } else if (window.twttr?.widgets) {
-      applyThemeToTweets();
-    }
-  }
-
-  if (!document.documentElement.hasAttribute('data-tweet-script-ready')) {
-    document.documentElement.setAttribute('data-tweet-script-ready', '');
-
-    loadTwitterWidget();
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          applyThemeToTweets();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
-  } else {
-    applyThemeToTweets();
+  // widgets.js が未読み込み (window.twttr が無い) のときだけ注入する
+  if (!('twttr' in window)) {
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    document.body.appendChild(script);
   }
 </script>

@@ -25,6 +25,7 @@
     PUBLIC_DATA_BASE_URL=https://data.example.com
     IMAGE_BASE_URL=
     NGROK_HOST=
+    SLIDE_PROXY_ALLOWED_HOSTS=doc.example.com
     ```
 
 **注意:** `.env` ファイルは `.gitignore` によってGitの管理対象から除外されています．機密情報 (API キーなど) を誤ってコミットしないようにしてください．
@@ -62,14 +63,15 @@
 
 このプロジェクトで使用される主な環境変数は以下の通りです．
 
-| 変数名                 | 説明                                                                                                                                                                    | 必須   | 例                              |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
-| `SITE_URL`             | サイトの正規 URL です．サイトマップや OGP 画像の生成に使用されます．                                                                                                    | はい   | `https://your-domain.com`       |
-| `PUBLIC_DATA_BASE_URL` | [特別記事機能](./special-articles.md) で使用する，記事データを配信するサイトのベース URL です．`PUBLIC_` プレフィックスが付いているため，ブラウザからアクセス可能です． | いいえ | `https://data.your-domain.com`  |
-| `IMAGE_BASE_URL`       | 記事内の画像を指定された CDN から配信する場合のベース URL です．設定すると `@@/` で始まる画像パスがこの URL に置換されます．                                            | いいえ | `https://your-image-cdn.com`    |
-| `USE_NGROK`            | `true` のときだけ ngrok 向け設定を有効にします．未設定時は `NGROK_HOST` は無視され，localhost 向けの通常 HMR になります．                                               | いいえ | `true`                          |
-| `NGROK_HOST`           | `USE_NGROK=true` のときの ngrok ホスト名 (`https://` なし)．`allowedHosts` への追加と HMR 無効に使います．                                                              | いいえ | `your-unique-id.ngrok-free.app` |
-| `R2_BUCKET_NAME`       | Cloudflare R2 のバケット名です．`make upload-images` で使用します．                                                                                                     | いいえ | `public`                        |
+| 変数名                      | 説明                                                                                                                                                                    | 必須   | 例                              |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
+| `SITE_URL`                  | サイトの正規 URL です．サイトマップや OGP 画像の生成に使用されます．                                                                                                    | はい   | `https://your-domain.com`       |
+| `PUBLIC_DATA_BASE_URL`      | [特別記事機能](./special-articles.md) で使用する，記事データを配信するサイトのベース URL です．`PUBLIC_` プレフィックスが付いているため，ブラウザからアクセス可能です． | いいえ | `https://data.your-domain.com`  |
+| `IMAGE_BASE_URL`            | 記事内の画像を指定された CDN から配信する場合のベース URL です．設定すると `@@/` で始まる画像パスがこの URL に置換されます．                                            | いいえ | `https://your-image-cdn.com`    |
+| `USE_NGROK`                 | `true` のときだけ ngrok 向け設定を有効にします．未設定時は `NGROK_HOST` は無視され，localhost 向けの通常 HMR になります．                                               | いいえ | `true`                          |
+| `NGROK_HOST`                | `USE_NGROK=true` のときの ngrok ホスト名 (`https://` なし)．`allowedHosts` への追加と HMR 無効に使います．                                                              | いいえ | `your-unique-id.ngrok-free.app` |
+| `R2_BUCKET_NAME`            | Cloudflare R2 のバケット名です．`make upload-images` で使用します．                                                                                                     | いいえ | `public`                        |
+| `SLIDE_PROXY_ALLOWED_HOSTS` | 開発サーバーのスライド PDF プロキシ (`/__doc_proxy`) が fetch を許可するホスト (カンマ区切り)．未設定だとプロキシはすべてのリクエストを拒否します．                     | いいえ | `doc.your-domain.com`           |
 
 ### ngrok 経由で開くとき
 

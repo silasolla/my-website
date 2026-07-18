@@ -162,31 +162,50 @@ const structuredData = {
     {/* Canonical URL */}
     <link rel="canonical" href={currentUrl} />
 
-    {/* RSS Feeds */}
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-suffix')}
-      href="/rss.xml"
-    />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-news-suffix')}
-      href="/rss/news.xml"
-    />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-tech-suffix')}
-      href="/rss/tech.xml"
-    />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-diary-suffix')}
-      href="/rss/diary.xml"
-    />
+    {/* RSS Feeds (カテゴリ別フィードは日本語版のみ提供) */}
+    {
+      Astro.currentLocale === 'en' ? (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-suffix')}
+          href="/en/rss.xml"
+        />
+      ) : (
+        <>
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-suffix')}
+            href="/rss.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={
+              siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-news-suffix')
+            }
+            href="/rss/news.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={
+              siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-tech-suffix')
+            }
+            href="/rss/tech.xml"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={
+              siteTitle + ' - ' + getTranslation(Astro.currentLocale, 'rss.feed-title-diary-suffix')
+            }
+            href="/rss/diary.xml"
+          />
+        </>
+      )
+    }
 
     {/* Open Graph */}
     <meta property="og:title" content={title} />

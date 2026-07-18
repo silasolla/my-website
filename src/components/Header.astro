@@ -3,6 +3,7 @@ import { getImage } from 'astro:assets';
 import LanguageSwitch from './LanguageSwitch.astro';
 import { getTranslation } from '../i18n/translations';
 import { getSiteTitle } from '../i18n/utils';
+import { homePath } from '../utils/paths';
 import { profileData } from '../data/profile';
 import avatarSrc from '../assets/avatar.png';
 
@@ -34,7 +35,7 @@ const avatar = await getImage({
 >
   <div class="header-bg-overlay"></div>
   <div class="header-content">
-    <a href="/" class="site-title">
+    <a href={homePath(Astro.currentLocale)} class="site-title">
       <img
         src={avatar.src}
         alt={profileData.nameEn}

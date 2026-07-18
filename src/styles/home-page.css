@@ -3,7 +3,7 @@
   margin-bottom: 1rem;
 }
 
-.pinned-title {
+.section-title.pinned-title {
   color: var(--color-primary-dark);
   border-bottom: 2px solid var(--color-accent-warn);
 }
@@ -12,8 +12,8 @@
   border-left: 4px solid var(--color-primary);
 }
 
-.important-post {
-  border-left-color: var(--color-accent-danger) !important;
+.post-item.important-post {
+  border-left-color: var(--color-accent-danger);
   background: linear-gradient(to right, var(--color-accent-danger-bg), var(--color-bg-alt));
 }
 

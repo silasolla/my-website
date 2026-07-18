@@ -30,6 +30,10 @@
 | `assets.directory`                   | `./dist`   | Astro ビルド成果物                         |
 | `assets.not_found_handling`          | `404-page` | 存在しないパスは `404.html` を返す         |
 
+### not_found_handling
+
+`404-page` は要求パスから階層を遡って最も近い `404.html` を返します．Astro が `404.html` として出力するのはルートの `/404` のみで，`src/pages/en/404.astro` は `dist/en/404/index.html` に出力されるため，`npm run build` の postbuild (`scripts/copy-en-404.js`) で `dist/en/404.html` へ複製しています．これにより `/en/` 配下の存在しないパスには英語の 404 ページが返ります．
+
 ### workers_dev
 
 本番はカスタムドメインのみで公開する想定です．`workers_dev` を省略するとデフォルト `true` となり，ダッシュボードで Disable しても次回 `wrangler deploy` で `*.workers.dev` が復活します．

@@ -69,9 +69,11 @@ export function formatDate(date: Date, locale?: string): string {
 
   const resolvedLocale = localeMap[locale || 'ja'] || 'ja-JP';
 
+  // frontmatter の date は UTC 深夜として解析されるため，表示も UTC に固定する
   return date.toLocaleDateString(resolvedLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   });
 }

@@ -329,7 +329,8 @@ export type TranslationKey = keyof (typeof translations)['ja'];
 
 export function getTranslation(locale: Locale | string | undefined, key: TranslationKey): string {
   const normalizedLocale = (locale === 'en' ? 'en' : 'ja') as Locale;
-  return translations[normalizedLocale][key] || translations['ja'][key];
+  // prefix/suffix 方式では空文字列も意図した値のため，truthy 判定でフォールバックしない
+  return translations[normalizedLocale][key];
 }
 
 export function getCurrentLocale(localeFromAstro: string | undefined): Locale {

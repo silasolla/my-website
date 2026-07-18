@@ -104,7 +104,11 @@ export default defineConfig({
     ...(USE_NGROK && NGROK_HOST && { hmr: false }),
   },
   vite: {
-    plugins: [slidePdfProxyPlugin()],
+    plugins: [
+      slidePdfProxyPlugin({
+        allowedHosts: (process.env.SLIDE_PROXY_ALLOWED_HOSTS ?? '').split(',').map((h) => h.trim()),
+      }),
+    ],
     server: {
       host: true,
       strictPort: false,

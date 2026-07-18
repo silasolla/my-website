@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "prebuild": "node scripts/generate-static-files.js",
     "build": "astro build",
+    "postbuild": "node scripts/copy-en-404.js",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",

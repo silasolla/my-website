@@ -1,3 +1,4 @@
+/* prebuild (scripts/generate-static-files.js) で public/vendor/katex-compat.css へ複製される */
 .katex-display,
 .katex,
 .katex * {

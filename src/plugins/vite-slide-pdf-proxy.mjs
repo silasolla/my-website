@@ -1,7 +1,15 @@
 const PROXY_PATH = '/__doc_proxy';
 const HTTP_URL = /^https?:\/\//;
 
-export function slidePdfProxyPlugin() {
+/**
+ * @param {{ allowedHosts?: string[] }} [options]
+ *   allowedHosts: プロキシを許可する配信元ホスト (SLIDE_PROXY_ALLOWED_HOSTS から渡す)．
+ *   dev サーバーを ngrok 等で公開しても任意 URL への SSRF プロキシに
+ *   ならないよう，未指定ならすべて拒否する．
+ */
+export function slidePdfProxyPlugin({ allowedHosts = [] } = {}) {
+  const allowed = new Set(allowedHosts.filter(Boolean));
+
   return {
     name: 'slide-pdf-proxy',
     configureServer(server) {
@@ -12,6 +20,16 @@ export function slidePdfProxyPlugin() {
         if (!target || !HTTP_URL.test(target)) {
           res.statusCode = 400;
           res.end('Bad Request');
+          return;
+        }
+
+        if (!allowed.has(new URL(target).hostname)) {
+          console.warn(
+            `[slide-pdf-proxy] 許可されていないホストへのリクエストを拒否しました: ${target}\n` +
+              '  .env の SLIDE_PROXY_ALLOWED_HOSTS にホスト名を追加してください'
+          );
+          res.statusCode = 403;
+          res.end('Forbidden');
           return;
         }
 
