@@ -46,6 +46,9 @@ export const translations = {
     'posts.share': 'シェア',
     'posts.back-to-list': '← 記事一覧に戻る',
     'posts.filter-toggle': '絞り込み・RSS',
+    'posts.external.prefix': '外部サイトに書いた記事は ',
+    'posts.external.link-text': 'About',
+    'posts.external.suffix': ' にまとめています．',
 
     // RSS フィードタイトル (接尾辞)
     'rss.feed-title-suffix': 'すべての記事',
@@ -207,6 +210,9 @@ export const translations = {
     'posts.share': 'Share',
     'posts.back-to-list': '← Back to Posts',
     'posts.filter-toggle': 'Filter & RSS',
+    'posts.external.prefix': 'Articles written on external sites are collected on the ',
+    'posts.external.link-text': 'About',
+    'posts.external.suffix': ' page.',
 
     // RSS feed titles (suffixes)
     'rss.feed-title-suffix': 'All Posts',

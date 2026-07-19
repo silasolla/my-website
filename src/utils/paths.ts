@@ -13,3 +13,7 @@ export function postsBasePath(locale: string | undefined): string {
 export function identityBasePath(locale: string | undefined): string {
   return locale === 'en' ? '/en/identity' : '/identity';
 }
+
+export function aboutBasePath(locale: string | undefined): string {
+  return locale === 'en' ? '/en/about' : '/about';
+}

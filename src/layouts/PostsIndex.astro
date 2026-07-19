@@ -4,7 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
 import { getSiteName, getTagLabel } from '../i18n/utils';
 import { formatPostListDate } from '../utils/posts';
-import { localeBasePath, postsBasePath } from '../utils/paths';
+import { aboutBasePath, localeBasePath, postsBasePath } from '../utils/paths';
 import '../styles/posts-index.css';
 
 interface Props {
@@ -32,6 +32,11 @@ const filterToggleLabel = getTranslation(locale, 'posts.filter-toggle');
 const filterToggleOpen = getTranslation(locale, 'filter.toggle.open');
 const filterToggleClose = getTranslation(locale, 'filter.toggle.close');
 const siteName = getSiteName(locale);
+
+const aboutWritingsPath = `${aboutBasePath(locale)}/#writings`;
+const externalPrefix = getTranslation(locale, 'posts.external.prefix');
+const externalLinkText = getTranslation(locale, 'posts.external.link-text');
+const externalSuffix = getTranslation(locale, 'posts.external.suffix');
 ---
 
 <Layout
@@ -106,6 +111,26 @@ const siteName = getSiteName(locale);
         </div>
       </div>
     </div>
+
+    <p class="posts-external-intro">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+      <span>
+        {externalPrefix}<a href={aboutWritingsPath} class="posts-external-link"
+          >{externalLinkText}</a
+        >{externalSuffix}
+      </span>
+    </p>
 
     {
       posts.length === 0 ? (
