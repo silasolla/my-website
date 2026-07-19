@@ -136,7 +136,7 @@ openssl s_client -connect silasol.la:443 -servername silasol.la \
 
 今後は 0-RTT を OFF にしておきます．静的サイトだしそれほど惜しくはありません．HTTP/3 を維持できてよかった．
 
-0-RTT の Early Data には，通常の通信より弱い面もあるようです．[RFC 8446](https://www.rfc-editor.org/rfc/rfc8446) には，Early Data が前方秘匿性を持たず，接続を跨いだ再送に関して保証しないと明記されていました [^rfc-8446]．今回のケースと関係するかは分かりませんが，まあ OFF にしても実害は無いでしょう．
+0-RTT の Early Data には，通常の通信より弱い面もあるようです．[RFC 9846](https://www.rfc-editor.org/info/rfc9846/) には，Early Data が前方秘匿性を持たず，接続を跨いだ再送に関して保証しないと明記されていました [^rfc-9846]．今回のケースと関係するかは分かりませんが，まあ OFF にしても実害は無いでしょう．
 
 同じような現象に心当たりのある方がいれば，根本的な原因や対処方法など教えていただけると喜びます．m(_ _)m
 
@@ -156,4 +156,4 @@ openssl s_client -connect silasol.la:443 -servername silasol.la \
 
 [^nazo]: [NAMIKIBASHI 日本の形「宴」](https://youtu.be/LxFjc99HWRs)
 
-[^rfc-8446]: 2.3 節の IMPORTANT NOTE にあります．
+[^rfc-9846]: 2.3 節の IMPORTANT NOTE にあります．
