@@ -35,9 +35,9 @@
     "@astrojs/check": "^0.9.9",
     "editorconfig-checker": "^6.1.1",
     "playwright": "^1.61.1",
-    "prettier": "^3.9.4",
+    "prettier": "^3.9.5",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "wrangler": "^4.110.0"
   },
   "overrides": {
