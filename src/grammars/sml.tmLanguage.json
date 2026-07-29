@@ -214,10 +214,7 @@
             "0": { "name": "support.constant.sml" }
           },
           "end": "(?=[;=,)|]|\\b(?:val|fun|type|datatype|structure|signature|functor|end|in|local|and|exception|include|sharing|where|of|fn)\\b)",
-          "patterns": [
-            { "include": "#comments" },
-            { "include": "#type-expression" }
-          ]
+          "patterns": [{ "include": "#comments" }, { "include": "#type-expression" }]
         }
       ]
     },
