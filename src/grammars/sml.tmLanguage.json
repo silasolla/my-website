@@ -6,11 +6,20 @@
   "aliases": ["sml", "standard-ml", "standardml"],
   "patterns": [
     { "include": "#comments" },
-    { "include": "#keywords" },
     { "include": "#strings" },
+    { "include": "#characters" },
+    { "include": "#constants" },
+    { "include": "#bindings" },
+    { "include": "#fn-expression" },
+    { "include": "#case-pipe" },
+    { "include": "#arrow-binder" },
+    { "include": "#type-annotations" },
+    { "include": "#keywords" },
     { "include": "#numbers" },
+    { "include": "#types" },
+    { "include": "#paths" },
     { "include": "#operators" },
-    { "include": "#types" }
+    { "include": "#punctuation" }
   ],
   "repository": {
     "comments": {
@@ -23,18 +32,6 @@
         }
       ]
     },
-    "keywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.sml",
-          "match": "\\b(if|then|else|case|of|fn|fun|val|let|in|end|local|open|infix|infixr|nonfix|op|raise|handle|andalso|orelse)\\b"
-        },
-        {
-          "name": "keyword.other.sml",
-          "match": "\\b(datatype|type|structure|signature|struct|sig|functor|where|sharing|withtype|eqtype|abstype|exception|rec|and|as|do|while)\\b"
-        }
-      ]
-    },
     "strings": {
       "patterns": [
         {
@@ -44,13 +41,211 @@
           "patterns": [
             {
               "name": "constant.character.escape.sml",
-              "match": "\\\\."
+              "match": "\\\\(a|b|t|n|v|f|r|\"|\\\\|^[@-_]|[0-9]{3}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|[ \\t\\n\\r\\f]+\\\\)"
             }
           ]
+        }
+      ]
+    },
+    "characters": {
+      "patterns": [
+        {
+          "name": "constant.character.sml",
+          "match": "#\"([^\"\\\\]|\\\\.)\""
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.sml",
+          "match": "\\b(true|false|nil|NONE|SOME|LESS|EQUAL|GREATER)\\b"
+        }
+      ]
+    },
+    "bindings": {
+      "patterns": [
+        {
+          "name": "meta.definition.fun.sml",
+          "begin": "\\b(fun)\\s+(op\\s+)?([\\w']+)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.sml" },
+            "2": { "name": "keyword.other.sml" },
+            "3": { "name": "entity.name.function.sml" }
+          },
+          "end": "(?==(?!>))",
+          "patterns": [{ "include": "#pattern-atoms" }]
         },
         {
-          "name": "string.quoted.other.sml",
-          "match": "#\".\""
+          "name": "meta.definition.fun-clause.sml",
+          "begin": "(\\|)\\s+(op\\s+)?([a-z_][\\w']*)(?=[^\\n]*=(?!>))",
+          "beginCaptures": {
+            "1": { "name": "punctuation.separator.sml" },
+            "2": { "name": "keyword.other.sml" },
+            "3": { "name": "entity.name.function.sml" }
+          },
+          "end": "(?==(?!>))",
+          "patterns": [{ "include": "#pattern-atoms" }]
+        },
+        {
+          "name": "meta.definition.and.sml",
+          "begin": "\\b(and)\\s+(op\\s+)?([a-z_][\\w']*)(?=[^\\n]*=(?!>))",
+          "beginCaptures": {
+            "1": { "name": "keyword.other.sml" },
+            "2": { "name": "keyword.other.sml" },
+            "3": { "name": "entity.name.function.sml" }
+          },
+          "end": "(?==(?!>))",
+          "patterns": [{ "include": "#pattern-atoms" }]
+        },
+        {
+          "name": "meta.definition.val.sml",
+          "match": "\\b(val)\\s+(rec\\s+)?(op\\s+)?([\\w']+)",
+          "captures": {
+            "1": { "name": "keyword.control.sml" },
+            "2": { "name": "keyword.other.sml" },
+            "3": { "name": "keyword.other.sml" },
+            "4": { "name": "entity.name.function.sml" }
+          }
+        },
+        {
+          "name": "meta.module.dec.sml",
+          "match": "\\b(structure|signature|functor)\\s+([\\w']+)",
+          "captures": {
+            "1": { "name": "keyword.other.sml" },
+            "2": { "name": "entity.name.type.module.sml" }
+          }
+        },
+        {
+          "name": "meta.definition.datatype.sml",
+          "match": "\\b(datatype|type|eqtype|exception|abstype)\\s+('[\\w']+\\s+|\\('[\\w'\\s,]+\\)\\s+)?([\\w']+)",
+          "captures": {
+            "1": { "name": "keyword.other.sml" },
+            "2": { "name": "support.type.sml" },
+            "3": { "name": "entity.name.type.sml" }
+          }
+        }
+      ]
+    },
+    "fn-expression": {
+      "patterns": [
+        {
+          "name": "meta.fn.sml",
+          "begin": "\\b(fn)\\b",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.sml" }
+          },
+          "end": "(?==>)",
+          "patterns": [{ "include": "#pattern-atoms" }]
+        }
+      ]
+    },
+    "case-pipe": {
+      "patterns": [
+        {
+          "name": "meta.case.clause.sml",
+          "begin": "(\\|)(?=[^\\n]*=>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.separator.sml" }
+          },
+          "end": "(?==>)",
+          "patterns": [{ "include": "#pattern-atoms" }]
+        }
+      ]
+    },
+    "arrow-binder": {
+      "patterns": [
+        {
+          "match": "\\b(?!if|then|else|case|of|fn|fun|val|let|in|end|local|open|raise|handle|andalso|orelse|do|while|and|as|op|rec)([a-z_][\\w']*)\\s*(=>)",
+          "captures": {
+            "1": { "name": "variable.parameter.sml" },
+            "2": { "name": "support.constant.sml" }
+          }
+        }
+      ]
+    },
+    "pattern-atoms": {
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#characters" },
+        { "include": "#constants" },
+        { "include": "#type-annotations" },
+        { "include": "#numbers" },
+        { "include": "#paths" },
+        { "include": "#operators" },
+        { "include": "#punctuation" },
+        {
+          "name": "keyword.other.sml",
+          "match": "\\b(op|as|ref)\\b"
+        },
+        {
+          "name": "variable.parameter.sml",
+          "match": "\\b_[\\w']*\\b|\\b(?!if|then|else|case|of|fn|fun|val|let|in|end|local|open|raise|handle|andalso|orelse|do|while|and|as|op|rec)([a-z][\\w']*)\\b"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.section.parens.sml",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.section.brackets.sml",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.section.braces.sml",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.separator.sml",
+          "match": "[,;]"
+        }
+      ]
+    },
+    "type-annotations": {
+      "patterns": [
+        {
+          "name": "meta.type.annotation.sml",
+          "begin": ":(?![:=>])",
+          "beginCaptures": {
+            "0": { "name": "support.constant.sml" }
+          },
+          "end": "(?=[;=,)|]|\\b(?:val|fun|type|datatype|structure|signature|functor|end|in|local|and|exception|include|sharing|where|of|fn)\\b)",
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#type-expression" }
+          ]
+        }
+      ]
+    },
+    "type-expression": {
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "name": "support.constant.sml",
+          "match": "(->|\\*)"
+        },
+        { "include": "#types" },
+        { "include": "#paths" },
+        { "include": "#punctuation" },
+        {
+          "name": "support.type.sml",
+          "match": "\\b[a-z][\\w']*\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.sml",
+          "match": "\\b(if|then|else|case|of|fn|fun|val|let|in|end|local|open|raise|handle|andalso|orelse|do|while)\\b"
+        },
+        {
+          "name": "keyword.other.sml",
+          "match": "\\b(datatype|type|structure|signature|struct|sig|functor|where|sharing|withtype|eqtype|abstype|exception|rec|and|as|op|infix|infixr|nonfix|include|with)\\b"
         }
       ]
     },
@@ -58,31 +253,70 @@
       "patterns": [
         {
           "name": "constant.numeric.sml",
-          "match": "\\b([0-9]+|0x[0-9A-Fa-f]+|0w[0-9]+)\\b"
+          "match": "(?<![\\w'])~?0[wW][xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.sml",
+          "match": "(?<![\\w'])~?0[wW][0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.sml",
+          "match": "(?<![\\w'])~?0[xX][0-9a-fA-F]+\\b"
         },
         {
           "name": "constant.numeric.float.sml",
-          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
-        }
-      ]
-    },
-    "operators": {
-      "patterns": [
+          "match": "(?<![\\w'])~?[0-9]+\\.[0-9]+([eE]~?[0-9]+)?\\b"
+        },
         {
-          "name": "keyword.operator.sml",
-          "match": "(=>|->|\\||:>|:|=|\\*|\\+|-|/|<|>|@|::|\\.)"
+          "name": "constant.numeric.float.sml",
+          "match": "(?<![\\w'])~?[0-9]+[eE]~?[0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.sml",
+          "match": "(?<![\\w'])~?[0-9]+\\b"
         }
       ]
     },
     "types": {
       "patterns": [
         {
-          "name": "storage.type.sml",
-          "match": "\\b(int|real|string|char|bool|unit|list|option|ref|array|vector|exn)\\b"
+          "name": "support.type.sml",
+          "match": "\\b(int|real|string|char|bool|unit|list|option|array|vector|exn|order|word|intInf|ref)\\b"
         },
         {
-          "name": "storage.type.sml",
-          "match": "'[a-zA-Z][a-zA-Z0-9_]*"
+          "name": "support.type.sml",
+          "match": "''[A-Za-z][\\w']*|'[A-Za-z][\\w']*"
+        }
+      ]
+    },
+    "paths": {
+      "patterns": [
+        {
+          "match": "\\b([A-Z][\\w']*)((?:\\.[A-Za-z][\\w']*)+)\\b",
+          "captures": {
+            "1": { "name": "entity.name.namespace.sml" },
+            "2": { "name": "support.function.sml" }
+          }
+        },
+        {
+          "name": "variable.other.enummember.sml",
+          "match": "\\b[A-Z][\\w']*\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "support.constant.sml",
+          "match": "(=>|->|::|:>|:=|<>|<=|>=)"
+        },
+        {
+          "name": "support.constant.sml",
+          "match": "#[A-Za-z0-9']+"
+        },
+        {
+          "name": "support.constant.sml",
+          "match": "[+\\-*/@^~]"
         }
       ]
     }

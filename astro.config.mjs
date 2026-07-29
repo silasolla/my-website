@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import githubDark from '@shikijs/themes/github-dark';
 import { remarkImageUrl } from './src/plugins/remark-image-url.mjs';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -23,6 +24,28 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const smlGrammar = JSON.parse(
   readFileSync(join(__dirname, 'src/grammars/sml.tmLanguage.json'), 'utf-8')
 );
+
+// github-dark に SML 用の色を足す
+const githubDarkTheme = {
+  ...githubDark,
+  name: 'github-dark',
+  tokenColors: [
+    ...(githubDark.tokenColors ?? []),
+    {
+      scope: [
+        'punctuation.section.parens.sml',
+        'punctuation.section.brackets.sml',
+        'punctuation.section.braces.sml',
+        'punctuation.separator.sml',
+      ],
+      settings: { foreground: '#8B949E' },
+    },
+    {
+      scope: ['variable.parameter.sml'],
+      settings: { foreground: '#D4A574' },
+    },
+  ],
+};
 
 // 環境変数の読み込み
 const SITE_URL = process.env.SITE_URL || 'https://example.com';
@@ -90,7 +113,7 @@ export default defineConfig({
       },
     }),
     shikiConfig: {
-      theme: 'github-dark',
+      theme: githubDarkTheme,
       langs: [smlGrammar],
       wrap: true,
     },
