@@ -108,6 +108,16 @@ export const aboutDataEn: AboutData = {
   ],
   talks: [
     {
+      title:
+        '"The Definition of Standard ML" in 2026: As a Source of Robust and Modern Software Design',
+      event: '関数型まつり 2026',
+      eventUrl: 'https://2026.fp-matsuri.org/',
+      date: 'July 12, 2026',
+      slideUrl: 'https://doc.silasol.la/talks/2026-07-12_fp-matsuri/slides.pdf',
+      description:
+        'A functional programming conference. I participated as both a core staff member and a speaker. This talk is an attempt to explore insights for software development from the formal specification of Standard ML.',
+    },
+    {
       title: 'How to Represent Monads in a Language Without HKTs: The Case of Standard ML',
       event: 'λ Kansai in Summer 2026',
       eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',

@@ -107,6 +107,16 @@ export const aboutDataJa: AboutData = {
   ],
   talks: [
     {
+      title:
+        '2026 年に読む "The Definition of Standard ML" 〜 現代の堅牢なソフトウェア設計の源流として',
+      event: '関数型まつり 2026',
+      eventUrl: 'https://2026.fp-matsuri.org/',
+      date: '2026年7月12日',
+      slideUrl: 'https://doc.silasol.la/talks/2026-07-12_fp-matsuri/slides.pdf',
+      description:
+        '関数型プログラミングのカンファレンスです．コアスタッフおよび登壇者としての参加でした．Standard ML の形式的な仕様から，ソフトウェア開発におけるヒントを探る試みです．',
+    },
+    {
       title: 'HKT のない言語で Monad をどう表現するか 〜 Standard ML の場合',
       event: 'λ Kansai in Summer 2026',
       eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',
@@ -276,6 +286,12 @@ export const aboutDataJa: AboutData = {
     {
       category: 'Tools',
       items: [
+        {
+          name: 'Functional Programming in SML (関数型まつり 2026 ハンズオン)',
+          url: 'https://github.com/fp-matsuri/fp-in-scala-exercises/tree/main/fp-in-sml',
+          description:
+            'Functional Programming in Scala の演習を Standard ML でやっていくハンズオン教材です．\nSML を書いたことがなくても前提知識の準備から始められます．MLton と SML/NJ の両方で動きます．',
+        },
         {
           name: 'Bluesky の投稿を消すやつ',
           url: 'https://github.com/silasolla/bsky-delete-bot',
