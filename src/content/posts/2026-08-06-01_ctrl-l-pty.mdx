@@ -112,7 +112,7 @@ fi
 
 こういった問題を解決するために，近年のアプリケーションは拡張キーボードプロトコルによって，リッチなキー入力をやりとりするようになりました．代表的なものとして xterm の modifyOtherKeys や kitty keyboard protocol があります．対話型のアプリは起動時に，ターミナルに対して「これからは拡張したエスケープシーケンスとして送信してほしい」と要求することができます．Gemini CLI はこれを要求しないため素の `0x0C` が送信されていましたが，Claude Code は要求を出していたと考えられます．
 
-具体的に Ctrl+L がどう変換されるかというと，modifyOtherKeys の場合は `CSI 27;5;108~` に，kitty keyboard protocol の場合は `CSI 108;5u` となります．ここで `CSI` は `ESC [` の 2 バイト，`108` は `l` の文字コード，`5` は Ctrl を表します．
+具体的に Ctrl+L がどう変換されるかというと，modifyOtherKeys の場合は `CSI 27;5;108~` と，kitty keyboard protocol の場合は `CSI 108;5u` となります．ここで `CSI` は `ESC [` の 2 バイト，`108` は `l` の文字コード，`5` は Ctrl を表します．
 
 わたしの使っている WezTerm には `enable_kitty_keyboard` という設定項目があり，公式ドキュメントによればデフォルトは `false` (アプリが要求しても無視する) とされています．特に設定していないので，WezTerm は kitty keyboard protocol の要求を無視し，Claude Code とは modifyOtherKeys でバイト列 (`\033[27;5;108~`) をやりとりしていたことになります．これを `expect` でキャッチして捨てればよいでしょう．
 
