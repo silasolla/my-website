@@ -13,6 +13,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkLinkCard from 'remark-link-card';
 import { rehypeLinkCardTarget } from './src/plugins/rehype-link-card-target.mjs';
+import { rehypeLinkCardAssets } from './src/plugins/rehype-link-card-assets.mjs';
 import { rehypeExternalLinks } from './src/plugins/rehype-external-links.mjs';
 import { slidePdfProxyPlugin } from './src/plugins/vite-slide-pdf-proxy.mjs';
 
@@ -102,12 +103,12 @@ export default defineConfig({
         [
           remarkLinkCard,
           {
-            cache: true,
+            cache: false,
             shortenUrl: true,
           },
         ],
       ],
-      rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeExternalLinks],
+      rehypePlugins: [rehypeKatex, rehypeLinkCardTarget, rehypeLinkCardAssets, rehypeExternalLinks],
       remarkRehype: {
         footnoteLabel: '脚注',
       },

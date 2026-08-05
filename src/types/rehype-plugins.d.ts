@@ -3,6 +3,11 @@ declare module './plugins/rehype-link-card-target.mjs' {
   export function rehypeLinkCardTarget(): (tree: Root) => void;
 }
 
+declare module './plugins/rehype-link-card-assets.mjs' {
+  import type { Root } from 'hast';
+  export function rehypeLinkCardAssets(): (tree: Root) => Promise<void>;
+}
+
 declare module './plugins/rehype-external-links.mjs' {
   import type { Root } from 'hast';
   export function rehypeExternalLinks(): (tree: Root) => void;
