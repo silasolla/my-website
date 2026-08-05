@@ -32,12 +32,12 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "editorconfig-checker": "^6.1.1",
     "playwright": "^1.62.1",
-    "prettier": "^3.9.4",
+    "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "wrangler": "^4.116.0"
   },
   "overrides": {
