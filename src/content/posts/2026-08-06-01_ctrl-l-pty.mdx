@@ -49,7 +49,7 @@ config.keys = {
 
 冒頭でも書いていたように，わたしは Ctrl+L を AquaSKK の ASCII モード切替に利用しています．これをターミナルで握り潰すと，モードを切り替える機能が使えなくなってしまって本末転倒です．
 
-そもそも Ctrl+L が AquaSKK に届いているのも，実はターミナルの設定によるものです．macOS において，修飾キーを伴う入力を IME に渡すかどうかはターミナルが決めており，WezTerm の場合は `macos_forward_to_ime_modifier_mask` でキーを指定します．デフォルトでは `SHIFT` のみがこれに相当し，Ctrl を IME で認識させるには明示的な設定が必要です．
+そもそも Ctrl+L が AquaSKK に届いているのも，実はターミナルの設定によるものです．macOS において，修飾キーを伴う入力を IME に渡すかどうかはターミナル側で制御できて，WezTerm の場合は `macos_forward_to_ime_modifier_mask` でキーを指定します．デフォルトでは `SHIFT` のみがこれに相当し，Ctrl を IME で認識させるには明示的な設定が必要です．
 
 ```lua
 config.use_ime = true
