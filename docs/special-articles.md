@@ -6,6 +6,8 @@
 
 記事データは別のプライベートなリポジトリで管理し，メインサイトからは API のように fetch してクライアントサイドでレンダリング (CSR) します．
 
+**公開範囲**: この機能が作るのは「非公開」ではなく「検索エンジンにインデックスされない」状態です．URL を知っていれば誰でもアクセスできます．認証によるアクセス制限は実装していません．
+
 ### アーキテクチャ
 
 ```
@@ -151,6 +153,17 @@
 
 これらのファイルは Git 管理外 (`.gitignore` に記載) であり，ビルド環境ごとに最適な設定が適用されます．
 
+### 2.3 検索エンジン対策
+
+インデックスの防止は 4 段構えです．
+
+| 手段                                                          | 実装                                                                                   |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `<meta name="robots" content="noindex, nofollow, noarchive">` | `Layout.astro` の `noIndex` prop (`special/[slug].astro` が `noIndex={true}` を渡す)   |
+| `robots.txt` で `/special/` を拒否                            | `scripts/generate-static-files.js`                                                     |
+| サイトマップから除外                                          | `astro.config.mjs` の `sitemap({ filter })` ([サイトマップガイド](./sitemap-guide.md)) |
+| データ配信サイト側の `X-Robots-Tag`                           | データ用リポジトリの `public/_headers`                                                 |
+
 ## Step 3: 記事の作成と公開
 
 ### 3.1. UUID の生成
@@ -174,7 +187,7 @@ npx marked article.md > content.html
 
 ### 3.3. 一覧への追加
 
-`articles/index.json` の `articles` 配列に，新しい記事のメタデータを追加します．
+`articles/index.json` の `slugs` 配列に，新しい記事の UUID を追加します．(タイトルなどのメタデータは含めません)
 
 ### 3.4. データサイトのデプロイ
 
@@ -201,7 +214,7 @@ git push
 
 `https://your-domain.com/special/[uuid]/`
 
-**注意**: トレイリングスラッシュ (`/`) が必要です．スラッシュなしでアクセスすると，308リダイレクトが発生します．
+**注意**: トレイリングスラッシュ (`/`) が必要です．`astro.config.mjs` の `trailingSlash: 'always'` により，スラッシュなしのURLは308リダイレクトされます．
 
 ## トラブルシューティング
 
@@ -234,6 +247,8 @@ git push
       headers: { 'Content-Type': 'application/json' },
     });
     ```
+
+    `Content-Type` を付けるとプリフライト (OPTIONS) が発生し，Cloudflare Pages は 405 (Method Not Allowed) を返します．`Access-Control-Allow-Origin: *` を使うのは，このプリフライト自体を回避するためです．
 
 ### Q: 記事が表示されず，404 エラーになる
 

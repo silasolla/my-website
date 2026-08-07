@@ -95,6 +95,7 @@ Markdown/MDX によって記事を管理します．
 │   ├── plugins/
 │   │   ├── remark-image-url.mjs
 │   │   ├── rehype-external-links.mjs
+│   │   ├── rehype-link-card-assets.mjs
 │   │   ├── rehype-link-card-target.mjs
 │   │   └── vite-slide-pdf-proxy.mjs
 │   ├── styles/

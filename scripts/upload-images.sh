@@ -81,7 +81,7 @@ while IFS= read -r file; do
       echo "✅ Success: $key"
       uploaded=$((uploaded + 1))
     else
-      echo "⏭️ Skiped or Error: $key"
+      echo "⏭️ Skipped or Error: $key"
       skipped=$((skipped + 1))
     fi
   fi
@@ -90,7 +90,7 @@ done < <(find "$TARGET_DIR" -type f)
 echo ""
 echo "📊 結果:"
 echo "   ✅ Uploaded: $uploaded"
-echo "   ⏭️ Skiped: $skipped"
+echo "   ⏭️ Skipped: $skipped"
 
 if $DRY_RUN; then
   echo ""

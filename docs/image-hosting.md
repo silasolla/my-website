@@ -73,13 +73,13 @@ R2_BUCKET_NAME=your-bucket-name
 make wrangler-auth
 
 # 1. Dry-runで確認 (実際にはアップロードしない)
-make upload-images-dry
+make upload-images-dry SLUG=YYYY-MM-DD-NN_new-post
 
 # 2. 問題なければ実際にアップロード
-make upload-images
+make upload-images SLUG=YYYY-MM-DD-NN_new-post
 
-# 3. Markdownファイルをコミット (画像はコミットしない)
-git add src/content/posts/YYYY-MM-DD-NN_new-post.md
+# 3. 記事ファイルをコミット (画像はコミットしない)
+git add src/content/posts/YYYY-MM-DD-NN_new-post.mdx
 git commit -m "Add new post"
 git push
 ```
@@ -115,7 +115,7 @@ Cloudflare R2から読み込み．
 
 ## アップロードスクリプトの動作
 
-1. `public/posts/images/` 内の全ファイルをスキャン
+1. `public/posts/images/<SLUG>/` 内の全ファイルをスキャン (SLUG 指定は必須)
 2. Wranglerコマンドで各ファイルをアップロード
 3. Content-Typeを自動判定
 4. Cache-Controlヘッダーを設定 (1年間キャッシュ，immutable)
@@ -183,10 +183,10 @@ cwebp -q 85 input.jpg -o output.webp
 
 ```bash
 # Dry-runで確認
-npm run upload-images:dry
+make upload-images-dry SLUG=YYYY-MM-DD-NN_post-slug
 
 # エラーメッセージを確認
-npm run upload-images 2>&1 | tee upload.log
+make upload-images SLUG=YYYY-MM-DD-NN_post-slug 2>&1 | tee upload.log
 ```
 
 ### R2の認証エラー

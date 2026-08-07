@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | grep -qE 'public/(_headers|robots\\.txt|\\.assetsignore)$' && { echo 'ビルド時の生成物です (scripts/generate-static-files.js)．直接編集しても npm run build で上書きされます．' >&2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path'); case \"$f\" in *.astro|*.ts|*.js|*.mjs|*.json|*.md|*.mdx) npx prettier --write \"$f\" ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}

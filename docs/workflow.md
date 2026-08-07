@@ -239,12 +239,12 @@ make upload-images-dry SLUG=2025-10-26-01_my-article-title
 🚀 R2 画像アップロードを開始します (対象: 2025-10-26-01_my-article-title)...
 📝 DRY RUN mode: 実際のアップロードは行いません
 
-📤 アップロード予定: posts/2025-10-26-01_my-article-title/result.png
-📤 アップロード予定: posts/2025-10-26-01_my-article-title/diagram.svg
+📤 アップロード対象: posts/2025-10-26-01_my-article-title/result.png
+📤 アップロード対象: posts/2025-10-26-01_my-article-title/diagram.svg
 
 📊 結果:
-   ✅ アップロード: 2
-   ⏭️ スキップ: 0
+   ✅ Uploaded: 2
+   ⏭️ Skipped: 0
 
 💡 実際にアップロードするには: make upload-images SLUG=2025-10-26-01_my-article-title
 ```
@@ -260,12 +260,12 @@ make upload-images SLUG=2025-10-26-01_my-article-title
 ```
 🚀 R2 画像アップロードを開始します (対象: 2025-10-26-01_my-article-title)...
 
-✅ アップロード完了: posts/2025-10-26-01_my-article-title/result.png
-✅ アップロード完了: posts/2025-10-26-01_my-article-title/diagram.svg
+✅ Success: posts/2025-10-26-01_my-article-title/result.png
+✅ Success: posts/2025-10-26-01_my-article-title/diagram.svg
 
 📊 結果:
-   ✅ アップロード: 2
-   ⏭️ スキップ: 0
+   ✅ Uploaded: 2
+   ⏭️ Skipped: 0
 ```
 
 **ヒント：** スラッグは `make new` の出力に表示されるので，コピー＆ペーストできます．
