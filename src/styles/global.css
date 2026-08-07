@@ -1,6 +1,22 @@
 @import './theme.css';
 
 /* ===========================================
+   Page Transitions
+   =========================================== */
+
+/* ページ遷移をブラウザのクロスフェードに任せる．JS は使わないので Astro の
+   ClientRouter は入れない．未対応ブラウザは従来どおり即時遷移． */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* ===========================================
    Base Reset & Layout
    =========================================== */
 
