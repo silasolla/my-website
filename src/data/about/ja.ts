@@ -4,11 +4,11 @@ export const aboutDataJa: AboutData = {
   bio: [
     'ソフトウェアエンジニアとして，アプリケーションの開発や，開発プロセスの内製化支援のお仕事をしています．アプリケーションのコーディングからパブリッククラウドまで，なんでも幅広くやっています．最近は DevOps の実践に関心があります．',
     '技術やツールのブラックボックスになっている部分，それらを裏付ける理論計算機科学や数理論理学，関数型プログラミングなどにも興味があります．お気に入りのプログラミング言語は Standard ML です．(流行りの Machine Learning ではなく Meta Language です．)',
-    '人 (開発者にもユーザにも) に優しいプログラミング言語やツールと，それらを醸成してきた人々を尊敬しており，今後の普及や発展に貢献できたらなと思っています．コミュニティや OSS などに支えられながらの日々ですが，これまで享受してきたぶん，自分も還元していけたらなというのが目標です．',
+    '人 (開発者にもユーザにも) に優しいプログラミング言語やツール，それらを醸成してきた人々を尊敬しています．今後の普及や発展に自分も貢献できたらなと思っています．コミュニティや OSS に支えられながらの日々ですが，これまで享受してきたぶん，還元していけたらなというのが目標です．',
   ],
   experiences: [
     {
-      period: '2025年6月 - 現在',
+      period: '2025-06 - 現在',
       company: '株式会社スリーシェイク - Sreake 事業部',
       companyLink: 'https://3-shake.com/',
       role: 'アプリケーション開発支援チーム (Full Stack)',
@@ -16,7 +16,7 @@ export const aboutDataJa: AboutData = {
         'アプリケーションの開発やクラウドネイティブな開発プロセスの内製化支援をやっています．',
     },
     {
-      period: '2022年4月 - 2025年5月',
+      period: '2022-04 - 2025-05',
       company: '株式会社ソニックムーブ - 開発部 (Solution 事業)',
       companyLink: 'https://sonicmoov.com/',
       role: 'ソフトウェアエンジニア (Web Backend / Public Cloud)',
@@ -26,21 +26,20 @@ export const aboutDataJa: AboutData = {
   ],
   educations: [
     {
-      period: '2020年4月 - 2022年3月',
+      period: '2020-04 - 2022-03',
       institution: '新潟大学 大学院 自然科学研究科 電気情報工学専攻 情報工学コース',
       degree: '修士 (工学)',
       description:
-        'プログラミング言語の基礎理論の研究をしており「項書き換えシステム」という計算モデルの性質を調べていました．',
+        'プログラミング言語の基礎理論 (特に「項書き換えシステム」という計算モデルの性質) を研究していました．',
     },
     {
-      period: '2016年4月 - 2020年3月',
+      period: '2016-04 - 2020-03',
       institution: '新潟大学 工学部 情報工学科',
       degree: '学士 (工学)',
-      description:
-        '学生として情報工学を体系的に学んでいました．プログラムを書くことだけでなくコンピュータの仕組みを知ることが好きでした．',
+      description: 'プログラムを書くことだけでなくコンピュータの仕組みを知ることが好きでした．',
     },
     {
-      period: '2013年4月 - 2016年3月',
+      period: '2013-04 - 2016-03',
       institution: '福島県立安積高等学校 普通科',
     },
   ],
@@ -49,11 +48,11 @@ export const aboutDataJa: AboutData = {
       category: 'Thesis',
       items: [
         {
-          title: '修士論文：置換に関する不動点制約を用いた名目書き換え',
+          title: '置換に関する不動点制約を用いた名目書き換え (修士論文)',
           url: 'https://doc.silasol.la/thesis/mthesis.pdf',
           description:
-            '名目書き換えシステム (Nominal Rewriting System) という計算モデルの性質について．\nPPL 2022 (第24回プログラミングおよびプログラミング言語ワークショップ) でも発表しました．',
-          date: '2022年3月',
+            '名目書き換えシステム (Nominal Rewriting System) という計算モデルの性質についてです．PPL 2022 (第24回プログラミングおよびプログラミング言語ワークショップ) でも発表しました．',
+          date: '2022-03-31',
         },
       ],
     },
@@ -64,43 +63,43 @@ export const aboutDataJa: AboutData = {
           title: 'Zanzibar モデルで考えるグラフの単調性と権限追記の安全性',
           url: 'https://sreake.com/blog/graphs-monotonicity-and-permission-safety-on-zanzibar-model/',
           description:
-            '職場の Tech Blog です．Google Zanzibar の権限モデルを題材に，Relation Tuple を有向グラフとして捉え権限判定をパスの到達性に帰着させる流れや，否定 (差集合) が単調性を崩し分散環境で事故を招くこと (CALM 定理) を掘り下げています．',
-          date: '2026年6月',
+            '職場の Tech Blog です．Google Zanzibar の権限モデルを題材に，Relation Tuple を有向グラフとして捉え権限判定をパスの到達性に帰着させる流れや，否定 (差集合) が単調性を崩し分散環境で事故を招くこと (CALM 定理) を見ていきます．',
+          date: '2026-06-22',
         },
         {
           title: 'TrueTime だけではない Spanner クエリエンジンの役割',
           url: 'https://sreake.com/blog/spanner-query-engine-functionability/',
           description:
-            '職場の Tech Blog です．Spanner の整合性を支えるストレージ層ではなく，性能を稼ぐコンピュート層に着目し，Distributed Union や Batched Apply Join，Restart Token，Ressi といったクエリエンジンの工夫を掘り下げています．',
-          date: '2026年6月',
+            '職場の Tech Blog です．Spanner は整合性を保つ部分がよく語られますが，今回はコンピュート層が性能を稼ぐ仕組みに着目し，Distributed Union や Batched Apply Join，Restart Token，Ressi といったクエリエンジンの工夫を掘り下げています．',
+          date: '2026-06-22',
         },
         {
           title: 'Firestore の競合解決とデータモデルの選択',
           url: 'https://sreake.com/blog/firestore-conflict-resolution-and-data-model-selection/',
           description:
-            '職場の Tech Blog です．Firestore のオフライン競合解決 (last write wins や Field transform) を CRDT (G-Counter, RGA など) と並べ，競合解決の責任をどこに持たせるかという設計の違いを掘り下げています．',
-          date: '2026年6月',
+            '職場の Tech Blog です．Firestore のオフライン競合解決を CRDT と比較して，競合解決の責任を持たせる設計の違いを考えます．',
+          date: '2026-06-22',
         },
         {
           title: 'Sreake 活用事例の紹介 (TIIS さま, インタビュー記事)',
           url: 'https://sreake.com/case/tiis/',
           description:
             '職場の顧客案件における事例紹介です．アプリケーション開発のモダナイゼーション支援をやっております．',
-          date: '2026年6月',
+          date: '2026-06-17',
         },
         {
           title: '順序の不確実性と決定性 〜 Cloud Dataflow における可換モノイド',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
-            '職場の Tech Blog です．Cloud Dataflow のパイプラインの安定性に可換モノイドの構造が寄与しているという話題です．',
-          date: '2026年4月',
+            '職場の Tech Blog です．Cloud Dataflow のパイプラインの安定性に可換モノイドの構造が見える話です．',
+          date: '2026-04-27',
         },
         {
           title: '地球規模の「時間のずれ」を Cloud Spanner はどう解決したか',
           url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
           description:
             '職場の Tech Blog です．Cloud Spanner のコアアーキテクチャについて，マルチリージョン構成を支える分散合意 (Paxos) や原子時計を用いた TrueTime の仕組みなど Google Cloud のブラックボックスを掘り下げています．',
-          date: '2025年12月',
+          date: '2025-12-16',
         },
       ],
     },
@@ -111,7 +110,7 @@ export const aboutDataJa: AboutData = {
         '2026 年に読む "The Definition of Standard ML" 〜 現代の堅牢なソフトウェア設計の源流として',
       event: '関数型まつり 2026',
       eventUrl: 'https://2026.fp-matsuri.org/',
-      date: '2026年7月12日',
+      date: '2026-07-12',
       slideUrl: 'https://doc.silasol.la/talks/2026-07-12_fp-matsuri/slides.pdf',
       description:
         '関数型プログラミングのカンファレンスです．コアスタッフおよび登壇者としての参加でした．Standard ML の形式的な仕様から，ソフトウェア開発におけるヒントを探る試みです．',
@@ -120,21 +119,21 @@ export const aboutDataJa: AboutData = {
       title: 'HKT のない言語で Monad をどう表現するか 〜 Standard ML の場合',
       event: 'λ Kansai in Summer 2026',
       eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',
-      date: '2026年6月13日',
+      date: '2026-06-13',
       slideUrl: 'https://doc.silasol.la/talks/2026-06-13_lambda-kansai/slides.pdf',
       postSlug: '2026-06-14-01_sml-type-class',
       description:
-        '大阪で開催された関数型プログラミングのイベントです．Standard ML で Haskell のような型クラスや Monad をやる試みです．',
+        '大阪に行って Haskell の型クラスや Monad を Standaed ML でやろうとする話をしてきました．',
     },
     {
       title: '先達もすなる仕様駆動といふものを、オタクもしてみむとてするなり。',
       event: 'AI を紡ぐ者たち #1',
       eventUrl: 'https://3-shake.connpass.com/event/391906/',
-      date: '2026年5月20日',
+      date: '2026-05-20',
       slideUrl: 'https://doc.silasol.la/talks/2026-05-20_3-shake_ai-1/slides.pdf',
       postSlug: '2026-05-20-01_3-shake-ai-1',
       description:
-        '職場で開催された勉強会です．仕様駆動開発を実務に取り入れて感じたことについて話しました．',
+        '職場で開催された勉強会です．仕様駆動開発を実務としてやっていて感じたことを話しました．',
     },
   ],
   certifications: [
@@ -273,13 +272,13 @@ export const aboutDataJa: AboutData = {
           name: '構成的に証明できないトートロジー',
           url: 'https://doc.silasol.la/logic/daily-shinjiro.pdf',
           description:
-            'トートロジーの自然演繹体系での証明木集です．\n背理法や二重否定の除去などを使わないと証明できない (証明は省略) ものを扱っています．',
+            '自然演繹体系でトートロジーを証明しています．背理法や二重否定の除去などを使わないと証明できない (証明は省略) ものを扱っています．',
         },
         {
           name: '様相論理の体系と Lindenbaum の補題',
           url: 'https://doc.silasol.la/logic/sys-modal.pdf',
           description:
-            '様相論理の体系の定義から始まって Lindenbaum の補題を導きます．\n様相論理と言いつつ極大理論を作る話がメインです．',
+            '様相論理の体系を定義して Lindenbaum の補題を導きます．様相論理と言いつつ極大理論を作る話がメインです．',
         },
       ],
     },
@@ -290,48 +289,45 @@ export const aboutDataJa: AboutData = {
           name: 'Functional Programming in SML (関数型まつり 2026 ハンズオン)',
           url: 'https://github.com/fp-matsuri/fp-in-scala-exercises/tree/main/fp-in-sml',
           description:
-            'Functional Programming in Scala の演習を Standard ML でやっていくハンズオン教材です．\nSML を書いたことがなくても前提知識の準備から始められます．MLton と SML/NJ の両方で動きます．',
+            'Functional Programming in Scala の演習を Standard ML でやっていくハンズオン教材です．SML を書いたことがなくても前提知識の準備から始められます．なるべく処理系に依存した機能は避けて，MLton と SML/NJ の両方で動くようにしています．',
         },
         {
           name: 'Bluesky の投稿を消すやつ',
           url: 'https://github.com/silasolla/bsky-delete-bot',
           description:
-            '自分の発言を削除して責任逃れをするための簡単な Python スクリプト．\nGitHub Actions で Workflow を動かして定期実行できます．',
+            '自分の発言を削除して責任逃れをするための簡単な Python スクリプトです．GitHub Actions で Workflow を動かして定期実行できます．',
         },
         {
           name: '退職届を作るやつ',
           url: 'https://gist.github.com/silasolla/806c4c50702fd743ef6789cedeea84cb',
-          description: '退職届 (PDF) を作るための LuaLaTeX コードスニペットです．',
+          description: '退職届 (PDF) を作るための LuaLaTeX のコードスニペットです．',
         },
         {
           name: '項書き換え系を完備化するやつ',
           url: 'https://github.com/silasolla/knuth-bendix',
           description:
-            'Standard ML で書いた一階項書き換え系を操作する UNIX コマンドです．\nMLton でコンパイルします．',
+            'Standard ML で書いた一階項書き換え系を操作する CLI ツールです．MLton で実行形式にコンパイルできます．',
         },
         {
           name: '証明写真のリストを作るやつ',
           url: 'https://gist.github.com/silasolla/48e34b90dfa9651a22b66efc61ef4bbc',
           description:
-            '写真データを縮小して PDF ファイルに並べます．\nコンビニプリントして切り取ることで印刷代をケチることができます．',
+            '写真データを縮小して単一の PDF ファイルに並べます．コンビニプリントして切り取ることで印刷代をケチることができます．',
         },
         {
           name: 'Brainf*ck のインタプリタ',
           url: 'https://github.com/silasolla/smlbf',
-          description:
-            'すべての人類が一生に一度は書くことで知られるインタプリタです．\nStandard ML で書いてます．',
+          description: 'Standard ML で書いたインタプリタです．',
         },
         {
           name: 'もけ寄生',
           url: 'https://github.com/silasolla/moke',
-          description:
-            'Gleam で作成した CSR で動作する簡単なプロジェクトです．\nCloudflare Pages にデプロイします．',
+          description: 'Gleam で簡単な CSR ページを作りました．Cloudflare Pages にデプロイします．',
         },
         {
           name: '担々麺屋',
           url: 'https://assets.silasol.la/extra/tangtang.html',
-          description:
-            '担々麺屋に行きたくなるページです．\nMatrix Canvas Code (https://gigazine.net/news/20130321-matrix-javascript/) を真似しました．',
+          description: '担々麺屋に行きたくなるページです．Matrix Canvas Code を参考にしています．',
         },
       ],
     },
@@ -339,91 +335,66 @@ export const aboutDataJa: AboutData = {
   hobbies: [
     {
       name: 'Standard ML',
-      note: 'ゆるく関数型．操作的意味論すごい！ HM 型推論すごい！手続き型との良いとこ取りすごい！ SML# 頑張れ！',
+      note: 'モジュールシステムや実直な仕様がお気に入りです．思い入れがある．',
     },
     {
-      name: 'Haskell',
-      note: 'はじめて関数型プログラミングするときに触った．遅延評価！お仕事で使うのがあこがれ．',
-    },
-    { name: 'Elm', note: 'コンパイルエラーが丁寧ですごい！ゴリゴリ書かなきゃなスタイル．' },
-    { name: 'Racket', note: 'Scheme! Homoiconicity! call/cc! shift/reset!' },
-    { name: 'Koka', note: '代数的エフェクトの．勉強中！' },
-    {
-      name: '型システム',
-      note: '推論が柔軟に動くレベルのと依存型くらい表現力強いのを適材適所で．',
-    },
-    { name: '定理証明支援系', note: 'Isabelle/HOL の本読んでた．Lean, Agda, Idris など勉強中．' },
-    { name: '音楽', note: 'クラシックや現代音楽から世界の民謡やロックバンドまで幅広く聴きます．' },
-    {
-      name: 'クラシック音楽',
-      note: 'Alkan, Liszt, Brahms, Bruckner, Franck, Sibelius, Webern, Varèse, Messiaen, Xenakis, Penderecki, Crumb, 諸井三郎, 湯浅譲二あたりが好きです．',
+      name: '関数型プログラミング',
+      note: 'OCaml, Haskell, Racket, Gleam, Koka など．とりわけ ML 系言語が好き．',
     },
     {
-      name: 'King Gnu',
-      note: 'どのアルバムも何周したかわからんくらい聴きました．Millennium Parade も好きです．常田大希さんリスペクトです．',
+      name: '型システムや定理証明',
+      note: '型自体の強さと扱いやすさ (型推論など) のバランスは大事だと思う．',
     },
     {
-      name: 'Tuba',
-      note: '中学校から大学までやっていました．デカすぎて個人所有が厳しいですがベースラインに耳が行きがち．',
+      name: '音楽鑑賞',
+      note: '古楽から現代音楽や民謡まで幅広く．King Gnu (常田さん) リスペクトです．',
     },
     {
-      name: 'ピアノ',
-      note: '母が実家でピアノ教室やってたので帰省したときに練習してます．ガチ勢じゃないのであんまり．',
+      name: '楽器演奏や歌うこと',
+      note: '中学から大学まで Tuba をやっていた．実家に帰省したらピアノを練習する．',
     },
-    {
-      name: '数学',
-      note: '計算より証明を追うのが好き．数理論理学に一番興味ありますが，メタじゃないのもやります．',
-    },
+    { name: '数学', note: '計算は得意じゃないけれど証明を追うのは好き．数理論理学に関心がある．' },
     {
       name: '国内旅行',
-      note: '知らない景色や根付いた文化を見に行くのが好きです．最近は静岡県 (熱海, 初島, 沼津, 三島, 三保松原, 三島, 天竜二俣など) を攻めてます．',
+      note: '直近は，高知 (四万十/足摺) や浜松 (天竜二俣) や三島，熱海 (初島) など．',
     },
-    {
-      name: '散歩',
-      note: '街並みを見ながら尋常じゃないくらい歩きます．2日で 42.195 × 2 km 歩いたり，浅草から新宿まで歩いたりもします．',
-    },
-    {
-      name: '日本庭園',
-      note: '四季折々の景観が楽しいです．草花や野鳥を眺めながら，のんびりと歩いています．浜離宮恩賜庭園の年パス持ってる．',
-    },
-    {
-      name: '読書',
-      note: 'コンピュータや数学などの理工書がメインですが，藤子F不二雄のSF短篇集や謎雑学本もよく読みます．最近は柞刈湯葉さんとか．',
-    },
+    { name: '散歩', note: 'かなり長く歩けて，浅草 ~ 新宿は余裕，2 日で 42.195 × 2 km 歩いたり．' },
+    { name: '日本庭園', note: '四季折々の景観が楽しいです (浜離宮恩賜庭園の年パス持ってます)．' },
+    { name: '読書', note: '理工書や謎雑学など．SF なら藤子F不二雄の短篇や柞刈湯葉さんが好き．' },
     {
       name: 'けろけろけろっぴ',
-      note: 'サンリオ人気投票で毎年投票してます (有象無象に負けるな)．部屋のカーテンも文房具もよく使う LINE スタンプも全部けろっぴです．',
+      note: 'サンリオの人気投票では毎年入れています (最近は不調みたいでつらい)．',
     },
-    {
-      name: '科博',
-      note: '特別展に毎回行っています．いつも展示のボリュームが凄くて，たくさん新しいこと知れたなって満足してます．',
-    },
+    { name: '科博', note: '直近だと鳥展から超危険生物展まで，特別展は毎回ずっと見に行っています' },
     {
       name: '神保町のカレー',
-      note: '最近は共栄堂のスマトラカレーにハマってます．疲れているときに食べるとありえん美味い．',
+      note: '疲れているときに共栄堂のスマトラカレーを食べると，ありえん美味い．',
     },
-    { name: 'トマトジュース', note: '塩分が無添加のやつ．' },
-    { name: '魚', note: '旅行で海の近くに行ったときに食べるお刺身ほど美味いものはない．' },
-    { name: '天麩羅', note: '目の前で揚げてもらったやつありえん美味い．' },
-    { name: 'ラーメン', note: 'あっさり系のシンプル醤油ラーメンが好き．' },
+    {
+      name: 'おいしいもの',
+      note: '揚げたての天麩羅や刺身，あっさり系のラーメン，トマトジュース (無塩) など．',
+    },
     {
       name: 'ビール',
-      note: '天然素材でこんなに金色の液体ってあるだろうか．神に祝福されている．クラフトビールやビアカクテルも．(not 任意の酒)',
+      note: '天然素材の液体でこんな黄金だと神に祝福されているなと．(not 任意の酒)',
     },
-    { name: '甘いもの', note: 'すきだけどおでぶに．' },
-    { name: 'カフェ通い', note: 'カフェ「巡り」ではない．お気に入りのお店にたくさん行きます．' },
-    { name: 'ごちうさ', note: '救われました．' },
-    { name: 'ゆるキャン△', note: 'おもしろい．実写も良かった．' },
-    { name: 'まどマギ', note: '脚本とキャラデザと音楽と演出と総合芸術．' },
-    { name: 'ドラえもん', note: '大長編ドラえもん全部持っている．映画も映画館で見ていた．' },
     {
-      name: 'ゲーム',
-      note: 'シナリオやゲームシステムや音楽に引き込まれる．好きなゲームはサルゲッチュ，ロマサガ，オクトラ，ドラクエ7，深夜廻など．',
+      name: 'カフェ通い',
+      note: 'カフェ「巡り」とは似て異なります．お気に入りのお店にたくさん行きます．',
     },
+    {
+      name: 'アニメ',
+      note: 'ごちうさ，ゆるキャン△，重めのだと，まどマギ，サイコパス1期が好きです．',
+    },
+    {
+      name: 'ドラえもん',
+      note: '大長編は全部持っているし，映画は小さい頃から劇場で見ていました．',
+    },
+    { name: 'ゲーム', note: 'サルゲッチュ，ロマサガ，オクトラ，ドラクエ7，深夜廻などが好きです．' },
     {
       name: '言葉遊び',
-      note: '自己言及文，部分文字列，回文，駄洒落，(何のとは言わないけれど) 語録遊びなど．',
+      note: '自己言及文，回文，駄洒落，あとは語録ごっこで遊ぶのなんかも好きです．',
     },
-    { name: '自分', note: '他人に優しく，自分には更に優しい．' },
+    { name: '自分', note: '他人に優しく，自分にはちょー優しい．' },
   ],
 };

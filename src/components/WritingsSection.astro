@@ -8,8 +8,6 @@ interface Props {
 }
 
 const { items } = Astro.props;
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
-const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
 
 const postsHref = `${postsBasePath(Astro.currentLocale)}/`;
 const introPrefix = getTranslation(Astro.currentLocale, 'writings.intro.prefix');
@@ -25,38 +23,23 @@ const introSuffix = getTranslation(Astro.currentLocale, 'writings.intro.suffix')
   items.map((category) => (
     <section class="writing-category">
       <h4 class="writing-category-title">{category.category}</h4>
-      <div class="writing-grid">
-        {category.items.map((item: WritingItem) => (
-          <div class="writing-card">
-            <div class="card-header">
-              {item.date && <span class="writing-date">{item.date}</span>}
-              <h4 class="writing-title">{item.title}</h4>
-            </div>
-            {item.description && (
-              <details class="writing-details">
-                <summary class="writing-summary">{detailsText}</summary>
-                <p class="writing-description">{item.description}</p>
-              </details>
-            )}
-            {item.url && (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" class="writing-link">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-                {openLinkText}
-              </a>
-            )}
-          </div>
-        ))}
+      <div class="row-list">
+        {category.items.map((item: WritingItem) => {
+          const RowTag = item.url ? 'a' : 'div';
+          const rowProps = item.url
+            ? { href: item.url, target: '_blank', rel: 'noopener noreferrer', class: 'row' }
+            : { class: 'row' };
+
+          return (
+            <RowTag {...rowProps}>
+              <div class="row-meta">{item.date}</div>
+              <div class="row-body">
+                <h4 class="row-title">{item.title}</h4>
+                {item.description && <p class="row-desc">{item.description}</p>}
+              </div>
+            </RowTag>
+          );
+        })}
       </div>
     </section>
   ))

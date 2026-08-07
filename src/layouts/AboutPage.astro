@@ -13,6 +13,7 @@ import { getTranslation } from '../i18n/translations';
 import { getSiteName } from '../i18n/utils';
 import { profileData } from '../data/profile';
 import { identityBasePath } from '../utils/paths';
+import '../styles/list-row.css';
 import '../styles/about-page.css';
 import '../styles/about-sections.css';
 
@@ -95,7 +96,9 @@ const profileImages = [
     <section class="about-section">
       <h3 class="section-title">About Me</h3>
       <div class="section-content">
-        {data.bio.map((paragraph) => <p>{paragraph}</p>)}
+        <div class="bio">
+          {data.bio.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
       </div>
     </section>
 

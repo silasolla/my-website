@@ -8,7 +8,7 @@
   padding: 2rem 0;
   margin-bottom: 2rem;
   box-shadow: 0 2px 8px var(--color-header-shadow);
-  transition: background 0.3s ease;
+  transition: background var(--motion-duration) ease;
 }
 
 @media (max-width: 768px) {
@@ -47,7 +47,7 @@
 .header-content {
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: var(--width-site);
   margin: 0 auto;
   padding: 0 3rem;
   display: flex;
@@ -106,7 +106,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--motion-duration) ease;
   flex-shrink: 0;
 }
 
@@ -151,7 +151,7 @@
   text-decoration: none;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all var(--motion-duration) ease;
 }
 
 .lang-link:hover {

@@ -4,3 +4,9 @@
 .katex * {
   box-sizing: content-box;
 }
+
+.article-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}

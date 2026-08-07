@@ -8,17 +8,13 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="hobby-container">
+<div class="hobby-grid">
   {
-    items.map((item) =>
-      item.note ? (
-        <details class="hobby-tag">
-          <summary class="hobby-name">{item.name}</summary>
-          <p class="hobby-note">{item.note}</p>
-        </details>
-      ) : (
-        <span class="hobby-tag simple">{item.name}</span>
-      )
-    )
+    items.map((item) => (
+      <div class="hobby-cell">
+        <h5 class="hobby-name">{item.name}</h5>
+        {item.note && <p class="hobby-note">{item.note}</p>}
+      </div>
+    ))
   }
 </div>

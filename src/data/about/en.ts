@@ -8,7 +8,7 @@ export const aboutDataEn: AboutData = {
   ],
   experiences: [
     {
-      period: 'June 2025 - Present',
+      period: '2025-06 - Present',
       company: '3-shake Inc. - Sreake',
       companyLink: 'https://3-shake.com/en/',
       role: 'Application Development Support (Full Stack)',
@@ -16,7 +16,7 @@ export const aboutDataEn: AboutData = {
         'Providing hands-on support for application development and facilitating the internalization (in-housing) of cloud-native development processes for client teams.',
     },
     {
-      period: 'April 2022 - May 2025',
+      period: '2022-04 - 2025-05',
       company: 'Sonicmoov Co., Ltd. - Solution Division',
       companyLink: 'https://sonicmoov.com/',
       role: 'Software Engineer (Web Backend / Public Cloud)',
@@ -26,14 +26,14 @@ export const aboutDataEn: AboutData = {
   ],
   educations: [
     {
-      period: 'April 2020 - March 2022',
+      period: '2020-04 - 2022-03',
       institution: 'Graduate School of Science and Technology, Niigata University',
       degree: 'Master of Engineering',
       description:
         'Researched the foundational theory of programming languages, specifically investigating the computational properties of Term Rewriting Systems.',
     },
     {
-      period: 'April 2016 - March 2020',
+      period: '2016-04 - 2020-03',
       institution:
         'Faculty of Engineering, Department of Information Engineering, Niigata University',
       degree: 'Bachelor of Engineering',
@@ -41,7 +41,7 @@ export const aboutDataEn: AboutData = {
         'Studied Computer Science systematically, with a passion not just for writing code, but for understanding the underlying mechanisms of computers.',
     },
     {
-      period: 'April 2013 - March 2016',
+      period: '2013-04 - 2016-03',
       institution: 'Fukushima Prefectural Asaka Senior High School',
     },
   ],
@@ -54,7 +54,7 @@ export const aboutDataEn: AboutData = {
           url: 'https://doc.silasol.la/thesis/mthesis.pdf',
           description:
             'A study on the properties of a computational model known as the Nominal Rewriting System. Also presented at PPL 2022 (Programming and Programming Languages Workshop).',
-          date: 'March 2022',
+          date: '2022-03-31',
         },
       ],
     },
@@ -66,42 +66,42 @@ export const aboutDataEn: AboutData = {
           url: 'https://sreake.com/blog/graphs-monotonicity-and-permission-safety-on-zanzibar-model/',
           description:
             "A post from my company's Tech Blog. Using Google Zanzibar's authorization model, I treat relation tuples as a directed graph and reduce permission checks to reachability, then explore how negation (set difference) breaks monotonicity and can cause incidents in distributed systems (the CALM theorem).",
-          date: 'June 2026',
+          date: '2026-06-22',
         },
         {
           title: 'Beyond TrueTime: The Role of the Spanner Query Engine',
           url: 'https://sreake.com/blog/spanner-query-engine-functionability/',
           description:
             "A post from my company's Tech Blog. Rather than the storage layer that guarantees consistency, I focus on the compute layer that earns performance, exploring query engine techniques such as Distributed Union, Batched Apply Join, Restart Token, and Ressi.",
-          date: 'June 2026',
+          date: '2026-06-22',
         },
         {
           title: 'Firestore Conflict Resolution and Choosing a Data Model',
           url: 'https://sreake.com/blog/firestore-conflict-resolution-and-data-model-selection/',
           description:
             "A post from my company's Tech Blog. I compare Firestore's offline conflict resolution (last write wins and Field transform) with CRDTs (G-Counter, RGA, etc.), exploring the design difference of where the responsibility for conflict resolution should live.",
-          date: 'June 2026',
+          date: '2026-06-22',
         },
         {
           title: 'Sreake Use Case (Interview with TIIS)',
           url: 'https://sreake.com/case/tiis/',
           description:
             'A case study from a client project at my company. It involves providing support for the modernization of application development.',
-          date: 'June 2026',
+          date: '2026-06-17',
         },
         {
           title: 'Commutative Monoids in Cloud Dataflow',
           url: 'https://sreake.com/blog/commutative-monoid-on-cloud-dataflow/',
           description:
             "A post from my company's Tech Blog. It discusses how commutative monoid structures contribute to the stability of Cloud Dataflow pipelines.",
-          date: 'April 2026',
+          date: '2026-04-27',
         },
         {
           title: 'How Cloud Spanner Solved the Global "Time Lag"',
           url: 'https://sreake.com/blog/how-cloud-spanner-deal-with-large-scale-time-diff/',
           description:
             "A post from my company's Tech Blog. Unlocking the Google Cloud black box: A deep dive into Cloud Spanner's architecture. I examine the inner workings of TrueTime (atomic clocks) and Paxos-based distributed consensus that make multi-region deployments possible.",
-          date: 'December 2025',
+          date: '2025-12-16',
         },
       ],
     },
@@ -112,7 +112,7 @@ export const aboutDataEn: AboutData = {
         '"The Definition of Standard ML" in 2026: As a Source of Robust and Modern Software Design',
       event: '関数型まつり 2026',
       eventUrl: 'https://2026.fp-matsuri.org/',
-      date: 'July 12, 2026',
+      date: '2026-07-12',
       slideUrl: 'https://doc.silasol.la/talks/2026-07-12_fp-matsuri/slides.pdf',
       description:
         'A functional programming conference. I participated as both a core staff member and a speaker. This talk is an attempt to explore insights for software development from the formal specification of Standard ML.',
@@ -121,7 +121,7 @@ export const aboutDataEn: AboutData = {
       title: 'How to Represent Monads in a Language Without HKTs: The Case of Standard ML',
       event: 'λ Kansai in Summer 2026',
       eventUrl: 'https://lambda-kansai.connpass.com/event/385059/',
-      date: 'June 13, 2026',
+      date: '2026-06-13',
       slideUrl: 'https://doc.silasol.la/talks/2026-06-13_lambda-kansai/slides.pdf',
       postSlug: '2026-06-14-01_sml-type-class',
       description:
@@ -131,7 +131,7 @@ export const aboutDataEn: AboutData = {
       title: 'Reflections on Practicing Spec-Driven Development',
       event: 'AI を紡ぐ者たち #1',
       eventUrl: 'https://3-shake.connpass.com/event/391906/',
-      date: 'May 20, 2026',
+      date: '2026-05-20',
       slideUrl: 'https://doc.silasol.la/talks/2026-05-20_3-shake_ai-1/slides.pdf',
       postSlug: '2026-05-20-01_3-shake-ai-1',
       description:

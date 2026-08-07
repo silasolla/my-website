@@ -28,8 +28,6 @@ export interface WritingCategory {
 export interface CertificationItem {
   name: string;
   credlyUrl?: string;
-  description?: string;
-  date?: string;
   badgeImage?: string;
 }
 

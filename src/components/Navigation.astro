@@ -17,6 +17,7 @@ const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close')
 
 <nav
   class="navigation"
+  aria-label={menuTitle}
   data-locale={locale}
   data-open-label={toggleOpenLabel}
   data-close-label={toggleCloseLabel}

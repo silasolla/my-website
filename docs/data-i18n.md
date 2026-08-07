@@ -72,8 +72,8 @@ export const translations = {
     'nav.about': '自己紹介',
 
     // コンポーネント
-    'component.details': '詳細を見る',
-    'component.open-link': 'リンクを開く',
+    'component.signed-text.copy': 'クリップボードにコピー',
+    'component.signed-text.open-file': '元のファイルを開く',
 
     // RSS
     'rss.feed-title-suffix': 'のブログ',
@@ -94,9 +94,9 @@ export const translations = {
 ---
 import { getTranslation } from '../i18n/translations';
 
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
-// ロケールが 'ja' なら "詳細を見る"
-// ロケールが 'en' なら "View Details"
+const copyText = getTranslation(Astro.currentLocale, 'component.signed-text.copy');
+// ロケールが 'ja' なら "クリップボードにコピー"
+// ロケールが 'en' なら "Copy to clipboard"
 ---
 ```
 
@@ -134,7 +134,6 @@ export const translations = {
 | `getSiteDescription` | meta description                     |
 | `getRssFeedTitle`    | RSS タイトル (`type` でカテゴリ指定) |
 | `getTagLabel`        | 記事タグの表示名                     |
-| `formatDate`         | 日付のロケール表示                   |
 
 ---
 
@@ -181,14 +180,16 @@ Links のリンク一覧は `src/data/links/ja.ts` と `en.ts` で管理し，`L
 
 スタイルは原則 `src/styles/*.css` に置き，レイアウトまたはコンポーネントから import します．
 
-| 読み込み元           | CSS                                                                         | 用途                   |
-| -------------------- | --------------------------------------------------------------------------- | ---------------------- |
-| `Layout.astro`       | `global.css`, `header.css`, `navigation.css`, `footer.css`, `link-card.css` | 全ページ共通           |
-| 各 `layouts/*.astro` | `home-page.css`, `post-article.css`, `about-page.css` 等                    | ページ種別             |
-| `PostArticle.astro`  | `article-content.css`                                                       | 記事本文 typography    |
-| MDX コンポーネント   | `tweet.css`, `slide.css` 等                                                 | 記事内 embed           |
-| `AboutPage.astro`    | `about-sections.css`                                                        | About 各セクション     |
-| `ImageGallery.astro` | `image-gallery.css`                                                         | プロフィールギャラリー |
+| 読み込み元                            | CSS                                                                         | 用途                   |
+| ------------------------------------- | --------------------------------------------------------------------------- | ---------------------- |
+| `Layout.astro`                        | `global.css`, `header.css`, `navigation.css`, `footer.css`, `link-card.css` | 全ページ共通           |
+| 各 `layouts/*.astro`                  | `home-page.css`, `post-article.css`, `about-page.css` 等                    | ページ種別             |
+| `PostArticle.astro`                   | `article-content.css`                                                       | 記事本文 typography    |
+| MDX コンポーネント                    | `tweet.css`, `slide.css` 等                                                 | 記事内 embed           |
+| `AboutPage.astro`                     | `about-sections.css`                                                        | About 各セクション     |
+| 一覧を持つ各レイアウト                | `list-row.css`                                                              | 一覧の行 (`.row`) 共通 |
+| `HomePage.astro` / `PostsIndex.astro` | `post-list.css`                                                             | 記事一覧の外枠         |
+| `ImageGallery.astro`                  | `image-gallery.css`                                                         | プロフィールギャラリー |
 
 About のプロフィール画像を円形にするなど，ギャラリーへの上書きが必要な場合は `AboutPage.astro` の `<style>` を編集します．
 
@@ -229,10 +230,10 @@ import { profileData } from '../data/profile';
 ```astro
 ---
 import { getTranslation } from '../i18n/translations';
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
+const copyText = getTranslation(Astro.currentLocale, 'component.signed-text.copy');
 ---
 
-<button>{detailsText}</button>
+<button>{copyText}</button>
 ```
 
 ### 3. 動的なテキストは `utils.ts` の関数を使用する

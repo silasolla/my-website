@@ -2,9 +2,11 @@
 import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
-import { splitHomePosts } from '../utils/posts';
+import { getSiteName, getTagLabel } from '../i18n/utils';
+import { formatPostListDate, splitHomePosts } from '../utils/posts';
 import { postsBasePath } from '../utils/paths';
+import '../styles/list-row.css';
+import '../styles/post-list.css';
 import '../styles/home-page.css';
 
 interface Props {
@@ -30,25 +32,27 @@ const viewAllText = getTranslation(locale, 'home.view-all');
     {
       pinnedPosts.length > 0 && (
         <section class="pinned-section">
-          <h2 class="section-title pinned-title">📌 {pinnedTitle}</h2>
+          <h2 class="section-title pinned-title">{pinnedTitle}</h2>
 
-          <ul class="posts-list pinned-posts">
+          <ul class="posts-list">
             {pinnedPosts.map((post) => (
               <li class={`post-item ${post.data.important ? 'important-post' : ''}`}>
-                <a href={`${postsPath}/${post.id}/`} class="post-link">
-                  {post.data.important && <span class="important-badge">{importantBadge}</span>}
-                  <div class="post-meta">
-                    <time class="post-date" datetime={post.data.date.toISOString()}>
-                      {formatDate(post.data.date, locale)}
+                <a href={`${postsPath}/${post.id}/`} class="row">
+                  <div class="row-meta">
+                    <time datetime={post.data.date.toISOString()}>
+                      {formatPostListDate(post.data.date)}
                     </time>
+                    {post.data.important && <span class="important-badge">{importantBadge}</span>}
                     <div class="post-tags">
                       {post.data.tags.map((tag) => (
-                        <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+                        <span class="tag">{getTagLabel(locale, tag)}</span>
                       ))}
                     </div>
                   </div>
-                  <h3 class="post-title">{post.data.title}</h3>
-                  {post.data.description && <p class="post-description">{post.data.description}</p>}
+                  <div class="row-body">
+                    <h3 class="row-title">{post.data.title}</h3>
+                    {post.data.description && <p class="row-desc">{post.data.description}</p>}
+                  </div>
                 </a>
               </li>
             ))}
@@ -67,19 +71,21 @@ const viewAllText = getTranslation(locale, 'home.view-all');
           <ul class="posts-list">
             {latestPosts.map((post) => (
               <li class="post-item">
-                <a href={`${postsPath}/${post.id}/`} class="post-link">
-                  <div class="post-meta">
-                    <time class="post-date" datetime={post.data.date.toISOString()}>
-                      {formatDate(post.data.date, locale)}
+                <a href={`${postsPath}/${post.id}/`} class="row">
+                  <div class="row-meta">
+                    <time datetime={post.data.date.toISOString()}>
+                      {formatPostListDate(post.data.date)}
                     </time>
                     <div class="post-tags">
                       {post.data.tags.map((tag) => (
-                        <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
+                        <span class="tag">{getTagLabel(locale, tag)}</span>
                       ))}
                     </div>
                   </div>
-                  <h3 class="post-title">{post.data.title}</h3>
-                  {post.data.description && <p class="post-description">{post.data.description}</p>}
+                  <div class="row-body">
+                    <h3 class="row-title">{post.data.title}</h3>
+                    {post.data.description && <p class="row-desc">{post.data.description}</p>}
+                  </div>
                 </a>
               </li>
             ))}

@@ -16,14 +16,14 @@
 ```typescript
 experiences: [
   {
-    period: '2025年6月 - 現在',
+    period: '2025-06 - 現在',
     company: 'やばい会社',
     companyLink: 'https://example.com',
     role: 'エンジニア',
     description: '闇の技術開発に従事しています．',
   },
   {
-    period: '2022年4月 - 2025年5月',
+    period: '2022-04 - 2025-05',
     company: 'すごい会社',
     companyLink: 'https://example.com',
     role: 'エンジニア',
@@ -44,18 +44,18 @@ experiences: [
 ```typescript
 educations: [
   {
-    period: '2020年4月 - 2022年3月',
+    period: '2020-04 - 2022-03',
     institution: 'すごい先端科学技術大学院大学',
     degree: '修士 (衒学)',
     description: 'すごい研究を行っていました．',
   },
   {
-    period: '2016年4月 - 2020年3月',
+    period: '2016-04 - 2020-03',
     institution: 'すごい大学',
     degree: '学士 (衒学)',
   },
   {
-    period: '2013年4月 - 2016年3月',
+    period: '2013-04 - 2016-03',
     institution: 'すごい高等学校',
     description: '普通科に在籍していました．',
   },
@@ -82,7 +82,7 @@ writings: [
         title: 'ひよこはすごい',
         url: 'https://example.com',
         description: 'この出版物は，ひよこに関する研究成果をまとめたものです．',
-        date: '2025年1月',
+        date: '2025-01',
       },
     ],
   },
@@ -112,7 +112,7 @@ talks: [
     title: 'ひよこ駆動開発入門',
     event: 'ひよこ Conference 2025',
     eventUrl: 'https://example.com/event',
-    date: '2025年1月1日',
+    date: '2025-01-01',
     slideUrl: 'https://example.com/talks/hiyoko/slides.pdf',
     postSlug: '2025-01-01-01_hiyoko-talk',
     description: '登壇のサマリです．',
@@ -140,8 +140,6 @@ certifications: [
       {
         name: 'Super Engineer',
         credlyUrl: 'https://www.credly.com/badges/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-        description: 'すごい認定資格です．',
-        date: '2025年1月',
         badgeImage:
           'https://images.credly.com/size/680x680/images/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/image.png',
       },
@@ -159,20 +157,14 @@ certifications: [
 - `items`: カテゴリ内の資格リスト (必須)
   - `name`: 資格の名前 (必須)
   - `credlyUrl`: Credly のバッジページ URL (オプション)
-  - `description`: 資格の説明 (オプション)
-  - `date`: 取得日 (オプション)
   - `badgeImage`: バッジ画像のパス (オプション)
 
-**Credly リンクについて：**
+**表示：**
 
-- `credlyUrl` はオプションです．指定しない場合は資格名のみ表示されます．
-- Credly のバッジページの URL を設定すると，カード内にリンクが表示されます．
-- クリックすると，Credly のバッジページが新しいタブで開きます．
-
-**詳細情報の追加：**
-
-- `description`, `date`, `badgeImage` を設定すると，カードの「詳細を見る」をクリックして展開できます．
-- バッジ画像を設定すると，PC版ではカード中央に，SP版ではテキストの左側に表示されます．
+- 資格はカテゴリごとにタイルのグリッドで並びます．
+- `credlyUrl` を設定するとタイル全体が Credly のバッジページへのリンクになり，新しいタブで開きます．
+- `badgeImage` を設定するとバッジ画像がタイル左側に表示されます．
+- 同じカテゴリ内の全項目が `badgeImage` を持たない場合は，資格名を中央に寄せます．
 
 ### 5. その他 (Misc) を追加
 
@@ -228,10 +220,10 @@ hobbies: [
 - `name`: 趣味の名前 (必須)
 - `note`: 趣味の説明 (オプション)
 
-**メモについて：**
+**表示：**
 
-- `note` はオプションです．設定すると，タグをクリックして詳細を表示できます．
-- メモがない場合は，通常のタグとして表示されます．
+- Hobby は 2 段組みで並びます．
+- `note` を設定すると，趣味の名前の下に表示されます．
 
 ## 日本語版と英語版
 

@@ -4,25 +4,18 @@
 
 .article-content a.rlc-container {
   display: flex;
-  max-width: 700px;
+  max-width: var(--width-prose);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
-  margin: 1.5rem auto;
-  background: var(--color-bg-alt);
-  transition: all 0.3s ease;
+  margin: 1.5rem 0;
+  background: transparent;
+  transition: border-color var(--motion-duration) ease;
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
 }
 
 .article-content a.rlc-container:hover {
   border-color: var(--color-primary);
-  box-shadow: var(--shadow-primary-md);
-  transform: translateY(-2px);
-}
-
-[data-theme='dark'] .article-content a.rlc-container:hover {
-  box-shadow: var(--shadow-primary-md);
 }
 
 .article-content .rlc-container .rlc-info {
@@ -39,7 +32,7 @@
 .article-content .rlc-container .rlc-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-heading);
   line-height: 1.4;
   margin: 0 0 0.25rem 0;
   overflow: hidden;

@@ -18,23 +18,12 @@ export function splitHomePosts(posts: CollectionEntry<'posts'>[]) {
   };
 }
 
-export function formatPostListDate(date: Date, locale?: string): string {
+export function formatPostListDate(date: Date): string {
   // frontmatter の date は UTC 深夜として解析されるため，表示も UTC に固定する
-  if (locale === 'en') {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      timeZone: 'UTC',
-    });
-  }
-
-  return date.toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    timeZone: 'UTC',
-  });
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**

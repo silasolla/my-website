@@ -10,7 +10,7 @@
   text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .profile-header {
@@ -40,7 +40,7 @@
   color: white;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  transition: all var(--motion-duration) ease;
   z-index: 10;
 }
 
@@ -57,7 +57,6 @@
 
 .profile-info h2 {
   font-size: 2rem;
-  color: var(--color-primary-dark);
   margin-bottom: 0.5rem;
 }
 
@@ -67,21 +66,21 @@
   margin: 0;
 }
 
-.section-title {
-  font-size: 1.6rem;
-  color: var(--color-primary-dark);
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary);
-}
-
 .section-content {
   color: var(--color-text);
   line-height: 1.8;
 }
 
-.section-content p {
-  margin-bottom: 1rem;
+.bio {
+  padding: var(--space-row) 1rem 0;
+}
+
+.bio p {
+  margin-bottom: 1.25rem;
+}
+
+.bio p:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
@@ -121,9 +120,5 @@
 
   .profile-info h2 {
     font-size: 1.6rem;
-  }
-
-  .section-title {
-    font-size: 1.4rem;
   }
 }

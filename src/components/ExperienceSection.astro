@@ -11,16 +11,14 @@ const { items } = Astro.props;
 <div class="experience-list">
   {
     items.map((item) => (
-      <div class="experience-item">
-        <div class="period">{item.period}</div>
-        <div class="details">
-          <h4 class="company">
-            <a href={item.companyLink} target="_blank">
-              {item.company}
-            </a>
-          </h4>
-          <p class="role">{item.role}</p>
-          {item.description && <p class="description">{item.description}</p>}
+      <div class="row">
+        <div class="row-meta">{item.period}</div>
+        <div class="row-body">
+          <a href={item.companyLink} target="_blank" rel="noopener noreferrer" class="row-title">
+            {item.company}
+          </a>
+          <p class="row-sub">{item.role}</p>
+          {item.description && <p class="row-desc">{item.description}</p>}
         </div>
       </div>
     ))

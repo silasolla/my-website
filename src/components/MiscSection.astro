@@ -1,14 +1,11 @@
 ---
 import type { MiscCategory } from '../data/about';
-import { getTranslation } from '../i18n/translations';
 
 interface Props {
   categories: MiscCategory[];
 }
 
 const { categories } = Astro.props;
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
-const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
 ---
 
 <div class="misc-container">
@@ -16,35 +13,27 @@ const openLinkText = getTranslation(Astro.currentLocale, 'component.open-link');
     categories.map((category) => (
       <div class="misc-category">
         <h4 class="category-title">{category.category}</h4>
-        <div class="misc-grid">
-          {category.items.map((item) => (
-            <div class="misc-card">
-              <h5 class="misc-name">{item.name}</h5>
-              {item.description && (
-                <details class="misc-details">
-                  <summary class="misc-summary">{detailsText}</summary>
-                  <p class="misc-description">{item.description}</p>
-                </details>
-              )}
-              {item.url && (
-                <a href={item.url} target="_blank" rel="noopener noreferrer" class="misc-link">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                  {openLinkText}
-                </a>
-              )}
-            </div>
-          ))}
+        <div class="row-list">
+          {category.items.map((item) => {
+            const RowTag = item.url ? 'a' : 'div';
+            const rowProps = item.url
+              ? {
+                  href: item.url,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  class: 'row row--flat',
+                }
+              : { class: 'row row--flat' };
+
+            return (
+              <RowTag {...rowProps}>
+                <div class="row-body">
+                  <h5 class="row-title">{item.name}</h5>
+                  {item.description && <p class="row-desc">{item.description}</p>}
+                </div>
+              </RowTag>
+            );
+          })}
         </div>
       </div>
     ))

@@ -36,28 +36,25 @@
 }
 
 .fetchable-text .copy-button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: white;
-  background: var(--color-primary);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1.25rem;
+  font-size: var(--text-sub);
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--motion-duration) ease;
 }
 
 .fetchable-text .copy-button:hover {
-  background: var(--color-primary-dark);
-  transform: translateY(-1px);
-}
-
-.fetchable-text .copy-button:active {
-  transform: translateY(0);
+  border-color: var(--color-primary);
 }
 
 .fetchable-text .copy-button:disabled {
@@ -65,16 +62,11 @@
   cursor: not-allowed;
 }
 
-.fetchable-text .secondary-button {
-  background: var(--color-bg-alt);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
-}
-
-.fetchable-text .secondary-button:hover {
-  background: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
+.fetchable-text .copy-button[target='_blank']::after {
+  content: '↗';
+  font-size: 0.85em;
+  font-weight: 400;
+  color: var(--color-text-light);
 }
 
 .fetchable-text-message {
@@ -82,7 +74,7 @@
   color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 500;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--motion-duration) ease;
 }
 
 .fetchable-text-message.show {

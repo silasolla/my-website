@@ -19,6 +19,9 @@ html {
     'Helvetica Neue',
     Arial,
     'Noto Sans',
+    'Hiragino Sans',
+    'Noto Sans JP',
+    'Yu Gothic UI',
     sans-serif,
     'Apple Color Emoji',
     'Segoe UI Emoji',
@@ -28,9 +31,11 @@ html {
   color: var(--color-text);
   line-height: 1.7;
   font-size: 16px;
+  font-feature-settings: 'palt' 1;
+  text-spacing-trim: trim-start;
   transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+    background-color var(--motion-duration) ease,
+    color var(--motion-duration) ease;
 }
 
 body {
@@ -44,7 +49,7 @@ body {
 }
 
 .container {
-  max-width: 1400px;
+  max-width: var(--width-site);
   margin: 0 auto;
   padding: 0 3rem;
 }
@@ -59,9 +64,12 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--color-primary-dark);
+  color: var(--color-heading);
   line-height: 1.4;
   margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  word-break: auto-phrase;
 }
 
 h1 {
@@ -89,30 +97,45 @@ p {
   margin-bottom: 1rem;
 }
 
+code,
+kbd,
+samp,
+pre {
+  font-feature-settings: normal;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
 /* ===========================================
    Tag Styles
    =========================================== */
 
 .tag {
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-light);
+  font-size: var(--text-meta);
   font-weight: 500;
-}
-
-.tag-news {
-  background: var(--color-tag-news-bg);
-  color: var(--color-tag-news-text);
-}
-
-.tag-tech {
-  background: var(--color-tag-tech-bg);
-  color: var(--color-tag-tech-text);
-}
-
-.tag-diary {
-  background: var(--color-tag-diary-bg);
-  color: var(--color-tag-diary-text);
+  line-height: 1.6;
+  white-space: nowrap;
 }
 
 /* ===========================================
@@ -148,5 +171,9 @@ p {
 
   p {
     font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
   }
 }

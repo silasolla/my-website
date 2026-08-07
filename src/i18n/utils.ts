@@ -57,23 +57,3 @@ export type PostTag = 'news' | 'tech' | 'diary';
 export function getTagLabel(locale: string | undefined, tag: PostTag): string {
   return getTranslation(locale, `tag.${tag}`);
 }
-
-/**
- * 日付をロケールに応じたフォーマットで表示
- */
-export function formatDate(date: Date, locale?: string): string {
-  const localeMap: Record<string, string> = {
-    ja: 'ja-JP',
-    en: 'en-US',
-  };
-
-  const resolvedLocale = localeMap[locale || 'ja'] || 'ja-JP';
-
-  // frontmatter の date は UTC 深夜として解析されるため，表示も UTC に固定する
-  return date.toLocaleDateString(resolvedLocale, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-}

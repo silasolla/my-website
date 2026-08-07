@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { items } = Astro.props;
-const detailsText = getTranslation(Astro.currentLocale, 'component.details');
 const eventLabel = getTranslation(Astro.currentLocale, 'talks.event');
 const slidesLabel = getTranslation(Astro.currentLocale, 'talks.slides');
 const postLabel = getTranslation(Astro.currentLocale, 'talks.post');
@@ -22,83 +21,48 @@ function postHref(slug: string): string {
   const target = findCounterpartPost(posts, slug, targetLang);
   return target ? `${postsBasePath(targetLang)}/${target.id}/` : `/posts/${slug}/`;
 }
+
+function resolveLinks(item: TalkItem) {
+  const all = [
+    item.postSlug ? { href: postHref(item.postSlug), label: postLabel, external: false } : null,
+    item.slideUrl ? { href: item.slideUrl, label: slidesLabel, external: true } : null,
+    item.eventUrl ? { href: item.eventUrl, label: eventLabel, external: true } : null,
+  ].filter((link) => link !== null);
+  return { primary: all[0], rest: all.slice(1) };
+}
 ---
 
-<div class="talk-grid">
+<div class="row-list">
   {
-    items.map((item) => (
-      <article class="talk-card">
-        <div class="talk-card-header">
-          <span class="talk-date">{item.date}</span>
-          <h4 class="talk-title">{item.title}</h4>
-          <p class="talk-event">{item.event}</p>
-        </div>
+    items.map((item) => {
+      const { primary, rest } = resolveLinks(item);
+      const externalAttrs = { target: '_blank', rel: 'noopener noreferrer' };
 
-        {item.description && (
-          <details class="talk-details">
-            <summary class="talk-summary">{detailsText}</summary>
-            <p class="talk-description">{item.description}</p>
-          </details>
-        )}
-
-        <div class="talk-links">
-          {item.postSlug && (
-            <a href={postHref(item.postSlug)} class="talk-link">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-              {postLabel}
-            </a>
-          )}
-          {item.slideUrl && (
-            <a href={item.slideUrl} target="_blank" rel="noopener noreferrer" class="talk-link">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-              {slidesLabel}
-            </a>
-          )}
-          {item.eventUrl && (
-            <a href={item.eventUrl} target="_blank" rel="noopener noreferrer" class="talk-link">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-              {eventLabel}
-            </a>
-          )}
-        </div>
-      </article>
-    ))
+      return (
+        <article class="row">
+          <div class="row-meta">{item.date}</div>
+          <div class="row-body">
+            {primary ? (
+              <a href={primary.href} class="row-title" {...(primary.external ? externalAttrs : {})}>
+                {item.title}
+              </a>
+            ) : (
+              <h4 class="row-title">{item.title}</h4>
+            )}
+            <p class="row-sub">{item.event}</p>
+            {item.description && <p class="row-desc">{item.description}</p>}
+            {rest.length > 0 && (
+              <div class="row-actions">
+                {rest.map((link) => (
+                  <a href={link.href} class="row-action" {...(link.external ? externalAttrs : {})}>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      );
+    })
   }
 </div>

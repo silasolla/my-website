@@ -4,6 +4,7 @@ import type { LinksData } from '../data/links';
 import { getTranslation } from '../i18n/translations';
 import { getSiteName } from '../i18n/utils';
 import { profileData } from '../data/profile';
+import '../styles/list-row.css';
 import '../styles/link-cards.css';
 import '../styles/links-page.css';
 
@@ -30,10 +31,11 @@ const description =
           <h2 class="section-title">{section.title}</h2>
           <div class="links-grid">
             {section.items.map((link) => (
-              <a href={link.url} class="link-card" target="_blank" rel="noopener noreferrer">
-                <h3 class="link-name">{link.name}</h3>
-                {link.description && <p class="link-description">{link.description}</p>}
-                <span class="link-arrow">→</span>
+              <a href={link.url} class="row row--flat" target="_blank" rel="noopener noreferrer">
+                <div class="row-body">
+                  <h3 class="row-title">{link.name}</h3>
+                  {link.description && <p class="row-desc">{link.description}</p>}
+                </div>
               </a>
             ))}
           </div>

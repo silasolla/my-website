@@ -23,7 +23,7 @@
 
 .notfound-heading {
   font-size: 2rem;
-  color: var(--color-primary-dark);
+  color: var(--color-heading);
   margin: 1.5rem 0 1rem;
 }
 
@@ -42,13 +42,11 @@
   text-decoration: none;
   border-radius: 8px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all var(--motion-duration) ease;
 }
 
 .home-link:hover {
   background: var(--color-primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 640px) {

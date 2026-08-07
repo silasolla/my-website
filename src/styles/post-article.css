@@ -1,13 +1,11 @@
 .post-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: minmax(0, 1fr) 260px;
   grid-template-areas:
     'header header'
     'content sidebar'
     'nav nav';
   gap: 0 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
   padding: 1rem 0;
 }
 
@@ -21,28 +19,24 @@
   gap: 2rem;
 }
 
+.share-section {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sidebar-pc .share-section:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
 .toc-mobile,
 .share-mobile {
   display: none;
 }
 
-.toc-section {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.5rem;
-}
-
 .article-content {
   grid-area: content;
   min-width: 0;
-}
-
-.share-section {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.5rem;
 }
 
 .article-nav {
@@ -56,7 +50,7 @@
 
 .toc-summary {
   font-size: 1.1rem;
-  color: var(--color-primary-dark);
+  color: var(--color-heading);
   font-weight: 600;
   cursor: pointer;
   list-style: none;
@@ -77,7 +71,7 @@
 
 .sidebar-title {
   font-size: 1.1rem;
-  color: var(--color-primary-dark);
+  color: var(--color-heading);
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -99,11 +93,11 @@
 .toc-link {
   color: var(--color-text);
   text-decoration: none;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: var(--text-meta);
+  line-height: 1.7;
   display: block;
   padding: 0.25rem 0;
-  transition: color 0.2s ease;
+  transition: color var(--motion-duration) ease;
 }
 
 .toc-link:hover {
@@ -117,40 +111,49 @@
 
 .share-button {
   flex: 1;
-  padding: 0.75rem;
-  background: var(--color-primary);
-  border: none;
-  border-radius: 8px;
-  color: white;
+  padding: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-light);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    color var(--motion-duration) ease,
+    border-color var(--motion-duration) ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .share-button:hover {
-  background: var(--color-primary-dark);
-  transform: translateY(-2px);
+  border-color: var(--color-primary);
 }
 
 .share-button img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0);
+  opacity: 0.65;
+  transition: opacity var(--motion-duration) ease;
+}
+
+[data-theme='dark'] .share-button img {
   filter: brightness(0) invert(1);
+}
+
+.share-button:hover img {
+  opacity: 1;
 }
 
 .share-button.copied {
-  background: var(--color-success);
-}
-
-.share-button.copied img {
-  filter: brightness(0) invert(1);
+  border-color: var(--color-success);
 }
 
 .article-header {
   grid-area: header;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .article-tags {
@@ -159,13 +162,8 @@
   margin-bottom: 1rem;
 }
 
-.post-layout .tag {
-  padding: 0.3rem 0.9rem;
-}
-
 .article-title {
   font-size: 2rem;
-  color: var(--color-primary-dark);
   margin-bottom: 0.5rem;
   line-height: 1.3;
 }
@@ -180,21 +178,21 @@
   display: inline-block;
   color: var(--color-primary);
   text-decoration: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  transition: border-color var(--motion-duration) ease;
 }
 
 .back-link:hover {
-  background: var(--color-primary-light);
   border-color: var(--color-primary);
   text-decoration: none;
 }
 
 @media (max-width: 1024px) {
   .post-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       'header'
       'toc'
@@ -216,10 +214,8 @@
   .toc-mobile {
     display: block;
     grid-area: toc;
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .toc-mobile .toc-details:not([open]) {
@@ -233,10 +229,8 @@
   .share-mobile {
     display: block;
     grid-area: share;
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 1.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
   }
 }
 

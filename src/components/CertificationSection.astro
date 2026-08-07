@@ -1,13 +1,11 @@
 ---
 import type { CertificationCategory } from '../data/about';
-import { getTranslation } from '../i18n/translations';
 
 interface Props {
   categories: CertificationCategory[];
 }
 
 const { categories } = Astro.props;
-const viewBadgeText = getTranslation(Astro.currentLocale, 'component.view-badge');
 ---
 
 <div class="certification-categories">
@@ -15,45 +13,25 @@ const viewBadgeText = getTranslation(Astro.currentLocale, 'component.view-badge'
     categories.map((category) => (
       <div class="category">
         <h4 class="category-name">{category.category}</h4>
-        <div class="certification-grid">
+        <div class="cert-grid">
           {category.items.map((item) => {
-            const CardTag = item.credlyUrl ? 'a' : 'div';
-            const cardProps = item.credlyUrl
+            const CellTag = item.credlyUrl ? 'a' : 'div';
+            const cellProps = item.credlyUrl
               ? {
                   href: item.credlyUrl,
                   target: '_blank',
                   rel: 'noopener noreferrer',
-                  class: 'certification-card card-clickable',
+                  class: 'cert-cell',
                 }
-              : {
-                  class: 'certification-card',
-                };
+              : { class: 'cert-cell' };
 
             return (
-              <CardTag {...cardProps}>
-                <div class="card-content-wrapper">
-                  {item.badgeImage && (
-                    <div class="badge-image-container">
-                      <img src={item.badgeImage} alt={`${item.name} badge`} class="badge-image" />
-                    </div>
-                  )}
-
-                  <div class="card-main-info">
-                    <div class="card-header">
-                      {item.date && <span class="cert-date">{item.date}</span>}
-                      <h5 class="cert-name">{item.name}</h5>
-                    </div>
-                    {item.credlyUrl && (
-                      <span class="credly-text">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg>
-                        {viewBadgeText}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </CardTag>
+              <CellTag {...cellProps}>
+                <span class="cert-badge">
+                  {item.badgeImage && <img src={item.badgeImage} alt="" />}
+                </span>
+                <span class="cert-name">{item.name}</span>
+              </CellTag>
             );
           })}
         </div>

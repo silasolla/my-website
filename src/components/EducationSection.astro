@@ -11,12 +11,12 @@ const { items } = Astro.props;
 <div class="education-list">
   {
     items.map((item) => (
-      <div class="education-item">
-        <div class="period">{item.period}</div>
-        <div class="details">
-          <h4 class="institution">{item.institution}</h4>
-          {item.degree && <p class="degree">{item.degree}</p>}
-          {item.description && <p class="description">{item.description}</p>}
+      <div class="row">
+        <div class="row-meta">{item.period}</div>
+        <div class="row-body">
+          <h4 class="row-title">{item.institution}</h4>
+          {item.degree && <p class="row-sub">{item.degree}</p>}
+          {item.description && <p class="row-desc">{item.description}</p>}
         </div>
       </div>
     ))

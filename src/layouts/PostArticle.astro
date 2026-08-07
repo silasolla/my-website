@@ -5,10 +5,12 @@ import ShareButtons from '../components/ShareButtons.astro';
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName, formatDate, getTagLabel } from '../i18n/utils';
+import { getSiteName, getTagLabel } from '../i18n/utils';
+import { formatPostListDate } from '../utils/posts';
 import { postsBasePath } from '../utils/paths';
 import '../styles/post-article.css';
 import '../styles/article-content.css';
+import '../styles/link-card.css';
 
 interface Props {
   entry: CollectionEntry<'posts'>;
@@ -36,15 +38,11 @@ const siteName = getSiteName(locale);
   <div class="post-layout">
     <header class="article-header">
       <div class="article-tags">
-        {
-          entry.data.tags.map((tag) => (
-            <span class={`tag tag-${tag}`}>{getTagLabel(locale, tag)}</span>
-          ))
-        }
+        {entry.data.tags.map((tag) => <span class="tag">{getTagLabel(locale, tag)}</span>)}
       </div>
       <h2 class="article-title">{entry.data.title}</h2>
       <time class="article-date" datetime={entry.data.date.toISOString()}>
-        {formatDate(entry.data.date, locale)}
+        {formatPostListDate(entry.data.date)}
       </time>
     </header>
 
