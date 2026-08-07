@@ -13,6 +13,20 @@ const postsText = getTranslation(Astro.currentLocale, 'nav.posts');
 const linksText = getTranslation(Astro.currentLocale, 'nav.links');
 const toggleOpenLabel = getTranslation(Astro.currentLocale, 'nav.toggle.open');
 const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close');
+
+const navItems = [
+  { href: `${baseUrl}/`, text: homeText, active: currentPath === `${baseUrl}/` },
+  { href: `${baseUrl}/about/`, text: aboutText, active: currentPath === `${baseUrl}/about/` },
+  {
+    href: `${baseUrl}/posts/`,
+    text: postsText,
+    active: currentPath.startsWith(`${baseUrl}/posts`),
+  },
+  { href: `${baseUrl}/links/`, text: linksText, active: currentPath === `${baseUrl}/links/` },
+];
+
+// モバイルはハンバーガーを閉じると現在地の手がかりが消えるため，メニュー名ではなく現在ページ名を出す
+const currentPageTitle = navItems.find((item) => item.active)?.text ?? menuTitle;
 ---
 
 <nav
@@ -23,41 +37,21 @@ const toggleCloseLabel = getTranslation(Astro.currentLocale, 'nav.toggle.close')
   data-close-label={toggleCloseLabel}
 >
   <div class="nav-header">
-    <h2 class="nav-title">{menuTitle}</h2>
+    <h2 class="nav-title">{currentPageTitle}</h2>
     <button id="nav-toggle" class="nav-toggle" aria-label={toggleOpenLabel}>
       <span class="hamburger"></span>
     </button>
   </div>
   <ul class="nav-list" id="nav-list">
-    <li>
-      <a
-        href={`${baseUrl}/`}
-        class={currentPath === `${baseUrl}/` || currentPath === `${baseUrl}` ? 'active' : ''}
-        >{homeText}</a
-      >
-    </li>
-    <li>
-      <a
-        href={`${baseUrl}/about/`}
-        class={currentPath === `${baseUrl}/about` || currentPath === `${baseUrl}/about/`
-          ? 'active'
-          : ''}>{aboutText}</a
-      >
-    </li>
-    <li>
-      <a
-        href={`${baseUrl}/posts/`}
-        class={currentPath.startsWith(`${baseUrl}/posts`) ? 'active' : ''}>{postsText}</a
-      >
-    </li>
-    <li>
-      <a
-        href={`${baseUrl}/links/`}
-        class={currentPath === `${baseUrl}/links` || currentPath === `${baseUrl}/links/`
-          ? 'active'
-          : ''}>{linksText}</a
-      >
-    </li>
+    {
+      navItems.map((item) => (
+        <li>
+          <a href={item.href} class={item.active ? 'active' : ''}>
+            {item.text}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </nav>
 
