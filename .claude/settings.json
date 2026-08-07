@@ -17,7 +17,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path'); case \"$f\" in *.astro|*.ts|*.js|*.mjs|*.json|*.md|*.mdx) npx prettier --write \"$f\" ;; esac"
+            "command": "f=$(jq -r '.tool_input.file_path'); case \"$f\" in *.astro|*.ts|*.js|*.mjs|*.json|*.md|*.mdx|*.css) npx prettier --write \"$f\" ;; esac"
+          },
+          {
+            "type": "command",
+            "command": "p=$(cat); f=$(printf '%s' \"$p\" | jq -r '.tool_input.file_path'); case \"$f\" in *.astro|*.ts|*.js|*.mjs|*.css) printf '%s' \"$p\" | jq -r '[.tool_input.new_string,.tool_input.content]|map(select(.!=null))|join(\"\\n\")' | grep -qE '(^[[:space:]]*|[^:])(//|/\\*|<!--)' && { echo \"コメントを追加しています．code-comment-style: 残してよいのは「これが無いと CI もツールも気づかないまま壊れる」理由を一行だけ．what の言い換え，利用箇所の列挙，隣接する宣言が無コメントなのに雰囲気で足したものは消してください．\" >&2; exit 2; } ;; esac; exit 0"
           }
         ]
       }

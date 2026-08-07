@@ -36,23 +36,29 @@ const currentPageTitle = navItems.find((item) => item.active)?.text ?? menuTitle
   data-open-label={toggleOpenLabel}
   data-close-label={toggleCloseLabel}
 >
-  <div class="nav-header">
-    <h2 class="nav-title">{currentPageTitle}</h2>
-    <button id="nav-toggle" class="nav-toggle" aria-label={toggleOpenLabel}>
-      <span class="hamburger"></span>
-    </button>
+  <button
+    id="nav-toggle"
+    class="nav-toggle"
+    aria-label={toggleOpenLabel}
+    aria-expanded="false"
+    aria-controls="nav-list"
+  >
+    <span class="nav-title">{currentPageTitle}</span>
+    <span class="hamburger"></span>
+  </button>
+  <div class="nav-list-wrap">
+    <ul class="nav-list" id="nav-list">
+      {
+        navItems.map((item) => (
+          <li>
+            <a href={item.href} class={item.active ? 'active' : ''}>
+              {item.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
-  <ul class="nav-list" id="nav-list">
-    {
-      navItems.map((item) => (
-        <li>
-          <a href={item.href} class={item.active ? 'active' : ''}>
-            {item.text}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
 </nav>
 
 <script>
@@ -64,20 +70,18 @@ const currentPageTitle = navItems.find((item) => item.active)?.text ?? menuTitle
     const openLabel = nav.getAttribute('data-open-label') || 'Open menu';
     const closeLabel = nav.getAttribute('data-close-label') || 'Close menu';
 
-    navToggle.addEventListener('click', () => {
-      const isOpen = navList.classList.toggle('open');
-      navToggle.classList.toggle('open', isOpen);
+    const setOpen = (isOpen: boolean) => {
+      nav.classList.toggle('open', isOpen);
       navToggle.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
-    });
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    navToggle.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
 
     // メニュー項目をクリックしたら閉じる
     const navLinks = navList.querySelectorAll('a');
     navLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        navList.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-label', openLabel);
-      });
+      link.addEventListener('click', () => setOpen(false));
     });
   }
 </script>

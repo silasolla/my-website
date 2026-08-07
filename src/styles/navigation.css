@@ -3,28 +3,23 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.nav-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .nav-title {
-  display: none;
   font-size: 1.1rem;
-  margin-bottom: 0;
   font-weight: 600;
+  color: var(--color-heading);
 }
 
 .nav-toggle {
   display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  width: 40px;
-  height: 40px;
-  position: relative;
+  padding: 0.5rem 0;
+  font: inherit;
+  text-align: left;
 }
 
 .hamburger,
@@ -35,34 +30,34 @@
   height: 2px;
   background: var(--color-text);
   transition: all var(--motion-duration) ease;
-  position: absolute;
-  left: 8px;
 }
 
 .hamburger {
-  top: 19px;
+  position: relative;
 }
 
 .hamburger::before {
   content: '';
+  position: absolute;
   top: -8px;
 }
 
 .hamburger::after {
   content: '';
+  position: absolute;
   top: 8px;
 }
 
-.nav-toggle.open .hamburger {
+.navigation.open .hamburger {
   background: transparent;
 }
 
-.nav-toggle.open .hamburger::before {
+.navigation.open .hamburger::before {
   transform: rotate(45deg);
   top: 0;
 }
 
-.nav-toggle.open .hamburger::after {
+.navigation.open .hamburger::after {
   transform: rotate(-45deg);
   top: 0;
 }
@@ -105,25 +100,31 @@
     margin-bottom: 1.5rem;
   }
 
-  .nav-title {
-    display: block;
+  .nav-toggle {
+    display: flex;
   }
 
-  .nav-toggle {
-    display: block;
+  .nav-list-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--motion-duration) ease,
+      visibility var(--motion-duration);
+  }
+
+  .navigation.open .nav-list-wrap {
+    grid-template-rows: 1fr;
+    visibility: visible;
   }
 
   .nav-list {
-    display: none;
     flex-direction: column;
     gap: 0;
-    margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid var(--color-border);
-  }
-
-  .nav-list.open {
-    display: flex;
+    /* 外すと grid item の自動最小サイズが効いて 0fr のトラックでも潰れなくなる */
+    overflow: hidden;
   }
 
   .nav-list li {
