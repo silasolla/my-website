@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
 
-  --color-primary: #4f7a60;
+  --color-primary: #466d55;
   --color-primary-dark: #35573f;
   --color-primary-light: #dfe8dc;
   --color-primary-deep: #3f6249;
-  --color-primary-rgb: 79, 122, 96;
+  --color-primary-rgb: 70, 109, 85;
 
   --color-heading: #33503d;
   --color-text: #36453a;
-  --color-text-light: #5e6d5f;
+  --color-text-light: #59685a;
   --color-border: #ccd6c9;
   --color-bg: #e9ede2;
   --color-bg-alt: #e0e6d7;
