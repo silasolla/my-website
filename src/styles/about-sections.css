@@ -131,3 +131,15 @@ a.cert-cell:hover {
   border-bottom: 1px solid var(--color-border);
   font-weight: 600;
 }
+
+.category-name {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-note {
+  font-weight: 500;
+  white-space: normal;
+}

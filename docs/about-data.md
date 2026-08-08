@@ -136,6 +136,7 @@ talks: [
 certifications: [
   {
     category: '認定資格',
+    note: '2025-01-01: 全冠しました！',
     items: [
       {
         name: 'Super Engineer',
@@ -154,6 +155,7 @@ certifications: [
 **フィールド説明：**
 
 - `category`: 資格のカテゴリ (必須)
+- `note`: カテゴリへの注記 (オプション)
 - `items`: カテゴリ内の資格リスト (必須)
   - `name`: 資格の名前 (必須)
   - `credlyUrl`: Credly のバッジページ URL (オプション)
@@ -164,6 +166,7 @@ certifications: [
 - 資格はカテゴリごとにタイルのグリッドで並びます．
 - `credlyUrl` を設定するとタイル全体が Credly のバッジページへのリンクになり，新しいタブで開きます．
 - `badgeImage` を設定するとバッジ画像がタイル左側に表示されます．
+- `note` を設定すると，カテゴリ名の右にタグとして表示されます．
 - 同じカテゴリ内の全項目が `badgeImage` を持たない場合は，資格名を中央に寄せます．
 
 ### 5. その他 (Misc) を追加

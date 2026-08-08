@@ -33,6 +33,7 @@ export interface CertificationItem {
 
 export interface CertificationCategory {
   category: string;
+  note?: string;
   items: CertificationItem[];
 }
 

@@ -140,7 +140,7 @@ export const aboutDataEn: AboutData = {
   ],
   certifications: [
     {
-      category: 'Google Cloud Certifications',
+      category: 'Google Cloud',
       items: [
         {
           name: 'Professional Cloud Architect',
@@ -229,7 +229,7 @@ export const aboutDataEn: AboutData = {
       ],
     },
     {
-      category: 'AWS Certifications',
+      category: 'AWS',
       items: [
         {
           name: 'Solutions Architect - Associate',

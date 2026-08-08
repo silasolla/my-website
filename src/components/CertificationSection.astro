@@ -12,7 +12,10 @@ const { categories } = Astro.props;
   {
     categories.map((category) => (
       <div class="category">
-        <h4 class="category-name">{category.category}</h4>
+        <h4 class="category-name">
+          {category.category}
+          {category.note && <span class="tag category-note">{category.note}</span>}
+        </h4>
         <div class="cert-grid">
           {category.items.map((item) => {
             const CellTag = item.credlyUrl ? 'a' : 'div';
