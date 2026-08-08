@@ -3,22 +3,16 @@ import Layout from './Layout.astro';
 import SignedTextViewer from '../components/SignedTextViewer.astro';
 import { profileData } from '../data/profile';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName } from '../i18n/utils';
+import { getNameWithUsername, getSiteName } from '../i18n/utils';
 import '../styles/identity-page.css';
 
 const locale = Astro.currentLocale;
 const siteName = getSiteName(locale);
 const title = `${getTranslation(locale, 'identity.key.title')} - ${siteName}`;
 
-const description =
-  locale === 'en'
-    ? `${getTranslation(locale, 'identity.key.meta-description-prefix')}${profileData.nameEn} (${profileData.username})`
-    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.meta-description')}`;
-
-const intro =
-  locale === 'en'
-    ? `${getTranslation(locale, 'identity.key.intro-prefix')}${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.intro-suffix')}`
-    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.key.intro')}`;
+const name = getNameWithUsername();
+const description = getTranslation(locale, 'identity.key.meta-description', { name });
+const intro = getTranslation(locale, 'identity.key.intro', { name });
 ---
 
 <Layout title={title} description={description}>

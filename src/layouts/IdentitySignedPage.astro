@@ -1,9 +1,8 @@
 ---
 import Layout from './Layout.astro';
 import SignedTextViewer from '../components/SignedTextViewer.astro';
-import { profileData } from '../data/profile';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName } from '../i18n/utils';
+import { getNameWithUsername, getSiteName } from '../i18n/utils';
 import { formatPlatformName } from '../utils/platform';
 import { identityBasePath } from '../utils/paths';
 import '../styles/identity-page.css';
@@ -21,10 +20,9 @@ const siteName = getSiteName(locale);
 
 const title = `${platformDisplay}/${account}${getTranslation(locale, 'identity.signed.title-suffix')} - ${siteName}`;
 
-const description =
-  locale === 'en'
-    ? `Proof that ${profileData.nameEn} (${profileData.username}) owns the ${platformDisplay} account ${account}`
-    : `${profileData.nameEn} (${profileData.username}) が ${platformDisplay} の ${account} アカウントを所有していることの証明`;
+const textParams = { name: getNameWithUsername(), platform: platformDisplay, account };
+const description = getTranslation(locale, 'identity.signed.meta-description', textParams);
+const intro = getTranslation(locale, 'identity.signed.intro', textParams);
 
 const textUrl = `/identity/${platform}/${account}/signed.txt`;
 ---
@@ -36,29 +34,7 @@ const textUrl = `/identity/${platform}/${account}/signed.txt`;
         {platformDisplay}/{account}{getTranslation(locale, 'identity.signed.title-suffix')}
       </h3>
       <div class="section-content">
-        <p>
-          {
-            locale === 'en' ? (
-              <>
-                {getTranslation(locale, 'identity.signed.intro-prefix-en')}
-                {profileData.nameEn} ({profileData.username})
-                {getTranslation(locale, 'identity.signed.intro-mid-en')}
-                <strong>{platformDisplay}</strong>
-                {getTranslation(locale, 'identity.signed.intro-end-en')}
-                <strong>{account}</strong>.
-              </>
-            ) : (
-              <>
-                {profileData.nameEn} ({profileData.username})
-                {getTranslation(locale, 'identity.signed.intro-mid')}
-                <strong>{platformDisplay}</strong>
-                {getTranslation(locale, 'identity.signed.intro-after')}
-                <strong>{account}</strong>
-                {getTranslation(locale, 'identity.signed.intro-end')}
-              </>
-            )
-          }
-        </p>
+        <p>{intro}</p>
       </div>
 
       <SignedTextViewer textUrl={textUrl} platform={platform} account={account} />

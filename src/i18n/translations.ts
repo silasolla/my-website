@@ -104,14 +104,12 @@ export const translations = {
 
     // アカウント証明
     'identity.title': 'アカウント証明',
-    'identity.meta-description': 'のアカウント証明と PGP 公開鍵',
-    'identity.meta-description-prefix': '',
+    'identity.meta-description': '{name} のアカウント証明と PGP 公開鍵',
     'identity.pgp-section': 'PGP 公開鍵',
     'identity.pgp-card-title': 'PGP 公開鍵',
     'identity.pgp-card-desc': '公開鍵の確認とダウンロード',
     'identity.accounts-section': 'アカウント証明',
-    'identity.accounts-intro-prefix': '',
-    'identity.accounts-intro-suffix': ' のアカウントであることを PGP で署名しています．',
+    'identity.accounts-intro': '{name} のアカウントであることを PGP で署名しています．',
     'identity.verification-title': '署名の検証方法',
     'identity.verify-step1': '上のリンクから公開鍵を取得し，インポート',
     'identity.verify-step2-before': '各アカウントの ',
@@ -120,19 +118,14 @@ export const translations = {
     'identity.verify-step3-after': ' で署名を検証',
 
     'identity.key.title': 'PGP 公開鍵',
-    'identity.key.meta-description': 'の PGP 公開鍵',
-    'identity.key.meta-description-prefix': '',
-    'identity.key.intro': 'の PGP 公開鍵です．',
-    'identity.key.intro-prefix': '',
-    'identity.key.intro-suffix': '',
+    'identity.key.meta-description': '{name} の PGP 公開鍵',
+    'identity.key.intro': '{name} の PGP 公開鍵です．',
 
     'identity.signed.title-suffix': ' の署名',
-    'identity.signed.intro-mid': ' が ',
-    'identity.signed.intro-after': ' の ',
-    'identity.signed.intro-end': ' アカウントを所有していることを述べた署名付きテキストです．',
-    'identity.signed.intro-prefix-en': 'Signed text stating that ',
-    'identity.signed.intro-mid-en': ' owns the ',
-    'identity.signed.intro-end-en': ' account ',
+    'identity.signed.meta-description':
+      '{name} が {platform} アカウント @{account} を所有していることの証明',
+    'identity.signed.intro':
+      '{name} が {platform} アカウント @{account} を所有していることを述べた署名付きテキストです．',
     'identity.signed.verification-title': '検証方法',
     'identity.signed.keybase-heading': 'A: Keybase でブラウザから検証',
     'identity.signed.keybase-step1-prefix': '',
@@ -259,14 +252,12 @@ export const translations = {
 
     // Identity verification
     'identity.title': 'Identity Verification',
-    'identity.meta-description-prefix': 'Identity verification and PGP public key for ',
-    'identity.meta-description': '',
+    'identity.meta-description': 'Identity verification and PGP public key for {name}',
     'identity.pgp-section': 'PGP Public Key',
     'identity.pgp-card-title': 'PGP Public Key',
     'identity.pgp-card-desc': 'View and download the public key',
     'identity.accounts-section': 'Account Verification',
-    'identity.accounts-intro-prefix': 'PGP-signed statements that these accounts belong to ',
-    'identity.accounts-intro-suffix': '.',
+    'identity.accounts-intro': 'PGP-signed statements that these accounts belong to {name}.',
     'identity.verification-title': 'How to Verify Signatures',
     'identity.verify-step1': 'Get the public key from the link above and import it',
     'identity.verify-step2-before': 'Download ',
@@ -275,19 +266,13 @@ export const translations = {
     'identity.verify-step3-after': '',
 
     'identity.key.title': 'PGP Public Key',
-    'identity.key.meta-description': '',
-    'identity.key.meta-description-prefix': 'PGP public key for ',
-    'identity.key.intro': '',
-    'identity.key.intro-prefix': 'PGP public key for ',
-    'identity.key.intro-suffix': '.',
+    'identity.key.meta-description': 'PGP public key for {name}',
+    'identity.key.intro': 'PGP public key for {name}.',
 
     'identity.signed.title-suffix': ' Signature',
-    'identity.signed.intro-mid': '',
-    'identity.signed.intro-after': '',
-    'identity.signed.intro-end': '',
-    'identity.signed.intro-prefix-en': 'Signed text stating that ',
-    'identity.signed.intro-mid-en': ' owns the ',
-    'identity.signed.intro-end-en': ' account ',
+    'identity.signed.meta-description': 'Proof that {name} owns the {platform} account @{account}',
+    'identity.signed.intro':
+      'Signed text stating that {name} owns the {platform} account @{account}.',
     'identity.signed.verification-title': 'How to Verify',
     'identity.signed.keybase-heading': 'A: Verify in Browser with Keybase',
     'identity.signed.keybase-step1-link': 'Keybase.io',
@@ -315,10 +300,15 @@ export const translations = {
 export type Locale = keyof typeof translations;
 export type TranslationKey = keyof (typeof translations)['ja'];
 
-export function getTranslation(locale: Locale | string | undefined, key: TranslationKey): string {
+export function getTranslation(
+  locale: Locale | string | undefined,
+  key: TranslationKey,
+  params?: Record<string, string>
+): string {
   const normalizedLocale = (locale === 'en' ? 'en' : 'ja') as Locale;
   // prefix/suffix 方式では空文字列も意図した値のため，truthy 判定でフォールバックしない
-  return translations[normalizedLocale][key];
+  const text = translations[normalizedLocale][key];
+  return params ? text.replace(/\{(\w+)\}/g, (match, name) => params[name] ?? match) : text;
 }
 
 export function getCurrentLocale(localeFromAstro: string | undefined): Locale {

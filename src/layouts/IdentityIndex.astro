@@ -2,7 +2,7 @@
 import Layout from './Layout.astro';
 import { profileData } from '../data/profile';
 import { getTranslation } from '../i18n/translations';
-import { getSiteName } from '../i18n/utils';
+import { getNameWithUsername, getSiteName } from '../i18n/utils';
 import { formatPlatformName } from '../utils/platform';
 import { identityBasePath } from '../utils/paths';
 import '../styles/list-row.css';
@@ -14,12 +14,9 @@ const identityPath = identityBasePath(locale);
 const siteName = getSiteName(locale);
 const title = `${getTranslation(locale, 'identity.title')} - ${siteName}`;
 
-const description =
-  locale === 'en'
-    ? `${getTranslation(locale, 'identity.meta-description-prefix')}${profileData.nameEn} (${profileData.username})`
-    : `${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.meta-description')}`;
-
-const accountsIntro = `${getTranslation(locale, 'identity.accounts-intro-prefix')}${profileData.nameEn} (${profileData.username})${getTranslation(locale, 'identity.accounts-intro-suffix')}`;
+const name = getNameWithUsername();
+const description = getTranslation(locale, 'identity.meta-description', { name });
+const accountsIntro = getTranslation(locale, 'identity.accounts-intro', { name });
 
 const proofs = profileData.identityProofs || [];
 ---

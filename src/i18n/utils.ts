@@ -1,6 +1,10 @@
 import { profileData } from '../data/profile';
 import { getTranslation } from './translations';
 
+export function getNameWithUsername(): string {
+  return `${profileData.nameEn} (${profileData.username})`;
+}
+
 /**
  * サイト名を取得 (プロフィール + i18n 接尾辞)
  */
