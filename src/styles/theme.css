@@ -3,17 +3,17 @@
 
   --color-primary: #466d55;
   --color-primary-dark: #35573f;
-  --color-primary-light: #dfe8dc;
+  --color-primary-light: #dee8dc;
   --color-primary-deep: #3f6249;
   --color-primary-rgb: 70, 109, 85;
 
-  --color-heading: #33503d;
+  --color-heading: #2c3d31;
   --color-text: #36453a;
   --color-text-light: #59685a;
   --color-border: #ccd6c9;
-  --color-bg: #e9ede2;
-  --color-bg-alt: #e0e6d7;
-  --color-surface: #f3f6ee;
+  --color-bg: #e6eee4;
+  --color-bg-alt: #dce7da;
+  --color-surface: #f1f7f0;
 
   --color-header-text: #eef2ee;
   --color-header-text-muted: #dde4dd;
