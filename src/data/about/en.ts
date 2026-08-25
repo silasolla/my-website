@@ -108,6 +108,15 @@ export const aboutDataEn: AboutData = {
   ],
   talks: [
     {
+      title: 'Assembling Cloud Run Applications with the Module System',
+      event: 'OCaml Meeting 2026 in Tokyo',
+      eventUrl: 'https://ocamljp.connpass.com/event/391765/',
+      date: '2026-08-22',
+      slideUrl: 'https://doc.silasol.la/talks/2026-08-22_ocaml-meeting/slides.pdf',
+      description:
+        'Spoke at an OCaml community event. Wrote a program in OCaml that calls an LLM API and deployed it on Cloud Run as an HTTP server built with Eio. Beyond the design built around the module system, the talk also covers building the container image and managing library dependencies.',
+    },
+    {
       title:
         '"The Definition of Standard ML" in 2026: As a Source of Robust and Modern Software Design',
       event: '関数型まつり 2026',

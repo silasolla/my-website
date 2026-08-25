@@ -106,6 +106,15 @@ export const aboutDataJa: AboutData = {
   ],
   talks: [
     {
+      title: 'モジュールシステムで組み立てる Cloud Run アプリケーション',
+      event: 'OCaml Meeting 2026 in Tokyo',
+      eventUrl: 'https://ocamljp.connpass.com/event/391765/',
+      date: '2026-08-22',
+      slideUrl: 'https://doc.silasol.la/talks/2026-08-22_ocaml-meeting/slides.pdf',
+      description:
+        'OCaml のコミュニティイベントに登壇しました．LLM の API を呼ぶプログラムを OCaml で書いて，Eio による HTTP サーバとして Cloud Run にデプロイした話です．モジュールシステムによる設計に加えて，コンテナイメージの構築やライブラリの依存管理についても触れています．',
+    },
+    {
       title:
         '2026 年に読む "The Definition of Standard ML" 〜 現代の堅牢なソフトウェア設計の源流として',
       event: '関数型まつり 2026',
