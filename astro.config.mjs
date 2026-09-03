@@ -76,8 +76,8 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      // 特別記事（/special/*）をサイトマップから除外
-      filter: (page) => !page.includes('/special/'),
+      // 特別記事（/special/*）とテキスト版（/text/*）をサイトマップから除外
+      filter: (page) => !page.includes('/special/') && !page.includes('/text/'),
       // i18n対応
       i18n: {
         defaultLocale: 'ja',

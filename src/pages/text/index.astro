@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import TextPage from '../../layouts/TextPage.astro';
+import { getSiteTitle } from '../../i18n/utils';
+import { formatPostListDate, sortPosts } from '../../utils/posts';
+
+const allPosts = await getCollection('posts', (post) => {
+  return post.data.lang === 'ja' || post.data.lang === undefined;
+});
+const sortedPosts = sortPosts(allPosts);
+---
+
+<TextPage title={`テキスト版 - ${getSiteTitle('ja')}`}>
+  <h1>記事</h1>
+  <ul>
+    {
+      sortedPosts.map((post) => (
+        <li>
+          {formatPostListDate(post.data.date)} [{post.data.tags.join(', ')}]{' '}
+          <a href={`/text/posts/${post.id}/`}>{post.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</TextPage>

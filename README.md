@@ -74,7 +74,8 @@ Markdown/MDX によって記事を管理します．
 │   │   ├── IdentitySignedPage.astro
 │   │   ├── AboutPage.astro
 │   │   ├── LinksPage.astro
-│   │   └── NotFoundPage.astro
+│   │   ├── NotFoundPage.astro
+│   │   └── TextPage.astro
 │   ├── pages/               # ページルート (日本語 / en)
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -86,6 +87,10 @@ Markdown/MDX によって記事を管理します．
 │   │   │   └── index.astro
 │   │   ├── special/
 │   │   │   └── [slug].astro
+│   │   ├── text/            # テキスト版 (w3m)
+│   │   │   ├── posts/
+│   │   │   │   └── [slug].astro
+│   │   │   └── index.astro
 │   │   ├── rss/
 │   │   │   ├── diary.xml.ts
 │   │   │   ├── news.xml.ts
@@ -129,6 +134,7 @@ Markdown/MDX によって記事を管理します．
 │       ├── rss.ts
 │       ├── math.ts
 │       ├── image.ts
+│       ├── textView.ts
 │       └── platform.ts
 ├── docs/
 ├── scripts/
@@ -176,6 +182,7 @@ cp .env.example .env
 | [data-i18n.md](./docs/data-i18n.md)                         | プロファイルデータ，i18n                 |
 | [sitemap-guide.md](./docs/sitemap-guide.md)                 | サイトマップ                             |
 | [special-articles.md](./docs/special-articles.md)           | 特別記事                                 |
+| [text-view.md](./docs/text-view.md)                         | テキスト版 (w3m)                         |
 
 ### 記事の作成と公開
 

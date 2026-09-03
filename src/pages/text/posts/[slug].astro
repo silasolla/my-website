@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import TextPage from '../../../layouts/TextPage.astro';
+import { formatPostListDate } from '../../../utils/posts';
+import { renderPostText } from '../../../utils/textView';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts', (post) => {
+    return post.data.lang === 'ja' || post.data.lang === undefined;
+  });
+  return allPosts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const html = await renderPostText(entry);
+---
+
+<TextPage title={`${entry.data.title} - テキスト版`}>
+  <h1>{entry.data.title}</h1>
+  <p>{formatPostListDate(entry.data.date)} [{entry.data.tags.join(', ')}]</p>
+  <p><a href={`/posts/${entry.id}/`}>通常版で読む</a></p>
+  <hr />
+  <Fragment set:html={html} />
+</TextPage>
